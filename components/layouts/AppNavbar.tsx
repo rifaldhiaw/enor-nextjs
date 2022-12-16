@@ -30,6 +30,7 @@ import {
   IconUser,
 } from "@tabler/icons";
 import { useState } from "react";
+import { navLinkData } from "../../data/navlinkData";
 
 const useStyles = createStyles((theme) => ({
   wrapper: {
@@ -161,15 +162,9 @@ export function AppNavbar(props: { opened: boolean }) {
   const [active, setActive] = useState("Releases");
 
   //  active accordion array
-  const [activeAccordion, setActiveAccordion] = useState<string[]>(["item-1"]);
-
-  const toggleActiveAccordion = (label: string) => {
-    if (activeAccordion.includes(label)) {
-      setActiveAccordion(activeAccordion.filter((item) => item !== label));
-    } else {
-      setActiveAccordion([...activeAccordion, label]);
-    }
-  };
+  const [activeAccordion, setActiveAccordion] = useState<string[]>([
+    navLinkData[0].title,
+  ]);
 
   const mainLinks = mainLinksMockdata.map((link) => (
     <Tooltip
@@ -218,120 +213,23 @@ export function AppNavbar(props: { opened: boolean }) {
               chevronPosition="left"
               mx="auto"
               value={activeAccordion}
+              onChange={(value) => setActiveAccordion(value)}
             >
-              <Accordion.Item
-                value="item-1"
-                onClick={() => toggleActiveAccordion("item-1")}
-              >
-                <AccordionControl>Tech And Product</AccordionControl>
-                <Accordion.Panel>
-                  <NavLink
-                    icon={<IconHash size={16} stroke={1.5} />}
-                    label="First child link"
-                    active={true}
-                  />
-                  <NavLink
-                    icon={<IconHash size={16} stroke={1.5} />}
-                    label="Second child link"
-                  />
-
-                  <NavLink
-                    icon={<IconHash size={16} stroke={1.5} />}
-                    label="First child link"
-                  />
-                  <NavLink
-                    icon={<IconHash size={16} stroke={1.5} />}
-                    label="Second child link"
-                  />
-                  <NavLink
-                    icon={<IconHash size={16} stroke={1.5} />}
-                    label="Third child link"
-                  />
-                </Accordion.Panel>
-              </Accordion.Item>
-
-              <Accordion.Item
-                value="item-2"
-                onClick={() => toggleActiveAccordion("item-2")}
-              >
-                <AccordionControl>Marketing</AccordionControl>
-                <Accordion.Panel>
-                  <NavLink
-                    icon={<IconHash size={16} stroke={1.5} />}
-                    label="First child link"
-                  />
-                  <NavLink
-                    icon={<IconHash size={16} stroke={1.5} />}
-                    label="Second child link"
-                  />
-                  <NavLink
-                    icon={<IconHash size={16} stroke={1.5} />}
-                    label="Third child link"
-                  />
-                </Accordion.Panel>
-              </Accordion.Item>
-
-              <Accordion.Item
-                value="item-3"
-                onClick={() => toggleActiveAccordion("item-3")}
-              >
-                <AccordionControl>Finance And HR</AccordionControl>
-                <Accordion.Panel>
-                  <NavLink
-                    icon={<IconHash size={16} stroke={1.5} />}
-                    label="First child link"
-                    active={true}
-                  />
-                  <NavLink
-                    icon={<IconHash size={16} stroke={1.5} />}
-                    label="Second child link"
-                  />
-
-                  <NavLink
-                    icon={<IconHash size={16} stroke={1.5} />}
-                    label="First child link"
-                  />
-                  <NavLink
-                    icon={<IconHash size={16} stroke={1.5} />}
-                    label="Second child link"
-                  />
-                  <NavLink
-                    icon={<IconHash size={16} stroke={1.5} />}
-                    label="Third child link"
-                  />
-                </Accordion.Panel>
-              </Accordion.Item>
-
-              <Accordion.Item
-                value="item-4"
-                onClick={() => toggleActiveAccordion("item-4")}
-              >
-                <AccordionControl>Sales And Promotion</AccordionControl>
-                <Accordion.Panel>
-                  <NavLink
-                    icon={<IconHash size={16} stroke={1.5} />}
-                    label="First child link"
-                    active={true}
-                  />
-                  <NavLink
-                    icon={<IconHash size={16} stroke={1.5} />}
-                    label="Second child link"
-                  />
-
-                  <NavLink
-                    icon={<IconHash size={16} stroke={1.5} />}
-                    label="First child link"
-                  />
-                  <NavLink
-                    icon={<IconHash size={16} stroke={1.5} />}
-                    label="Second child link"
-                  />
-                  <NavLink
-                    icon={<IconHash size={16} stroke={1.5} />}
-                    label="Third child link"
-                  />
-                </Accordion.Panel>
-              </Accordion.Item>
+              {navLinkData.map((item) => (
+                <Accordion.Item key={item.title} value={item.title}>
+                  <AccordionControl>{item.title}</AccordionControl>
+                  <Accordion.Panel>
+                    {item.links.map((child) => (
+                      <NavLink
+                        key={child.label}
+                        icon={<IconHash size={16} stroke={1.5} />}
+                        label={child.label}
+                        active={child.current}
+                      />
+                    ))}
+                  </Accordion.Panel>
+                </Accordion.Item>
+              ))}
             </Accordion>
           </ScrollArea>
         </Flex>
