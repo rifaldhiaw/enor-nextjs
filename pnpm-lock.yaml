@@ -3,10 +3,12 @@ lockfileVersion: 5.4
 specifiers:
   '@emotion/react': ^11.10.5
   '@emotion/server': ^11.10.0
+  '@faker-js/faker': ^7.6.0
   '@mantine/carousel': ^5.9.4
   '@mantine/core': ^5.9.4
   '@mantine/dates': ^5.9.4
   '@mantine/dropzone': ^5.9.4
+  '@mantine/ds': ^5.9.4
   '@mantine/form': ^5.9.4
   '@mantine/hooks': ^5.9.4
   '@mantine/modals': ^5.9.4
@@ -39,6 +41,7 @@ dependencies:
   '@mantine/core': 5.9.4_pgo6dehjvjnehz6jphknhqbkyi
   '@mantine/dates': 5.9.4_qna4mfjln7nd2ikoxaebjem64u
   '@mantine/dropzone': 5.9.4_akxvflpdc4qclfp7ngtfppkada
+  '@mantine/ds': 5.9.4_hekf2qdqmy7voi5soie5fvga6q
   '@mantine/form': 5.9.4_react@18.2.0
   '@mantine/hooks': 5.9.4_react@18.2.0
   '@mantine/modals': 5.9.4_akxvflpdc4qclfp7ngtfppkada
@@ -63,6 +66,9 @@ dependencies:
   react: 18.2.0
   react-dom: 18.2.0_react@18.2.0
   typescript: 4.9.4
+
+devDependencies:
+  '@faker-js/faker': 7.6.0
 
 packages:
 
@@ -263,6 +269,11 @@ packages:
       - supports-color
     dev: false
 
+  /@faker-js/faker/7.6.0:
+    resolution: {integrity: sha512-XK6BTq1NDMo9Xqw/YkYyGjSsg44fbNwYRx7QK2CuoQgyy+f1rrTDHoExVM5PsyXCtfl2vs2vVJ0MN0yN6LppRw==}
+    engines: {node: '>=14.0.0', npm: '>=6.0.0'}
+    dev: true
+
   /@floating-ui/core/1.0.4:
     resolution: {integrity: sha512-FPFLbg2b06MIw1dqk2SOEMAMX3xlrreGjcui5OTxfBDtaKTmh0kioOVjT8gcfl58juawL/yF+S+gnq8aUYQx/Q==}
     dev: false
@@ -382,6 +393,25 @@ packages:
       react: 18.2.0
       react-dom: 18.2.0_react@18.2.0
       react-dropzone: 14.2.3_react@18.2.0
+    dev: false
+
+  /@mantine/ds/5.9.4_hekf2qdqmy7voi5soie5fvga6q:
+    resolution: {integrity: sha512-Za4swQs0OBFC4NUbf85tIK1ph8aW9OZEW9qJh/BGm+956xECEufU0LRImAT+HLWpPP2f/ONa863MITxOs6O+uw==}
+    peerDependencies:
+      '@mantine/core': 5.9.4
+      '@mantine/hooks': 5.9.4
+      '@mantine/prism': 5.9.4
+      '@tabler/icons': '*'
+      react: '>=16.8.0'
+      react-dom: '>=16.8.0'
+    dependencies:
+      '@mantine/core': 5.9.4_pgo6dehjvjnehz6jphknhqbkyi
+      '@mantine/hooks': 5.9.4_react@18.2.0
+      '@mantine/prism': 5.9.4_akxvflpdc4qclfp7ngtfppkada
+      '@mantine/utils': 5.9.4_react@18.2.0
+      '@tabler/icons': 1.117.0_biqbaboplfbrettd7655fr4n2y
+      react: 18.2.0
+      react-dom: 18.2.0_react@18.2.0
     dev: false
 
   /@mantine/form/5.9.4_react@18.2.0:
