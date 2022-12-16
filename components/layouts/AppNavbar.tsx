@@ -187,7 +187,7 @@ export function AppNavbar(props: { opened: boolean }) {
       hidden={!props.opened}
       width={{ sm: 200, lg: 320 }}
     >
-      <Navbar.Section className={classes.wrapper}>
+      <Navbar.Section grow className={classes.wrapper}>
         <div className={classes.aside}>
           <div className={classes.logo}>
             <MantineLogo type="mark" size={30} />
