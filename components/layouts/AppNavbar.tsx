@@ -12,7 +12,6 @@ import {
   Title,
   Tooltip,
   UnstyledButton,
-  useMantineTheme,
 } from "@mantine/core";
 import { MantineLogo } from "@mantine/ds";
 import {
@@ -160,7 +159,17 @@ function AccordionControl(props: AccordionControlProps) {
 export function AppNavbar(props: { opened: boolean }) {
   const { classes, cx } = useStyles();
   const [active, setActive] = useState("Releases");
-  const theme = useMantineTheme();
+
+  //  active accordion array
+  const [activeAccordion, setActiveAccordion] = useState<string[]>(["item-1"]);
+
+  const toggleActiveAccordion = (label: string) => {
+    if (activeAccordion.includes(label)) {
+      setActiveAccordion(activeAccordion.filter((item) => item !== label));
+    } else {
+      setActiveAccordion([...activeAccordion, label]);
+    }
+  };
 
   const mainLinks = mainLinksMockdata.map((link) => (
     <Tooltip
@@ -204,8 +213,16 @@ export function AppNavbar(props: { opened: boolean }) {
               flex: 1,
             }}
           >
-            <Accordion multiple={true} chevronPosition="left" mx="auto">
-              <Accordion.Item value="item-1">
+            <Accordion
+              multiple={true}
+              chevronPosition="left"
+              mx="auto"
+              value={activeAccordion}
+            >
+              <Accordion.Item
+                value="item-1"
+                onClick={() => toggleActiveAccordion("item-1")}
+              >
                 <AccordionControl>Tech And Product</AccordionControl>
                 <Accordion.Panel>
                   <NavLink
@@ -233,7 +250,10 @@ export function AppNavbar(props: { opened: boolean }) {
                 </Accordion.Panel>
               </Accordion.Item>
 
-              <Accordion.Item value="item-2">
+              <Accordion.Item
+                value="item-2"
+                onClick={() => toggleActiveAccordion("item-2")}
+              >
                 <AccordionControl>Marketing</AccordionControl>
                 <Accordion.Panel>
                   <NavLink
@@ -251,7 +271,10 @@ export function AppNavbar(props: { opened: boolean }) {
                 </Accordion.Panel>
               </Accordion.Item>
 
-              <Accordion.Item value="item-3">
+              <Accordion.Item
+                value="item-3"
+                onClick={() => toggleActiveAccordion("item-3")}
+              >
                 <AccordionControl>Finance And HR</AccordionControl>
                 <Accordion.Panel>
                   <NavLink
@@ -279,7 +302,10 @@ export function AppNavbar(props: { opened: boolean }) {
                 </Accordion.Panel>
               </Accordion.Item>
 
-              <Accordion.Item value="item-4">
+              <Accordion.Item
+                value="item-4"
+                onClick={() => toggleActiveAccordion("item-4")}
+              >
                 <AccordionControl>Sales And Promotion</AccordionControl>
                 <Accordion.Panel>
                   <NavLink

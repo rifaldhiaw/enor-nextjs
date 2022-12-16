@@ -4,9 +4,10 @@ import {
   Button,
   createStyles,
   Group,
+  Stack,
   Text,
-  useMantineTheme,
 } from "@mantine/core";
+import { post100 } from "../data/discussion";
 
 const useStyles = createStyles((theme) => ({
   body: {
@@ -26,7 +27,6 @@ interface PostProps {
 
 export function Post({ postedAt, body, author }: PostProps) {
   const { classes } = useStyles();
-  const theme = useMantineTheme();
 
   return (
     <Box>
@@ -50,3 +50,18 @@ export function Post({ postedAt, body, author }: PostProps) {
     </Box>
   );
 }
+
+export const PostList = () => {
+  return (
+    <Stack>
+      {post100.map((post) => (
+        <Post
+          key={post.id}
+          postedAt={post.postedAt}
+          body={post.body}
+          author={post.author}
+        />
+      ))}
+    </Stack>
+  );
+};
