@@ -16,7 +16,6 @@ import {
 import { MantineLogo } from "@mantine/ds";
 import {
   IconCalendarStats,
-  IconDeviceDesktopAnalytics,
   IconDots,
   IconFingerprint,
   IconGauge,
@@ -122,7 +121,6 @@ const useStyles = createStyles((theme) => ({
 const mainLinksMockdata = [
   { icon: IconHome2, label: "Home", url: "/" },
   { icon: IconGauge, label: "Dashboard", url: "/discussion/channel" },
-  { icon: IconDeviceDesktopAnalytics, label: "Analytics", url: "/analytics" },
   { icon: IconCalendarStats, label: "Releases", url: "/releases" },
   { icon: IconUser, label: "Account", url: "/account" },
   { icon: IconFingerprint, label: "Security", url: "/security" },
