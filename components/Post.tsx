@@ -3,9 +3,12 @@ import {
   Avatar,
   Box,
   Button,
+  CloseButton,
   createStyles,
+  Divider,
   Flex,
   Group,
+  Stack,
   Text,
   useMantineTheme,
 } from "@mantine/core";
@@ -17,8 +20,12 @@ import {
   IconShare,
 } from "@tabler/icons";
 import { useVirtualizer } from "@tanstack/react-virtual";
-import { useRef, useState } from "react";
-import { post100 } from "../data/discussion";
+import { FC, useRef, useState } from "react";
+import { Post, post100 } from "../data/discussion";
+import {
+  discussionActions,
+  useDiscussionStore,
+} from "../stores/discussionStore";
 
 const useStyles = createStyles((theme) => ({
   body: {
@@ -27,16 +34,22 @@ const useStyles = createStyles((theme) => ({
   },
 }));
 
-interface PostProps {
+interface PostDetailProps {
   postedAt: string;
   body: string;
+  onCommentClick: () => void;
   author: {
     name: string;
     image: string;
   };
 }
 
-export function Post({ postedAt, body, author }: PostProps) {
+export function PostDetail({
+  postedAt,
+  body,
+  author,
+  onCommentClick,
+}: PostDetailProps) {
   const { classes } = useStyles();
   const theme = useMantineTheme();
 
@@ -69,7 +82,7 @@ export function Post({ postedAt, body, author }: PostProps) {
         {body}
       </Text>
       <Flex pl={40} align="center">
-        <Button size="xs" variant="subtle">
+        <Button size="xs" variant="subtle" onClick={onCommentClick}>
           36 Comments
         </Button>
         <ActionIcon
@@ -182,10 +195,97 @@ export const PostList = () => {
               transform: `translateY(${virtualItem.start}px)`,
             }}
           >
-            <Post {...post100[virtualItem.index]} />
+            <PostDetail
+              {...post100[virtualItem.index]}
+              onCommentClick={() =>
+                discussionActions.selectPost(post100[virtualItem.index])
+              }
+            />
           </div>
         ))}
       </div>
     </div>
+  );
+};
+
+// Detail post with reply section
+export const PostWithReply: FC<{ post: Post }> = (props) => {
+  return (
+    <Stack>
+      <PostDetail {...props.post} onCommentClick={() => {}} />
+      <Divider />
+      <PostDetail {...props.post} onCommentClick={() => {}} />
+      <PostDetail {...props.post} onCommentClick={() => {}} />
+    </Stack>
+  );
+};
+
+export const PostContainer = () => {
+  const showPostWithReply = useDiscussionStore(
+    (state) => state.selectedPost !== null
+  );
+
+  return (
+    <Flex
+      direction="row"
+      sx={{
+        height: "calc(100vh - var(--mantine-header-height, 0px))",
+        overflow: "auto",
+      }}
+    >
+      <Flex
+        sx={{
+          flex: 1,
+          flexDirection: "column",
+          gap: "16px",
+        }}
+      >
+        <Box
+          sx={{
+            height: 60,
+            position: "sticky",
+            top: 0,
+            zIndex: 10,
+            backgroundColor: "white",
+            borderBottom: "1px solid #dee2e6",
+            borderRight: "1px solid #dee2e6",
+          }}
+          p="md"
+        >
+          <CloseButton />
+        </Box>
+        <PostList />
+      </Flex>
+      {showPostWithReply && (
+        <Flex
+          sx={{
+            flex: 1,
+            height: "100%",
+            flexDirection: "column",
+            gap: "16px",
+          }}
+        >
+          <Box
+            sx={{
+              height: 60,
+              position: "sticky",
+              top: 0,
+              zIndex: 10,
+              backgroundColor: "white",
+              borderBottom: "1px solid #dee2e6",
+            }}
+            p="md"
+          >
+            <CloseButton
+              onClick={() => {
+                discussionActions.unselectPost();
+              }}
+            />
+          </Box>
+
+          <PostWithReply post={post100[0]} />
+        </Flex>
+      )}
+    </Flex>
   );
 };

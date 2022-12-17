@@ -1,16 +1,10 @@
-import {
-  AppShell,
-  Burger,
-  Header,
-  MediaQuery,
-  useMantineTheme,
-} from "@mantine/core";
+import { AppShell, useMantineTheme } from "@mantine/core";
 import dynamic from "next/dynamic";
 import { useState } from "react";
 import { AppNavbar } from "../components/layouts/AppNavbar";
 
-const PostList = dynamic(
-  () => import("../components/Post").then((v) => v.PostList),
+const PostContainer = dynamic(
+  () => import("../components/Post").then((v) => v.PostContainer),
   { ssr: false }
 );
 
@@ -35,25 +29,8 @@ export default function Home() {
       navbarOffsetBreakpoint="sm"
       asideOffsetBreakpoint="sm"
       navbar={<AppNavbar opened={opened} />}
-      header={
-        <Header height={60} p="md">
-          <div
-            style={{ display: "flex", alignItems: "center", height: "100%" }}
-          >
-            <MediaQuery largerThan="sm" styles={{ display: "none" }}>
-              <Burger
-                opened={opened}
-                onClick={() => setOpened((o) => !o)}
-                size="sm"
-                color={theme.colors.gray[6]}
-                mr="xl"
-              />
-            </MediaQuery>
-          </div>
-        </Header>
-      }
     >
-      <PostList />
+      <PostContainer />
     </AppShell>
   );
 }
