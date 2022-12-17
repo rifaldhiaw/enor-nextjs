@@ -1,29 +1,5 @@
-import { AppShell, useMantineTheme } from "@mantine/core";
-import { AppNavbar } from "../components/layouts/AppNavbar";
+import { AppLayout } from "../components/layouts/AppLayout";
 
 export default function Home() {
-  const theme = useMantineTheme();
-
-  return (
-    <AppShell
-      styles={{
-        main: {
-          background:
-            theme.colorScheme === "dark"
-              ? theme.colors.dark[8]
-              : theme.colors.gray[0],
-          paddingTop: "calc(var(--mantine-header-height, 0px))",
-          paddingRight: "calc(var(--mantine-aside-width, 0px))",
-          paddingLeft: "calc(var(--mantine-navbar-width, 0px))",
-          paddingBottom: 0,
-        },
-      }}
-      layout="alt"
-      navbarOffsetBreakpoint="sm"
-      asideOffsetBreakpoint="sm"
-      navbar={<AppNavbar opened={true} />}
-    >
-      Index
-    </AppShell>
-  );
+  return <AppLayout>Index</AppLayout>;
 }

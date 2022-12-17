@@ -1,44 +1,22 @@
-import {
-  AppShell,
-  Box,
-  CloseButton,
-  Flex,
-  Text,
-  useMantineTheme,
-} from "@mantine/core";
+import { Box, CloseButton, Flex, Text } from "@mantine/core";
 import { IconHash } from "@tabler/icons";
 import router, { useRouter } from "next/router";
-import { AppNavbar } from "../../../components/layouts/AppNavbar";
+import { AppLayout } from "../../../components/layouts/AppLayout";
 import { PostList, PostWithReply } from "../../../components/Post";
 import { post100 } from "../../../data/discussion";
 
 const Channel = () => {
   const channelId = useRouter().query.channelId;
-  const theme = useMantineTheme();
+  const postId = useRouter().query.postId;
 
-  if (typeof channelId !== "string") {
+  if (typeof channelId !== "string" || typeof postId !== "string") {
     return null;
   }
 
+  const selectedPost = post100.find((post) => post.id.toString() === postId);
+
   return (
-    <AppShell
-      styles={{
-        main: {
-          background:
-            theme.colorScheme === "dark"
-              ? theme.colors.dark[8]
-              : theme.colors.gray[0],
-          paddingTop: "calc(var(--mantine-header-height, 0px))",
-          paddingRight: "calc(var(--mantine-aside-width, 0px))",
-          paddingLeft: "calc(var(--mantine-navbar-width, 0px))",
-          paddingBottom: 0,
-        },
-      }}
-      layout="alt"
-      navbarOffsetBreakpoint="sm"
-      asideOffsetBreakpoint="sm"
-      navbar={<AppNavbar opened={true} />}
-    >
+    <AppLayout>
       <Flex
         direction="row"
         sx={{
@@ -106,10 +84,10 @@ const Channel = () => {
             />
           </Box>
 
-          <PostWithReply post={post100[0]} />
+          {selectedPost && <PostWithReply post={selectedPost} />}
         </Flex>
       </Flex>
-    </AppShell>
+    </AppLayout>
   );
 };
 

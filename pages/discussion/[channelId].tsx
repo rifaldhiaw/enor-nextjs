@@ -1,7 +1,7 @@
-import { AppShell, Box, Flex, Text, useMantineTheme } from "@mantine/core";
+import { Box, Flex, Text, useMantineTheme } from "@mantine/core";
 import { IconHash } from "@tabler/icons";
 import { useRouter } from "next/router";
-import { AppNavbar } from "../../components/layouts/AppNavbar";
+import { AppLayout } from "../../components/layouts/AppLayout";
 import { PostList } from "../../components/Post";
 
 const Channel = () => {
@@ -13,24 +13,7 @@ const Channel = () => {
   }
 
   return (
-    <AppShell
-      styles={{
-        main: {
-          background:
-            theme.colorScheme === "dark"
-              ? theme.colors.dark[8]
-              : theme.colors.gray[0],
-          paddingTop: "calc(var(--mantine-header-height, 0px))",
-          paddingRight: "calc(var(--mantine-aside-width, 0px))",
-          paddingLeft: "calc(var(--mantine-navbar-width, 0px))",
-          paddingBottom: 0,
-        },
-      }}
-      layout="alt"
-      navbarOffsetBreakpoint="sm"
-      asideOffsetBreakpoint="sm"
-      navbar={<AppNavbar opened={true} />}
-    >
+    <AppLayout>
       <Flex
         direction="row"
         sx={{
@@ -71,7 +54,7 @@ const Channel = () => {
           <PostList />
         </Flex>
       </Flex>
-    </AppShell>
+    </AppLayout>
   );
 };
 
