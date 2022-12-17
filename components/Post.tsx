@@ -1,15 +1,19 @@
 import { useVirtualizer } from "@tanstack/react-virtual";
 import {
+  ActionIcon,
   Avatar,
   Box,
   Button,
   createStyles,
+  Flex,
   Group,
   Stack,
   Text,
+  useMantineTheme,
 } from "@mantine/core";
 import { useRef } from "react";
 import { post100 } from "../data/discussion";
+import { IconPlus } from "@tabler/icons";
 
 const useStyles = createStyles((theme) => ({
   body: {
@@ -29,6 +33,7 @@ interface PostProps {
 
 export function Post({ postedAt, body, author }: PostProps) {
   const { classes } = useStyles();
+  const theme = useMantineTheme();
 
   return (
     <Box
@@ -48,11 +53,30 @@ export function Post({ postedAt, body, author }: PostProps) {
       <Text className={classes.body} size="sm">
         {body}
       </Text>
-      <Group pl={40}>
+      <Flex pl={40} align="center">
         <Button size="xs" variant="subtle">
           36 Comments
         </Button>
-      </Group>
+        <ActionIcon
+          color="blue"
+          variant="subtle"
+          sx={{
+            borderRadius: "50%",
+          }}
+        >
+          <em-emoji id="+1"></em-emoji>
+        </ActionIcon>
+        {/* action icon to add new emoji */}
+        <ActionIcon
+          size="sm"
+          variant="light"
+          sx={{
+            borderRadius: "50%",
+          }}
+        >
+          <IconPlus size={16} />
+        </ActionIcon>
+      </Flex>
     </Box>
   );
 }

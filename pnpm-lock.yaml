@@ -1,6 +1,7 @@
 lockfileVersion: 5.4
 
 specifiers:
+  '@emoji-mart/data': ^1.1.0
   '@emotion/react': ^11.10.5
   '@emotion/server': ^11.10.0
   '@faker-js/faker': ^7.6.0
@@ -28,6 +29,7 @@ specifiers:
   '@types/react-dom': 18.0.9
   dayjs: ^1.11.7
   embla-carousel-react: ^7.0.5
+  emoji-mart: ^5.4.0
   eslint: 8.29.0
   eslint-config-next: 13.0.6
   next: 13.0.6
@@ -36,6 +38,7 @@ specifiers:
   typescript: 4.9.4
 
 dependencies:
+  '@emoji-mart/data': 1.1.0
   '@emotion/react': 11.10.5_kzbn2opkn2327fwg5yzwzya5o4
   '@emotion/server': 11.10.0
   '@mantine/carousel': 5.9.4_y6renfj2fnbjkh2qcqzkcc4yhy
@@ -62,6 +65,7 @@ dependencies:
   '@types/react-dom': 18.0.9
   dayjs: 1.11.7
   embla-carousel-react: 7.0.5_react@18.2.0
+  emoji-mart: 5.4.0
   eslint: 8.29.0
   eslint-config-next: 13.0.6_ha6vam6werchizxrnqvarmz2zu
   next: 13.0.6_biqbaboplfbrettd7655fr4n2y
@@ -143,6 +147,10 @@ packages:
       '@babel/helper-string-parser': 7.19.4
       '@babel/helper-validator-identifier': 7.19.1
       to-fast-properties: 2.0.0
+    dev: false
+
+  /@emoji-mart/data/1.1.0:
+    resolution: {integrity: sha512-gwwGC0v5+BQM5On8hy0Uw7qT+xBHVLFuamHj8wHLo4JkuYM+XlGbQuQZj/X7JJLQuBiHs4d3Xh2O+h6YlbtCCA==}
     dev: false
 
   /@emotion/babel-plugin/11.10.5:
@@ -1667,6 +1675,10 @@ packages:
 
   /embla-carousel/7.0.5:
     resolution: {integrity: sha512-loRcu0La0F7bhEMwbvgpi14iaaIEdwacH1xoplnaYfwN4KMgECkiuLgu4lx+v6MYd6lSpg/bw7ZxEuLUwYjavg==}
+    dev: false
+
+  /emoji-mart/5.4.0:
+    resolution: {integrity: sha512-xrRrUmMqZG64oRxmUZcf8zSMUGQtIUYUL3aZD5iMkqAve+I9wMNh3OVOXL7NW9fEm48L2LI3BUPpj/DUIAJrVg==}
     dev: false
 
   /emoji-regex/9.2.2:
