@@ -1,4 +1,3 @@
-import { useVirtualizer } from "@tanstack/react-virtual";
 import {
   ActionIcon,
   Avatar,
@@ -7,13 +6,19 @@ import {
   createStyles,
   Flex,
   Group,
-  Stack,
   Text,
   useMantineTheme,
 } from "@mantine/core";
-import { useRef } from "react";
+import {
+  IconDotsVertical,
+  IconMoodSmile,
+  IconPencil,
+  IconPlus,
+  IconShare,
+} from "@tabler/icons";
+import { useVirtualizer } from "@tanstack/react-virtual";
+import { useRef, useState } from "react";
 import { post100 } from "../data/discussion";
-import { IconPlus } from "@tabler/icons";
 
 const useStyles = createStyles((theme) => ({
   body: {
@@ -35,10 +40,20 @@ export function Post({ postedAt, body, author }: PostProps) {
   const { classes } = useStyles();
   const theme = useMantineTheme();
 
+  // show actions on hover
+  const [showAcitons, setShowActions] = useState(false);
+
   return (
     <Box
+      onMouseEnter={() => setShowActions(true)}
+      onMouseLeave={() => setShowActions(false)}
       sx={{
-        margin: "8px 0",
+        padding: "8px 16px",
+        position: "relative",
+        ":hover": {
+          backgroundColor:
+            theme.colors.gray[theme.colorScheme === "dark" ? 7 : 1],
+        },
       }}
     >
       <Group>
@@ -77,6 +92,52 @@ export function Post({ postedAt, body, author }: PostProps) {
           <IconPlus size={16} />
         </ActionIcon>
       </Flex>
+
+      {showAcitons && (
+        <Flex
+          right={32}
+          top={-8}
+          sx={{
+            position: "absolute",
+            borderRadius: "16px",
+            padding: "2px 8px",
+            boxShadow: "0 0 0 1px rgba(0, 0, 0, 0.1)",
+            zIndex: 10,
+            backgroundColor:
+              theme.colorScheme === "dark" ? theme.colors.dark[7] : "white",
+          }}
+        >
+          {/* emoji reaction button */}
+          <ActionIcon
+            sx={{
+              borderRadius: "50%",
+            }}
+          >
+            <IconMoodSmile size="16" />
+          </ActionIcon>
+          <ActionIcon
+            sx={{
+              borderRadius: "50%",
+            }}
+          >
+            <IconPencil size="16" />
+          </ActionIcon>
+          <ActionIcon
+            sx={{
+              borderRadius: "50%",
+            }}
+          >
+            <IconShare size="16" />
+          </ActionIcon>
+          <ActionIcon
+            sx={{
+              borderRadius: "50%",
+            }}
+          >
+            <IconDotsVertical size="16" />
+          </ActionIcon>
+        </Flex>
+      )}
     </Box>
   );
 }
@@ -98,7 +159,7 @@ export const PostList = () => {
         height: "calc(100vh - var(--mantine-header-height, 0px))",
         overflow: "auto",
         width: "100%",
-        padding: "16px",
+        padding: "16px 0",
       }}
     >
       <div
@@ -119,7 +180,6 @@ export const PostList = () => {
               left: 0,
               width: "100%",
               transform: `translateY(${virtualItem.start}px)`,
-              gap: 20,
             }}
           >
             <Post {...post100[virtualItem.index]} />
