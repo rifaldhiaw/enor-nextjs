@@ -1,3 +1,4 @@
+import { useVirtualizer } from "@tanstack/react-virtual";
 import {
   Avatar,
   Box,
@@ -7,6 +8,7 @@ import {
   Stack,
   Text,
 } from "@mantine/core";
+import { useRef } from "react";
 import { post100 } from "../data/discussion";
 
 const useStyles = createStyles((theme) => ({
@@ -29,7 +31,11 @@ export function Post({ postedAt, body, author }: PostProps) {
   const { classes } = useStyles();
 
   return (
-    <Box>
+    <Box
+      sx={{
+        margin: "8px 0",
+      }}
+    >
       <Group>
         <Avatar src={author.image} alt={author.name} radius="xl" />
         <div>
@@ -52,16 +58,50 @@ export function Post({ postedAt, body, author }: PostProps) {
 }
 
 export const PostList = () => {
+  const parentRef = useRef<HTMLDivElement>(null);
+
+  const virtualizer = useVirtualizer({
+    count: post100.length,
+    getScrollElement: () => parentRef.current,
+    estimateSize: () => 150,
+    overscan: 10,
+  });
+
   return (
-    <Stack>
-      {post100.map((post) => (
-        <Post
-          key={post.id}
-          postedAt={post.postedAt}
-          body={post.body}
-          author={post.author}
-        />
-      ))}
-    </Stack>
+    <div
+      ref={parentRef}
+      style={{
+        height: "calc(100vh - var(--mantine-header-height, 0px))",
+        overflow: "auto",
+        width: "100%",
+        padding: "16px",
+      }}
+    >
+      <div
+        style={{
+          height: virtualizer.getTotalSize(),
+          width: "100%",
+          position: "relative",
+        }}
+      >
+        {virtualizer.getVirtualItems().map((virtualItem) => (
+          <div
+            key={virtualItem.key}
+            data-index={virtualItem.index}
+            ref={virtualizer.measureElement}
+            style={{
+              position: "absolute",
+              top: 0,
+              left: 0,
+              width: "100%",
+              transform: `translateY(${virtualItem.start}px)`,
+              gap: 20,
+            }}
+          >
+            <Post {...post100[virtualItem.index]} />
+          </div>
+        ))}
+      </div>
+    </div>
   );
 };

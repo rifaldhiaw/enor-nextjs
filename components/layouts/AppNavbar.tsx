@@ -161,7 +161,6 @@ export function AppNavbar(props: { opened: boolean }) {
   const { classes, cx } = useStyles();
   const [active, setActive] = useState("Releases");
 
-  //  active accordion array
   const [activeAccordion, setActiveAccordion] = useState<string[]>([
     navLinkData[0].title,
   ]);

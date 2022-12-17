@@ -25,6 +25,10 @@ export default function Home() {
             theme.colorScheme === "dark"
               ? theme.colors.dark[8]
               : theme.colors.gray[0],
+          paddingTop: "calc(var(--mantine-header-height, 0px))",
+          paddingRight: "calc(var(--mantine-aside-width, 0px))",
+          paddingLeft: "calc(var(--mantine-navbar-width, 0px))",
+          paddingBottom: 0,
         },
       }}
       layout="alt"

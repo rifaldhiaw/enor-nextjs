@@ -19,6 +19,7 @@ specifiers:
   '@mantine/spotlight': ^5.9.4
   '@mantine/tiptap': ^5.9.4
   '@tabler/icons': ^1.117.0
+  '@tanstack/react-virtual': 3.0.0-beta.30
   '@tiptap/extension-link': 2.0.0-beta.207
   '@tiptap/react': 2.0.0-beta.207
   '@tiptap/starter-kit': 2.0.0-beta.207
@@ -52,6 +53,7 @@ dependencies:
   '@mantine/spotlight': 5.9.4_akxvflpdc4qclfp7ngtfppkada
   '@mantine/tiptap': 5.9.4_jlovmuqn4m6arrkjlb2w22itqi
   '@tabler/icons': 1.117.0_biqbaboplfbrettd7655fr4n2y
+  '@tanstack/react-virtual': 3.0.0-beta.30_react@18.2.0
   '@tiptap/extension-link': 2.0.0-beta.207
   '@tiptap/react': 2.0.0-beta.207_biqbaboplfbrettd7655fr4n2y
   '@tiptap/starter-kit': 2.0.0-beta.207
@@ -882,6 +884,19 @@ packages:
     dependencies:
       react: 18.2.0
       react-dom: 18.2.0_react@18.2.0
+    dev: false
+
+  /@tanstack/react-virtual/3.0.0-beta.30_react@18.2.0:
+    resolution: {integrity: sha512-Sn1SSbSjDwb++jVOtgiQ/OHFMdcXFg8Qx02/cn0eq9xxHIhm/SqrKDpywIeydgNdOsdfBomOfxm/4gqTLrY1gg==}
+    peerDependencies:
+      react: ^16.8.0 || ^17.0.0 || ^18.0.0
+    dependencies:
+      '@tanstack/virtual-core': 3.0.0-beta.30
+      react: 18.2.0
+    dev: false
+
+  /@tanstack/virtual-core/3.0.0-beta.30:
+    resolution: {integrity: sha512-fewNoKiJeG5v0T4jg7UO99G+hUYDHig6AkiIeqvC1O2zEw96MlzR6DXw91aqxcsIPSVp83IPsgNa7su8yZWldw==}
     dev: false
 
   /@tiptap/core/2.0.0-beta.207:
