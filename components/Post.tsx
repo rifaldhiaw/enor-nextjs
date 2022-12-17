@@ -3,7 +3,6 @@ import {
   Avatar,
   Box,
   Button,
-  CloseButton,
   createStyles,
   Divider,
   Flex,
@@ -20,12 +19,9 @@ import {
   IconShare,
 } from "@tabler/icons";
 import { useVirtualizer } from "@tanstack/react-virtual";
+import { useRouter } from "next/router";
 import { FC, useRef, useState } from "react";
 import { Post, post100 } from "../data/discussion";
-import {
-  discussionActions,
-  useDiscussionStore,
-} from "../stores/discussionStore";
 
 const useStyles = createStyles((theme) => ({
   body: {
@@ -157,6 +153,7 @@ export function PostDetail({
 
 export const PostList = () => {
   const parentRef = useRef<HTMLDivElement>(null);
+  const router = useRouter();
 
   const virtualizer = useVirtualizer({
     count: post100.length,
@@ -198,7 +195,9 @@ export const PostList = () => {
             <PostDetail
               {...post100[virtualItem.index]}
               onCommentClick={() =>
-                discussionActions.selectPost(post100[virtualItem.index])
+                router.push(
+                  `/discussion/channel/${post100[virtualItem.index].id}`
+                )
               }
             />
           </div>
@@ -217,75 +216,5 @@ export const PostWithReply: FC<{ post: Post }> = (props) => {
       <PostDetail {...props.post} onCommentClick={() => {}} />
       <PostDetail {...props.post} onCommentClick={() => {}} />
     </Stack>
-  );
-};
-
-export const PostContainer = () => {
-  const showPostWithReply = useDiscussionStore(
-    (state) => state.selectedPost !== null
-  );
-
-  return (
-    <Flex
-      direction="row"
-      sx={{
-        height: "calc(100vh - var(--mantine-header-height, 0px))",
-        overflow: "auto",
-      }}
-    >
-      <Flex
-        sx={{
-          flex: 1,
-          flexDirection: "column",
-          gap: "16px",
-        }}
-      >
-        <Box
-          sx={{
-            height: 60,
-            position: "sticky",
-            top: 0,
-            zIndex: 10,
-            backgroundColor: "white",
-            borderBottom: "1px solid #dee2e6",
-            borderRight: "1px solid #dee2e6",
-          }}
-          p="md"
-        >
-          <CloseButton />
-        </Box>
-        <PostList />
-      </Flex>
-      {showPostWithReply && (
-        <Flex
-          sx={{
-            flex: 1,
-            height: "100%",
-            flexDirection: "column",
-            gap: "16px",
-          }}
-        >
-          <Box
-            sx={{
-              height: 60,
-              position: "sticky",
-              top: 0,
-              zIndex: 10,
-              backgroundColor: "white",
-              borderBottom: "1px solid #dee2e6",
-            }}
-            p="md"
-          >
-            <CloseButton
-              onClick={() => {
-                discussionActions.unselectPost();
-              }}
-            />
-          </Box>
-
-          <PostWithReply post={post100[0]} />
-        </Flex>
-      )}
-    </Flex>
   );
 };

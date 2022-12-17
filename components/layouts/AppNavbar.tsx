@@ -29,6 +29,7 @@ import {
   IconTrash,
   IconUser,
 } from "@tabler/icons";
+import { useRouter } from "next/router";
 import { useState } from "react";
 import { navLinkData } from "../../data/navlinkData";
 
@@ -119,13 +120,13 @@ const useStyles = createStyles((theme) => ({
 }));
 
 const mainLinksMockdata = [
-  { icon: IconHome2, label: "Home" },
-  { icon: IconGauge, label: "Dashboard" },
-  { icon: IconDeviceDesktopAnalytics, label: "Analytics" },
-  { icon: IconCalendarStats, label: "Releases" },
-  { icon: IconUser, label: "Account" },
-  { icon: IconFingerprint, label: "Security" },
-  { icon: IconSettings, label: "Settings" },
+  { icon: IconHome2, label: "Home", url: "/" },
+  { icon: IconGauge, label: "Dashboard", url: "/discussion/channel" },
+  { icon: IconDeviceDesktopAnalytics, label: "Analytics", url: "/analytics" },
+  { icon: IconCalendarStats, label: "Releases", url: "/releases" },
+  { icon: IconUser, label: "Account", url: "/account" },
+  { icon: IconFingerprint, label: "Security", url: "/security" },
+  { icon: IconSettings, label: "Settings", url: "/settings" },
 ];
 
 function AccordionControl(props: AccordionControlProps) {
@@ -160,6 +161,7 @@ function AccordionControl(props: AccordionControlProps) {
 export function AppNavbar(props: { opened: boolean }) {
   const { classes, cx } = useStyles();
   const [active, setActive] = useState("Releases");
+  const router = useRouter();
 
   const [activeAccordion, setActiveAccordion] = useState<string[]>([
     navLinkData[0].title,
@@ -174,7 +176,10 @@ export function AppNavbar(props: { opened: boolean }) {
       key={link.label}
     >
       <UnstyledButton
-        onClick={() => setActive(link.label)}
+        onClick={() => {
+          // setActive(link.label);
+          router.push(link.url);
+        }}
         className={cx(classes.mainLink, {
           [classes.mainLinkActive]: link.label === active,
         })}

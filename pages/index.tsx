@@ -1,16 +1,9 @@
 import { AppShell, useMantineTheme } from "@mantine/core";
-import dynamic from "next/dynamic";
-import { useState } from "react";
 import { AppNavbar } from "../components/layouts/AppNavbar";
-
-const PostContainer = dynamic(
-  () => import("../components/Post").then((v) => v.PostContainer),
-  { ssr: false }
-);
 
 export default function Home() {
   const theme = useMantineTheme();
-  const [opened, setOpened] = useState(false);
+
   return (
     <AppShell
       styles={{
@@ -28,9 +21,9 @@ export default function Home() {
       layout="alt"
       navbarOffsetBreakpoint="sm"
       asideOffsetBreakpoint="sm"
-      navbar={<AppNavbar opened={opened} />}
+      navbar={<AppNavbar opened={true} />}
     >
-      <PostContainer />
+      Index
     </AppShell>
   );
 }
