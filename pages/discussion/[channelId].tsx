@@ -1,4 +1,4 @@
-import { Box, Flex, Text, useMantineTheme } from "@mantine/core";
+import { Box, Flex, Text } from "@mantine/core";
 import { IconHash } from "@tabler/icons";
 import { useRouter } from "next/router";
 import { AppLayout } from "../../components/layouts/AppLayout";
@@ -6,7 +6,6 @@ import { PostList } from "../../components/Post";
 
 const Channel = () => {
   const channelId = useRouter().query.channelId;
-  const theme = useMantineTheme();
 
   if (typeof channelId !== "string") {
     return null;

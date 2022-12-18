@@ -1,4 +1,4 @@
-import { Box, CloseButton, Flex, Text } from "@mantine/core";
+import { Box, CloseButton, Flex, Group, Text } from "@mantine/core";
 import { IconHash } from "@tabler/icons";
 import router, { useRouter } from "next/router";
 import { AppLayout } from "../../../components/layouts/AppLayout";
@@ -17,20 +17,15 @@ const Channel = () => {
 
   return (
     <AppLayout>
-      <Flex
-        direction="row"
+      <Group
+        grow
+        align="stretch"
+        spacing={0}
         sx={{
           height: "calc(100vh - var(--mantine-header-height, 0px))",
-          overflow: "auto",
         }}
       >
-        <Flex
-          sx={{
-            flex: 1,
-            flexDirection: "column",
-            gap: "16px",
-          }}
-        >
+        <Flex direction="column">
           <Box
             sx={{
               height: 60,
@@ -58,14 +53,7 @@ const Channel = () => {
           <PostList />
         </Flex>
 
-        <Flex
-          sx={{
-            flex: 1,
-            height: "100%",
-            flexDirection: "column",
-            gap: "16px",
-          }}
-        >
+        <Flex direction="column">
           <Box
             sx={{
               height: 60,
@@ -78,6 +66,7 @@ const Channel = () => {
             p="md"
           >
             <CloseButton
+              size="lg"
               onClick={() => {
                 router.push("/discussion/channel");
               }}
@@ -86,7 +75,7 @@ const Channel = () => {
 
           {selectedPost && <PostWithReply post={selectedPost} />}
         </Flex>
-      </Flex>
+      </Group>
     </AppLayout>
   );
 };
