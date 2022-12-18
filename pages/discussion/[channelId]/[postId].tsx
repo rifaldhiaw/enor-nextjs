@@ -1,4 +1,4 @@
-import { Box, CloseButton, Group, ScrollArea } from "@mantine/core";
+import { Box, CloseButton, Group, ScrollArea, Text } from "@mantine/core";
 import router, { useRouter } from "next/router";
 import { DiscussionLayout } from "../../../components/layouts/DiscussionLayout";
 import { PostList, PostWithReply } from "../../../components/Post";
@@ -49,12 +49,15 @@ export const PostHeader = () => {
       }}
       p="md"
     >
-      <CloseButton
-        size="lg"
-        onClick={() => {
-          router.push("/discussion/channel");
-        }}
-      />
+      <Group spacing="sm">
+        <CloseButton
+          size="lg"
+          onClick={() => {
+            router.push("/discussion/channel");
+          }}
+        />
+        <Text fw="bold">Thread</Text>
+      </Group>
     </Box>
   );
 };

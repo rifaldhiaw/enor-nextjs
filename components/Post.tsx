@@ -60,7 +60,7 @@ export function PostDetail({
         position: "relative",
         ":hover": {
           backgroundColor:
-            theme.colors.gray[theme.colorScheme === "dark" ? 7 : 1],
+            theme.colors.gray[theme.colorScheme === "dark" ? 7 : 0],
         },
       }}
     >
