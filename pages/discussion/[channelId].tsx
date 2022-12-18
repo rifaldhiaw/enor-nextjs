@@ -13,11 +13,11 @@ import { useEffect } from "react";
 import { PostList } from "../../components/discussion/PostList";
 import { PostWithReplies } from "../../components/discussion/PostWithReplies";
 import { DiscussionLayout } from "../../components/layouts/DiscussionLayout";
-import { post100 } from "../../domains/discussion/discussion";
+import { post100 } from "../../data/discussion";
 import {
   discussionStoreActions,
   useDiscussionStore,
-} from "../../domains/discussion/discussionStore";
+} from "../../stores/discussionStore";
 
 const Channel = () => {
   const channelId = useRouter().query.channelId as string | undefined;
