@@ -1,23 +1,100 @@
-import { Box, Flex, Text } from "@mantine/core";
+import {
+  Box,
+  CloseButton,
+  Flex,
+  Group,
+  LoadingOverlay,
+  ScrollArea,
+  Text,
+} from "@mantine/core";
 import { IconHash } from "@tabler/icons";
-import { useRouter } from "next/router";
+import router, { useRouter } from "next/router";
+import { useEffect } from "react";
 import { DiscussionLayout } from "../../components/layouts/DiscussionLayout";
-import { PostList } from "../../components/Post";
+import { PostList, PostWithReply } from "../../components/Post";
+import { post100 } from "../../data/discussion";
+import {
+  discussionStoreActions,
+  useDiscussionStore,
+} from "../../stores/discussionStore";
 
 const Channel = () => {
-  const channelId = useRouter().query.channelId;
+  const channelId = useRouter().query.channelId as string | undefined;
+  const postId = useRouter().query.postId as string | undefined;
 
-  if (typeof channelId !== "string") {
-    return null;
-  }
+  const showOverlay = useDiscussionStore((state) => state.showPostOverlay);
+
+  // hide overlay after 500ms
+  useEffect(() => {
+    if (showOverlay) {
+      const timeout = setTimeout(() => {
+        discussionStoreActions.setShowPostOverlay(false);
+      }, 300);
+      return () => clearTimeout(timeout);
+    }
+  }, [showOverlay]);
+
+  const selectedPost = post100.find((post) => post.id.toString() === postId);
 
   return (
     <DiscussionLayout navTitle="Discussion">
-      <ChannelHeader title={channelId} />
-      <Box h="calc(100% - 60px)">
-        <PostList />
-      </Box>
+      <Group align="stretch" spacing={0} h="100%">
+        <Box
+          h="100%"
+          sx={{
+            flex: 1,
+          }}
+        >
+          <ChannelHeader title={channelId ?? ""} />
+          <Box h="calc(100% - 60px)" pos="relative">
+            <LoadingOverlay
+              visible={showOverlay}
+              overlayBlur={5}
+              transitionDuration={0}
+            />
+            <PostList focusPost={postId} />
+          </Box>
+        </Box>
+
+        {selectedPost && (
+          <Box h="100%" w="400px">
+            <PostHeader />
+            <ScrollArea h="calc(100% - 60px)">
+              <PostWithReply post={selectedPost} />
+            </ScrollArea>
+          </Box>
+        )}
+      </Group>
     </DiscussionLayout>
+  );
+};
+
+export const PostHeader = () => {
+  const channelId = useRouter().query.channelId;
+
+  return (
+    <Box
+      sx={{
+        height: 60,
+        position: "sticky",
+        top: 0,
+        zIndex: 10,
+        backgroundColor: "white",
+        borderBottom: "1px solid #dee2e6",
+      }}
+      p="md"
+    >
+      <Group spacing="sm">
+        <CloseButton
+          size="lg"
+          onClick={() => {
+            discussionStoreActions.setShowPostOverlay(true);
+            router.push(`/discussion/${channelId}`);
+          }}
+        />
+        <Text fw="bold">Thread</Text>
+      </Group>
+    </Box>
   );
 };
 

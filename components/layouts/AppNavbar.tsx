@@ -98,8 +98,8 @@ const useStyles = createStyles((theme) => ({
 const mainLinksMockdata = [
   { icon: IconHome2, label: "Home", url: "/" },
   { icon: IconMessages, label: "Discussion", url: "/discussion/channel" },
-  { icon: IconCalendarStats, label: "Releases", url: "/releases" },
   { icon: IconUser, label: "Account", url: "/account" },
+  { icon: IconCalendarStats, label: "Releases", url: "/releases" },
   { icon: IconFingerprint, label: "Security", url: "/security" },
   { icon: IconSettings, label: "Settings", url: "/settings" },
 ] as const;

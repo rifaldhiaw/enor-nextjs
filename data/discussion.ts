@@ -7,7 +7,7 @@ const getRandomInt = (max: number) => Math.floor(Math.random() * max);
 const avatar = faker.image.avatar();
 
 export const faksePost = (i: number) => ({
-  id: i,
+  id: i.toString(),
   postedAt: dayjs().format("YYYY-MM-DD HH:mm:ss"),
   body: faker.lorem.sentence(getRandomInt(100) + 1),
   author: {

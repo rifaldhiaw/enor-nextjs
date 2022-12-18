@@ -19,6 +19,7 @@ import {
   IconReportAnalytics,
   IconTrash,
 } from "@tabler/icons";
+import { useRouter } from "next/router";
 import React from "react";
 import { navLinkData } from "../../data/navlinkData";
 import {
@@ -44,6 +45,8 @@ export const DiscussionLayout = (props: {
 
 const DiscussionNav = (props: { title: string }) => {
   const activeAccordion = useDiscussionStore((state) => state.activeAccordion);
+  const router = useRouter();
+  const channelId = router.query.channelId;
 
   return (
     <Paper
@@ -95,7 +98,10 @@ const DiscussionNav = (props: { title: string }) => {
                     key={child.label}
                     icon={<IconHash size={16} stroke={1.5} />}
                     label={child.label}
-                    active={child.current}
+                    active={child.label.toLowerCase() === channelId}
+                    onClick={() => {
+                      router.push(`/discussion${child.href}`);
+                    }}
                   />
                 ))}
               </Accordion.Panel>

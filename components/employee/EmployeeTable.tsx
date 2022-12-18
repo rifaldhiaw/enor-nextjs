@@ -1,48 +1,76 @@
 import {
+  ActionIcon,
+  Anchor,
   Avatar,
   Badge,
   Group,
   ScrollArea,
-  Select,
   Table,
   Text,
+  useMantineTheme,
 } from "@mantine/core";
+import { IconPencil, IconTrash } from "@tabler/icons";
 
-interface EmployeeTableProps {
+interface UsersTableProps {
   data: {
     avatar: string;
     name: string;
     job: string;
     email: string;
-    role: string;
+    phone: string;
   }[];
 }
 
-const rolesData = ["Manager", "Collaborator", "Contractor"];
+const jobColors: Record<string, string> = {
+  engineer: "blue",
+  manager: "cyan",
+  designer: "pink",
+};
 
-export function EmployeeTable({ data }: EmployeeTableProps) {
+export function EmployeeTable({ data }: UsersTableProps) {
+  const theme = useMantineTheme();
   const rows = data.map((item) => (
     <tr key={item.name}>
       <td>
         <Group spacing="sm">
-          <Avatar size={40} src={item.avatar} radius={40} />
-          <div>
-            <Text size="sm" weight={500}>
-              {item.name}
-            </Text>
-            <Text size="xs" color="dimmed">
-              {item.email}
-            </Text>
-          </div>
+          <Avatar size={30} src={item.avatar} radius={30} />
+          <Text size="sm" weight={500}>
+            {item.name}
+          </Text>
         </Group>
       </td>
 
       <td>
-        <Select data={rolesData} defaultValue={item.role} variant="unstyled" />
+        <Badge
+          color={jobColors[item.job.toLowerCase()]}
+          variant={theme.colorScheme === "dark" ? "light" : "outline"}
+        >
+          {item.job}
+        </Badge>
       </td>
-      <td>7 days ago</td>
       <td>
-        <Badge fullWidth>Active</Badge>
+        <Anchor<"a">
+          size="sm"
+          href="#"
+          onClick={(event) => event.preventDefault()}
+        >
+          {item.email}
+        </Anchor>
+      </td>
+      <td>
+        <Text size="sm" color="dimmed">
+          {item.phone}
+        </Text>
+      </td>
+      <td>
+        <Group spacing={0} position="right">
+          <ActionIcon>
+            <IconPencil size={16} stroke={1.5} />
+          </ActionIcon>
+          <ActionIcon color="red">
+            <IconTrash size={16} stroke={1.5} />
+          </ActionIcon>
+        </Group>
       </td>
     </tr>
   ));
@@ -53,9 +81,10 @@ export function EmployeeTable({ data }: EmployeeTableProps) {
         <thead>
           <tr>
             <th>Employee</th>
-            <th>Role</th>
-            <th>Last active</th>
-            <th>Status</th>
+            <th>Job title</th>
+            <th>Email</th>
+            <th>Phone</th>
+            <th />
           </tr>
         </thead>
         <tbody>{rows}</tbody>

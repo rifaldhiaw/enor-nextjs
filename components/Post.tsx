@@ -11,6 +11,7 @@ import {
   Text,
   useMantineTheme,
 } from "@mantine/core";
+import { usePrevious } from "@mantine/hooks";
 import {
   IconDotsVertical,
   IconMoodSmile,
@@ -19,8 +20,9 @@ import {
 } from "@tabler/icons";
 import { useVirtualizer } from "@tanstack/react-virtual";
 import { useRouter } from "next/router";
-import { FC, useRef, useState } from "react";
+import { FC, useEffect, useRef, useState } from "react";
 import { Post, post100 } from "../data/discussion";
+import { discussionStoreActions } from "../stores/discussionStore";
 
 const useStyles = createStyles((theme) => ({
   body: {
@@ -32,6 +34,7 @@ const useStyles = createStyles((theme) => ({
 interface PostDetailProps {
   postedAt: string;
   body: string;
+  selected?: boolean;
   onCommentClick: () => void;
   author: {
     name: string;
@@ -43,6 +46,7 @@ export function PostDetail({
   postedAt,
   body,
   author,
+  selected,
   onCommentClick,
 }: PostDetailProps) {
   const { classes } = useStyles();
@@ -55,13 +59,13 @@ export function PostDetail({
     <Box
       onMouseEnter={() => setShowActions(true)}
       onMouseLeave={() => setShowActions(false)}
+      mb="sm"
       sx={{
         padding: "8px 16px",
         position: "relative",
-        ":hover": {
-          backgroundColor:
-            theme.colors.gray[theme.colorScheme === "dark" ? 7 : 0],
-        },
+        boxShadow: selected
+          ? "rgba(17, 17, 26, 0.05) 0px 4px 16px, rgba(17, 17, 26, 0.05) 0px 8px 32px"
+          : "none",
       }}
     >
       <Group>
@@ -151,9 +155,13 @@ export function PostDetail({
   );
 }
 
-export const PostList = () => {
+export const PostList = (props: { focusPost?: string }) => {
   const parentRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
+  const channelId = router.query.channelId as string;
+
+  // previous post id with usePrevious hook
+  const prevPostId = usePrevious(props.focusPost);
 
   const virtualizer = useVirtualizer({
     count: post100.length,
@@ -161,6 +169,23 @@ export const PostList = () => {
     estimateSize: () => 150,
     overscan: 10,
   });
+
+  useEffect(() => {
+    if (!props.focusPost) return;
+
+    const targetId = props.focusPost ? props.focusPost : prevPostId;
+    const index = post100.findIndex((post) => post.id === targetId);
+    if (index === -1) return;
+
+    // timeout for the virtualizer to render the post
+    const id = setTimeout(() => {
+      virtualizer.scrollToIndex(index, {
+        align: "start",
+      });
+    }, 50);
+
+    return () => clearTimeout(id);
+  }, [!!props.focusPost]);
 
   return (
     <Box
@@ -180,29 +205,41 @@ export const PostList = () => {
           position: "relative",
         }}
       >
-        {virtualizer.getVirtualItems().map((virtualItem) => (
-          <div
-            key={virtualItem.key}
-            data-index={virtualItem.index}
-            ref={virtualizer.measureElement}
-            style={{
-              position: "absolute",
-              top: 0,
-              left: 0,
-              width: "100%",
-              transform: `translateY(${virtualItem.start}px)`,
-            }}
-          >
-            <PostDetail
-              {...post100[virtualItem.index]}
-              onCommentClick={() =>
-                router.push(
-                  `/discussion/channel/${post100[virtualItem.index].id}`
-                )
-              }
-            />
-          </div>
-        ))}
+        {virtualizer.getVirtualItems().map((virtualItem) => {
+          const post = post100[virtualItem.index];
+
+          return (
+            <Box
+              key={virtualItem.key}
+              data-index={virtualItem.index}
+              ref={virtualizer.measureElement}
+              sx={(theme) => ({
+                position: "absolute",
+                top: 0,
+                left: 0,
+                width: "100%",
+                transform: `translateY(${virtualItem.start}px)`,
+              })}
+            >
+              <PostDetail
+                {...post100[virtualItem.index]}
+                selected={post.id === props.focusPost}
+                onCommentClick={() => {
+                  if (!props.focusPost) {
+                    discussionStoreActions.setShowPostOverlay(true);
+                  }
+                  return router.push({
+                    pathname: "/discussion/[channelId]",
+                    query: {
+                      channelId,
+                      postId: post100[virtualItem.index].id,
+                    },
+                  });
+                }}
+              />
+            </Box>
+          );
+        })}
       </div>
     </Box>
   );
