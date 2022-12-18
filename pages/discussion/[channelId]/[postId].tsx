@@ -1,9 +1,9 @@
-import { Box, CloseButton, Flex, Group, Text } from "@mantine/core";
-import { IconHash } from "@tabler/icons";
+import { Box, CloseButton, Group, ScrollArea } from "@mantine/core";
 import router, { useRouter } from "next/router";
-import { AppLayout } from "../../../components/layouts/AppLayout";
+import { DiscussionLayout } from "../../../components/layouts/DiscussionLayout";
 import { PostList, PostWithReply } from "../../../components/Post";
 import { post100 } from "../../../data/discussion";
+import { ChannelHeader } from "../[channelId]";
 
 const Channel = () => {
   const channelId = useRouter().query.channelId;
@@ -16,67 +16,46 @@ const Channel = () => {
   const selectedPost = post100.find((post) => post.id.toString() === postId);
 
   return (
-    <AppLayout activeNav={"Discussion"}>
-      <Group
-        grow
-        align="stretch"
-        spacing={0}
-        sx={{
-          height: "calc(100vh - var(--mantine-header-height, 0px))",
-        }}
-      >
-        <Flex direction="column">
-          <Box
-            sx={{
-              height: 60,
-              position: "sticky",
-              top: 0,
-              zIndex: 10,
-              backgroundColor: "white",
-              borderBottom: "1px solid #dee2e6",
-              borderRight: "1px solid #dee2e6",
-            }}
-            p="md"
-          >
-            <Flex align="center" gap={4}>
-              <IconHash />
-              <Text
-                sx={{
-                  fontWeight: 600,
-                  fontSize: 18,
-                }}
-              >
-                {channelId}
-              </Text>
-            </Flex>
+    <DiscussionLayout navTitle="Discussion">
+      <Group grow align="stretch" spacing={0} h="100%">
+        <Box h="100%">
+          <ChannelHeader title={channelId} />
+          <Box h="calc(100% - 60px)">
+            <PostList />
           </Box>
-          <PostList />
-        </Flex>
+        </Box>
 
-        <Flex direction="column">
-          <Box
-            sx={{
-              height: 60,
-              position: "sticky",
-              top: 0,
-              zIndex: 10,
-              backgroundColor: "white",
-              borderBottom: "1px solid #dee2e6",
-            }}
-            p="md"
-          >
-            <CloseButton
-              size="lg"
-              onClick={() => {
-                router.push("/discussion/channel");
-              }}
-            />
-          </Box>
-
-          {selectedPost && <PostWithReply post={selectedPost} />}
-        </Flex>
+        <Box h="100%">
+          <PostHeader />
+          <ScrollArea h="calc(100% - 60px)">
+            {selectedPost && <PostWithReply post={selectedPost} />}
+          </ScrollArea>
+        </Box>
       </Group>
-    </AppLayout>
+    </DiscussionLayout>
+  );
+};
+
+export const PostHeader = () => {
+  return (
+    <Box
+      sx={{
+        height: 60,
+        position: "sticky",
+        top: 0,
+        zIndex: 10,
+        backgroundColor: "white",
+        borderBottom: "1px solid #dee2e6",
+      }}
+      p="md"
+    >
+      <CloseButton
+        size="lg"
+        onClick={() => {
+          router.push("/discussion/channel");
+        }}
+      />
+    </Box>
   );
 };
 

@@ -163,13 +163,14 @@ export const PostList = () => {
   });
 
   return (
-    <div
+    <Box
       ref={parentRef}
+      bg="white"
+      w="100%"
+      h="100%"
+      py="lg"
       style={{
-        height: "calc(100vh - var(--mantine-header-height, 0px))",
         overflow: "auto",
-        width: "100%",
-        padding: "16px 0",
       }}
     >
       <div
@@ -203,14 +204,14 @@ export const PostList = () => {
           </div>
         ))}
       </div>
-    </div>
+    </Box>
   );
 };
 
 // Detail post with reply section
 export const PostWithReply: FC<{ post: Post }> = (props) => {
   return (
-    <Stack p="16px 0">
+    <Stack p="16px 0" bg={"white"}>
       <PostDetail {...props.post} onCommentClick={() => {}} />
       <Divider />
       <PostDetail {...props.post} onCommentClick={() => {}} />

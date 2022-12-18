@@ -1,35 +1,14 @@
-import {
-  Accordion,
-  AccordionControlProps,
-  ActionIcon,
-  Box,
-  createStyles,
-  Flex,
-  Menu,
-  Navbar,
-  NavLink,
-  ScrollArea,
-  Title,
-  Tooltip,
-  UnstyledButton,
-} from "@mantine/core";
+import { createStyles, Navbar, Tooltip, UnstyledButton } from "@mantine/core";
 import { MantineLogo } from "@mantine/ds";
 import {
   IconCalendarStats,
-  IconDots,
   IconFingerprint,
-  IconHash,
   IconHome2,
   IconMessages,
-  IconNote,
-  IconReportAnalytics,
   IconSettings,
-  IconTrash,
   IconUser,
 } from "@tabler/icons";
 import { useRouter } from "next/router";
-import { useState } from "react";
-import { navLinkData } from "../../data/navlinkData";
 
 const useStyles = createStyles((theme) => ({
   wrapper: {
@@ -38,7 +17,6 @@ const useStyles = createStyles((theme) => ({
   },
 
   aside: {
-    flex: "0 0 60px",
     backgroundColor:
       theme.colorScheme === "dark" ? theme.colors.dark[7] : theme.white,
     display: "flex",
@@ -128,35 +106,6 @@ const mainLinksMockdata = [
 
 export type MainLink = typeof mainLinksMockdata[number]["label"];
 
-function AccordionControl(props: AccordionControlProps) {
-  return (
-    <Box sx={{ display: "flex", alignItems: "center" }}>
-      <Accordion.Control {...props} />
-      <Menu transition="pop" withArrow position="bottom-end">
-        <Menu.Target>
-          <ActionIcon size="lg">
-            <IconDots size={16} />
-          </ActionIcon>
-        </Menu.Target>
-        <Menu.Dropdown>
-          <Menu.Item icon={<IconMessages size={16} stroke={1.5} />}>
-            Send message
-          </Menu.Item>
-          <Menu.Item icon={<IconNote size={16} stroke={1.5} />}>
-            Add note
-          </Menu.Item>
-          <Menu.Item icon={<IconReportAnalytics size={16} stroke={1.5} />}>
-            Analytics
-          </Menu.Item>
-          <Menu.Item icon={<IconTrash size={16} stroke={1.5} />} color="red">
-            Terminate contract
-          </Menu.Item>
-        </Menu.Dropdown>
-      </Menu>
-    </Box>
-  );
-}
-
 export function AppNavbar(props: {
   opened: boolean;
   onClose: () => void;
@@ -165,18 +114,8 @@ export function AppNavbar(props: {
   const { classes, cx } = useStyles();
   const router = useRouter();
 
-  const [activeAccordion, setActiveAccordion] = useState<string[]>([
-    navLinkData[0].title,
-  ]);
-
   const mainLinks = mainLinksMockdata.map((link) => (
-    <Tooltip
-      label={link.label}
-      position="right"
-      withArrow
-      transitionDuration={0}
-      key={link.label}
-    >
+    <Tooltip label={link.label} position="right" withArrow key={link.label}>
       <UnstyledButton
         onClick={() => {
           // setActive(link.label);
@@ -192,11 +131,7 @@ export function AppNavbar(props: {
   ));
 
   return (
-    <Navbar
-      hiddenBreakpoint="sm"
-      hidden={!props.opened}
-      width={{ sm: 200, lg: 320 }}
-    >
+    <Navbar hiddenBreakpoint="sm" hidden={!props.opened} width={{ sm: 76 }}>
       <Navbar.Section grow className={classes.wrapper}>
         <div className={classes.aside}>
           <div className={classes.logo}>
@@ -204,41 +139,6 @@ export function AppNavbar(props: {
           </div>
           {mainLinks}
         </div>
-        <Flex direction="column" sx={{ flex: 1 }}>
-          <Title order={4} className={classes.title}>
-            {props.active}
-          </Title>
-
-          <ScrollArea
-            sx={{
-              flex: 1,
-            }}
-          >
-            <Accordion
-              multiple={true}
-              chevronPosition="left"
-              mx="auto"
-              value={activeAccordion}
-              onChange={(value) => setActiveAccordion(value)}
-            >
-              {navLinkData.map((item) => (
-                <Accordion.Item key={item.title} value={item.title}>
-                  <AccordionControl>{item.title}</AccordionControl>
-                  <Accordion.Panel>
-                    {item.links.map((child) => (
-                      <NavLink
-                        key={child.label}
-                        icon={<IconHash size={16} stroke={1.5} />}
-                        label={child.label}
-                        active={child.current}
-                      />
-                    ))}
-                  </Accordion.Panel>
-                </Accordion.Item>
-              ))}
-            </Accordion>
-          </ScrollArea>
-        </Flex>
       </Navbar.Section>
     </Navbar>
   );
