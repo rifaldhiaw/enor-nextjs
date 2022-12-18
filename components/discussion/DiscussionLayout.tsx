@@ -2,8 +2,8 @@ import { Flex } from "@mantine/core";
 import dynamic from "next/dynamic";
 
 import React from "react";
+import { AppLayout } from "../layouts/AppLayout";
 import { Expanded } from "../utils/Expanded";
-import { AppLayout } from "./AppLayout";
 
 const DiscussionLayoutNav = dynamic(
   () => import("./DiscussionLayoutNav").then((mod) => mod.DiscussionLayoutNav),

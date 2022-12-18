@@ -12,7 +12,7 @@ import dynamic from "next/dynamic";
 import router, { useRouter } from "next/router";
 import { useEffect } from "react";
 
-import { DiscussionLayout } from "../../components/layouts/DiscussionLayout";
+import { DiscussionLayout } from "../../components/discussion/DiscussionLayout";
 import { post100 } from "../../data/discussion";
 import {
   discussionStoreActions,
