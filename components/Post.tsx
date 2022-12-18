@@ -248,9 +248,9 @@ export const PostList = (props: { focusPost?: string }) => {
 // Detail post with reply section
 export const PostWithReply: FC<{ post: Post }> = (props) => {
   return (
-    <Stack p="16px 0" bg={"white"}>
+    <Stack p="16px 0" bg={"white"} spacing={0}>
       <PostDetail {...props.post} onCommentClick={() => {}} />
-      <Divider />
+      <Divider py="md" />
       <PostDetail {...props.post} onCommentClick={() => {}} />
       <PostDetail {...props.post} onCommentClick={() => {}} />
     </Stack>

@@ -9,7 +9,7 @@ const avatar = faker.image.avatar();
 export const faksePost = (i: number) => ({
   id: i.toString(),
   postedAt: dayjs().format("YYYY-MM-DD HH:mm:ss"),
-  body: faker.lorem.sentence(getRandomInt(100) + 1),
+  body: faker.lorem.sentence(getRandomInt(30) + 1),
   author: {
     name: faker.name.fullName(),
     image: avatar,

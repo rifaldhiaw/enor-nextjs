@@ -91,11 +91,12 @@ const DiscussionNav = (props: { title: string }) => {
         >
           {navLinkData.map((item) => (
             <Accordion.Item key={item.title} value={item.title}>
-              <AccordionControl>{item.title}</AccordionControl>
+              <AccordionControl py="xs">{item.title}</AccordionControl>
               <Accordion.Panel>
                 {item.links.map((child) => (
                   <NavLink
                     key={child.label}
+                    h={32}
                     icon={<IconHash size={16} stroke={1.5} />}
                     label={child.label}
                     active={child.label.toLowerCase() === channelId}
