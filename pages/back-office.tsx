@@ -3,12 +3,12 @@ import { AppLayout } from "../components/layouts/AppLayout";
 
 import employeeData from "../data/employees.json";
 
-const Account = () => {
+const BackOffice = () => {
   return (
-    <AppLayout activeNav="Account">
+    <AppLayout activeNav="Back Office">
       <EmployeeTable data={employeeData.data} />
     </AppLayout>
   );
 };
 
-export default Account;
+export default BackOffice;

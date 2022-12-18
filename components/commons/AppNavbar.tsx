@@ -1,12 +1,12 @@
 import { createStyles, Navbar, Tooltip, UnstyledButton } from "@mantine/core";
 import { MantineLogo } from "@mantine/ds";
 import {
+  IconBuilding,
   IconCalendarStats,
   IconFingerprint,
   IconHome2,
   IconMessages,
   IconSettings,
-  IconUser,
 } from "@tabler/icons";
 import { useRouter } from "next/router";
 
@@ -98,7 +98,7 @@ const useStyles = createStyles((theme) => ({
 const mainLinksMockdata = [
   { icon: IconHome2, label: "Home", url: "/" },
   { icon: IconMessages, label: "Discussion", url: "/discussion/home" },
-  { icon: IconUser, label: "Account", url: "/account" },
+  { icon: IconBuilding, label: "Back Office", url: "/back-office" },
   { icon: IconCalendarStats, label: "Releases", url: "/releases" },
   { icon: IconFingerprint, label: "Security", url: "/security" },
   { icon: IconSettings, label: "Settings", url: "/settings" },
