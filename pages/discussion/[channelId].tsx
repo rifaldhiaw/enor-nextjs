@@ -8,16 +8,29 @@ import {
   Text,
 } from "@mantine/core";
 import { IconHash } from "@tabler/icons";
+import dynamic from "next/dynamic";
 import router, { useRouter } from "next/router";
 import { useEffect } from "react";
-import { PostList } from "../../components/discussion/PostList";
-import { PostWithReplies } from "../../components/discussion/PostWithReplies";
+
 import { DiscussionLayout } from "../../components/layouts/DiscussionLayout";
 import { post100 } from "../../data/discussion";
 import {
   discussionStoreActions,
   useDiscussionStore,
 } from "../../stores/discussionStore";
+
+const PostList = dynamic(
+  () =>
+    import("../../components/discussion/PostList").then((mod) => mod.PostList),
+  { ssr: false }
+);
+const PostWithReplies = dynamic(
+  () =>
+    import("../../components/discussion/PostWithReplies").then(
+      (mod) => mod.PostWithReplies
+    ),
+  { ssr: false }
+);
 
 const Channel = () => {
   const channelId = useRouter().query.channelId as string | undefined;
