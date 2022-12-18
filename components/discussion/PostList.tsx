@@ -32,6 +32,7 @@ export const PostList = (props: { focusPost?: string }) => {
     const id = setTimeout(() => {
       virtualizer.scrollToIndex(index, {
         align: "start",
+        behavior: "smooth",
       });
     }, 50);
 
