@@ -26,7 +26,7 @@ import {
   discussionStoreActions,
   useDiscussionStore,
 } from "../../stores/discussionStore";
-import { Expanded } from "../Expanded";
+import { Expanded } from "../utils/Expanded";
 import { AppLayout } from "./AppLayout";
 
 export const DiscussionLayout = (props: {

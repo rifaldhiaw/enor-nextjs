@@ -10,8 +10,9 @@ import {
 import { IconHash } from "@tabler/icons";
 import router, { useRouter } from "next/router";
 import { useEffect } from "react";
+import { PostList } from "../../components/discussion/PostList";
+import { PostWithReplies } from "../../components/discussion/PostWithReplies";
 import { DiscussionLayout } from "../../components/layouts/DiscussionLayout";
-import { PostList, PostWithReply } from "../../components/Post";
 import { post100 } from "../../data/discussion";
 import {
   discussionStoreActions,
@@ -60,7 +61,7 @@ const Channel = () => {
           <Box h="100%" w="400px">
             <PostHeader />
             <ScrollArea h="calc(100% - 60px)">
-              <PostWithReply post={selectedPost} />
+              <PostWithReplies post={selectedPost} />
             </ScrollArea>
           </Box>
         )}
