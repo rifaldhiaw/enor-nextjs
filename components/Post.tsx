@@ -15,7 +15,6 @@ import {
   IconDotsVertical,
   IconMoodSmile,
   IconPencil,
-  IconPlus,
   IconShare,
 } from "@tabler/icons";
 import { useVirtualizer } from "@tanstack/react-virtual";
@@ -91,17 +90,18 @@ export function PostDetail({
           <em-emoji id="+1"></em-emoji>
         </ActionIcon>
         {/* action icon to add new emoji */}
-        <ActionIcon
-          size="sm"
-          variant="light"
-          sx={{
-            borderRadius: "50%",
-          }}
-        >
-          <IconPlus size={16} />
-        </ActionIcon>
+        {showAcitons && (
+          <ActionIcon
+            sx={{
+              borderRadius: "50%",
+            }}
+          >
+            <IconMoodSmile size="16" />
+          </ActionIcon>
+        )}
       </Flex>
 
+      {/* post actions section */}
       {showAcitons && (
         <Flex
           right={32}
@@ -210,7 +210,7 @@ export const PostList = () => {
 // Detail post with reply section
 export const PostWithReply: FC<{ post: Post }> = (props) => {
   return (
-    <Stack>
+    <Stack p="16px 0">
       <PostDetail {...props.post} onCommentClick={() => {}} />
       <Divider />
       <PostDetail {...props.post} onCommentClick={() => {}} />
