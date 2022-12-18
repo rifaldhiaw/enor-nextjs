@@ -1,8 +1,11 @@
 import { AppShell, useMantineTheme } from "@mantine/core";
 import { ReactNode } from "react";
-import { AppNavbar } from "./AppNavbar";
+import { AppNavbar, MainLink } from "./AppNavbar";
 
-export const AppLayout = ({ children }: { children: ReactNode }) => {
+export const AppLayout = (props: {
+  children: ReactNode;
+  activeNav: MainLink;
+}) => {
   const theme = useMantineTheme();
   return (
     <AppShell
@@ -21,9 +24,17 @@ export const AppLayout = ({ children }: { children: ReactNode }) => {
       layout="alt"
       navbarOffsetBreakpoint="sm"
       asideOffsetBreakpoint="sm"
-      navbar={<AppNavbar opened={true} />}
+      navbar={
+        <AppNavbar
+          opened={true}
+          onClose={function (): void {
+            throw new Error("Function not implemented.");
+          }}
+          active={props.activeNav}
+        />
+      }
     >
-      {children}
+      {props.children}
     </AppShell>
   );
 };

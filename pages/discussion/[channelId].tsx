@@ -12,7 +12,7 @@ const Channel = () => {
   }
 
   return (
-    <AppLayout>
+    <AppLayout activeNav="Discussion">
       <Flex
         direction="row"
         sx={{

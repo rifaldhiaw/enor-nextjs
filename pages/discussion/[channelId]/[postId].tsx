@@ -16,7 +16,7 @@ const Channel = () => {
   const selectedPost = post100.find((post) => post.id.toString() === postId);
 
   return (
-    <AppLayout>
+    <AppLayout activeNav={"Discussion"}>
       <Group
         grow
         align="stretch"

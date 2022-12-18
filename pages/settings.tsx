@@ -2,7 +2,7 @@ import { AppLayout } from "../components/layouts/AppLayout";
 
 const Settings = () => {
   return (
-    <AppLayout>
+    <AppLayout activeNav="Settings">
       <h1>Settings</h1>
     </AppLayout>
   );

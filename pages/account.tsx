@@ -1,11 +1,11 @@
 import { AppLayout } from "../components/layouts/AppLayout";
 
-const Accounts = () => {
+const Account = () => {
   return (
-    <AppLayout>
+    <AppLayout activeNav="Account">
       <h1>Accounts</h1>
     </AppLayout>
   );
 };
 
-export default Accounts;
+export default Account;

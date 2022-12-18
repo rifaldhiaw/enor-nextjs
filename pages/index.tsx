@@ -1,5 +1,5 @@
 import { AppLayout } from "../components/layouts/AppLayout";
 
 export default function Home() {
-  return <AppLayout>Index</AppLayout>;
+  return <AppLayout activeNav="Home">Index</AppLayout>;
 }

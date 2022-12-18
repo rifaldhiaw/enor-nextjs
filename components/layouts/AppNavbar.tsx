@@ -18,7 +18,6 @@ import {
   IconCalendarStats,
   IconDots,
   IconFingerprint,
-  IconGauge,
   IconHash,
   IconHome2,
   IconMessages,
@@ -120,12 +119,14 @@ const useStyles = createStyles((theme) => ({
 
 const mainLinksMockdata = [
   { icon: IconHome2, label: "Home", url: "/" },
-  { icon: IconGauge, label: "Dashboard", url: "/discussion/channel" },
+  { icon: IconMessages, label: "Discussion", url: "/discussion/channel" },
   { icon: IconCalendarStats, label: "Releases", url: "/releases" },
   { icon: IconUser, label: "Account", url: "/account" },
   { icon: IconFingerprint, label: "Security", url: "/security" },
   { icon: IconSettings, label: "Settings", url: "/settings" },
-];
+] as const;
+
+export type MainLink = typeof mainLinksMockdata[number]["label"];
 
 function AccordionControl(props: AccordionControlProps) {
   return (
@@ -156,9 +157,12 @@ function AccordionControl(props: AccordionControlProps) {
   );
 }
 
-export function AppNavbar(props: { opened: boolean }) {
+export function AppNavbar(props: {
+  opened: boolean;
+  onClose: () => void;
+  active: MainLink;
+}) {
   const { classes, cx } = useStyles();
-  const [active, setActive] = useState("Releases");
   const router = useRouter();
 
   const [activeAccordion, setActiveAccordion] = useState<string[]>([
@@ -179,7 +183,7 @@ export function AppNavbar(props: { opened: boolean }) {
           router.push(link.url);
         }}
         className={cx(classes.mainLink, {
-          [classes.mainLinkActive]: link.label === active,
+          [classes.mainLinkActive]: link.label === props.active,
         })}
       >
         <link.icon stroke={1.5} />
@@ -202,7 +206,7 @@ export function AppNavbar(props: { opened: boolean }) {
         </div>
         <Flex direction="column" sx={{ flex: 1 }}>
           <Title order={4} className={classes.title}>
-            {active}
+            {props.active}
           </Title>
 
           <ScrollArea
