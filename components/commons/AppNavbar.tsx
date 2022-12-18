@@ -97,7 +97,7 @@ const useStyles = createStyles((theme) => ({
 
 const mainLinksMockdata = [
   { icon: IconHome2, label: "Home", url: "/" },
-  { icon: IconMessages, label: "Discussion", url: "/discussion/channel" },
+  { icon: IconMessages, label: "Discussion", url: "/discussion/home" },
   { icon: IconUser, label: "Account", url: "/account" },
   { icon: IconCalendarStats, label: "Releases", url: "/releases" },
   { icon: IconFingerprint, label: "Security", url: "/security" },
