@@ -1,6 +1,6 @@
 import create from "zustand";
 import { persist } from "zustand/middleware";
-import { Post } from "../data/discussion";
+import { Post } from "./discussion";
 
 export const useDiscussionStore = create(
   persist(

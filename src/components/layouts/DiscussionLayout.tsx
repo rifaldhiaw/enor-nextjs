@@ -25,7 +25,7 @@ import { navLinkData } from "../../data/navlinkData";
 import {
   discussionStoreActions,
   useDiscussionStore,
-} from "../../stores/discussionStore";
+} from "../../domains/discussion/discussionStore";
 import { Expanded } from "../utils/Expanded";
 import { AppLayout } from "./AppLayout";
 

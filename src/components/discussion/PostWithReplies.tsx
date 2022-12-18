@@ -1,6 +1,6 @@
 import { Divider, Stack } from "@mantine/core";
 import { FC } from "react";
-import { Post } from "../../data/discussion";
+import { Post } from "../../domains/discussion/discussion";
 import { PostDetail } from "./Post";
 
 export const PostWithReplies: FC<{ post: Post }> = (props) => {

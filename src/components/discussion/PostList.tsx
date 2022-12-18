@@ -3,8 +3,8 @@ import { usePrevious } from "@mantine/hooks";
 import { useVirtualizer } from "@tanstack/react-virtual";
 import { useRouter } from "next/router";
 import { useEffect, useRef } from "react";
-import { post100 } from "../../data/discussion";
-import { discussionStoreActions } from "../../stores/discussionStore";
+import { post100 } from "../../domains/discussion/discussion";
+import { discussionStoreActions } from "../../domains/discussion/discussionStore";
 import { PostDetail } from "./Post";
 
 export const PostList = (props: { focusPost?: string }) => {
