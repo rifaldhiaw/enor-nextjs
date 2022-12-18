@@ -19,7 +19,6 @@ export const PostList = (props: { focusPost?: string }) => {
     count: post100.length,
     getScrollElement: () => parentRef.current,
     estimateSize: () => 120,
-    overscan: 10,
   });
 
   useEffect(() => {
