@@ -27,7 +27,6 @@ import { discussionStoreActions } from "../stores/discussionStore";
 const useStyles = createStyles((theme) => ({
   body: {
     paddingLeft: 54,
-    paddingTop: theme.spacing.sm,
   },
 }));
 
@@ -166,7 +165,7 @@ export const PostList = (props: { focusPost?: string }) => {
   const virtualizer = useVirtualizer({
     count: post100.length,
     getScrollElement: () => parentRef.current,
-    estimateSize: () => 150,
+    estimateSize: () => 120,
     overscan: 10,
   });
 
