@@ -1,6 +1,6 @@
 import { AppShell, useMantineTheme } from "@mantine/core";
 import { ReactNode } from "react";
-import { AppNavbar, MainLink } from "../commons/AppNavbar";
+import { AppNavbar, MainLink } from "./AppNavbar";
 
 export const AppLayout = (props: {
   children: ReactNode;

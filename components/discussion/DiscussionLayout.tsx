@@ -2,7 +2,7 @@ import { Flex } from "@mantine/core";
 import dynamic from "next/dynamic";
 
 import React from "react";
-import { AppLayout } from "../layouts/AppLayout";
+import { AppLayout } from "../app/AppLayout";
 import { Expanded } from "../utils/Expanded";
 
 const DiscussionLayoutNav = dynamic(
