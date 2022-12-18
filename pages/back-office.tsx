@@ -1,13 +1,13 @@
+import { BackOfficeLayout } from "../components/backOffice/BackOfficeLayout";
 import { EmployeeTable } from "../components/employee/EmployeeTable";
-import { AppLayout } from "../components/layouts/AppLayout";
 
 import employeeData from "../data/employees.json";
 
 const BackOffice = () => {
   return (
-    <AppLayout activeNav="Back Office">
+    <BackOfficeLayout navTitle="Back Office">
       <EmployeeTable data={employeeData.data} />
-    </AppLayout>
+    </BackOfficeLayout>
   );
 };
 
