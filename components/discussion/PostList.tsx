@@ -2,7 +2,7 @@ import { Box } from "@mantine/core";
 import { usePrevious } from "@mantine/hooks";
 import { useVirtualizer } from "@tanstack/react-virtual";
 import { useRouter } from "next/router";
-import { useEffect, useRef } from "react";
+import { useRef } from "react";
 import { post100 } from "../../data/discussion";
 import { discussionStoreActions } from "../../stores/discussionStore";
 import { PostDetail } from "./Post";
@@ -20,24 +20,6 @@ export const PostList = (props: { focusPost?: string }) => {
     getScrollElement: () => parentRef.current,
     estimateSize: () => 120,
   });
-
-  useEffect(() => {
-    if (!props.focusPost) return;
-
-    const targetId = props.focusPost ? props.focusPost : prevPostId;
-    const index = post100.findIndex((post) => post.id === targetId);
-    if (index === -1) return;
-
-    // timeout for the virtualizer to render the post
-    const id = setTimeout(() => {
-      virtualizer.scrollToIndex(index, {
-        align: "start",
-        behavior: "smooth",
-      });
-    }, 50);
-
-    return () => clearTimeout(id);
-  }, [!!props.focusPost]);
 
   return (
     <Box
