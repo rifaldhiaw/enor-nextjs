@@ -5,6 +5,7 @@ specifiers:
   '@emoji-mart/react': ^1.1.0
   '@emotion/react': ^11.10.5
   '@emotion/server': ^11.10.0
+  '@excalidraw/excalidraw': ^0.13.0
   '@faker-js/faker': ^7.6.0
   '@mantine/carousel': ^5.9.4
   '@mantine/core': ^5.9.4
@@ -44,6 +45,7 @@ dependencies:
   '@emoji-mart/react': 1.1.0_64mwqb66z7c4vy75vn2wjcn7pu
   '@emotion/react': 11.10.5_kzbn2opkn2327fwg5yzwzya5o4
   '@emotion/server': 11.10.0
+  '@excalidraw/excalidraw': 0.13.0_biqbaboplfbrettd7655fr4n2y
   '@mantine/carousel': 5.9.4_y6renfj2fnbjkh2qcqzkcc4yhy
   '@mantine/core': 5.9.4_pgo6dehjvjnehz6jphknhqbkyi
   '@mantine/dates': 5.9.4_qna4mfjln7nd2ikoxaebjem64u
@@ -291,6 +293,16 @@ packages:
       strip-json-comments: 3.1.1
     transitivePeerDependencies:
       - supports-color
+    dev: false
+
+  /@excalidraw/excalidraw/0.13.0_biqbaboplfbrettd7655fr4n2y:
+    resolution: {integrity: sha512-TTi1hiUczfIj/kLQshh1EHUrXziEa5cwLF74TrlFQWwW9jhJIF73HplmqEMrfwwqt7CrypXRZtMzH1hhmZ3vbg==}
+    peerDependencies:
+      react: ^17.0.2 || ^18.2.0
+      react-dom: ^17.0.2 || ^18.2.0
+    dependencies:
+      react: 18.2.0
+      react-dom: 18.2.0_react@18.2.0
     dev: false
 
   /@faker-js/faker/7.6.0:

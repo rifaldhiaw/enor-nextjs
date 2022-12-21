@@ -1,19 +1,13 @@
-import {
-  Box,
-  CloseButton,
-  Flex,
-  Group,
-  LoadingOverlay,
-  ScrollArea,
-  Text,
-} from "@mantine/core";
+import { Box, CloseButton, Flex, Group, ScrollArea, Text } from "@mantine/core";
 import { IconHash } from "@tabler/icons";
 import dynamic from "next/dynamic";
 import router, { useRouter } from "next/router";
-import { useEffect } from "react";
+import { ReactNode, useEffect } from "react";
 
 import { DiscussionLayout } from "../../components/discussion/DiscussionLayout";
+
 import { post100 } from "../../data/discussion";
+import { navLinkData, NavLinkData } from "../../data/navlinkData";
 import {
   discussionStoreActions,
   useDiscussionStore,
@@ -29,6 +23,12 @@ const PostWithReplies = dynamic(
     import("../../components/discussion/PostWithReplies").then(
       (mod) => mod.PostWithReplies
     ),
+  { ssr: false }
+);
+
+const DrawBoard = dynamic(
+  () =>
+    import("../../components/whiteboard/Whiteboard").then((mod) => mod.default),
   { ssr: false }
 );
 
@@ -50,6 +50,21 @@ const Channel = () => {
 
   const selectedPost = post100.find((post) => post.id.toString() === postId);
 
+  const viewByNavLink: Record<NavLinkData["type"], ReactNode> = {
+    textRoom: <PostList />,
+    voiceRoom: <Text>Voice Room</Text>,
+    drawBoard: <DrawBoard />,
+    document: <Text>Document</Text>,
+    kanban: <Text>Kanban</Text>,
+  };
+
+  const getView = () => {
+    const selectedNavLink = navLinkData.find(
+      (navLink) => navLink.href === channelId
+    );
+    return viewByNavLink[selectedNavLink?.type ?? "textRoom"];
+  };
+
   return (
     <DiscussionLayout navTitle="Discussion">
       <Group align="stretch" spacing={0} h="100%">
@@ -61,12 +76,7 @@ const Channel = () => {
         >
           <ChannelHeader title={channelId ?? ""} />
           <Box h="calc(100% - 60px)" pos="relative">
-            <LoadingOverlay
-              visible={showOverlay}
-              overlayBlur={5}
-              transitionDuration={0}
-            />
-            <PostList focusPost={postId} />
+            {getView()}
           </Box>
         </Box>
 

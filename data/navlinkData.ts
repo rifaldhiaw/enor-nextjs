@@ -1,6 +1,7 @@
-type NavLinkData = {
+export type NavLinkData = {
   label: string;
   href: string;
+  type: "textRoom" | "voiceRoom" | "drawBoard" | "document" | "kanban";
 };
 
 type NavLinkGroup = {
@@ -8,21 +9,24 @@ type NavLinkGroup = {
   links: NavLinkData[];
 };
 
-export const navLinkData: NavLinkGroup[] = [
+export const navLinkGroups: NavLinkGroup[] = [
   {
     title: "Main",
     links: [
       {
         label: "Home",
-        href: "/home",
+        href: "home",
+        type: "textRoom",
       },
       {
-        label: "About",
-        href: "/about",
+        label: "Audio",
+        href: "audio",
+        type: "voiceRoom",
       },
       {
-        label: "Contact",
-        href: "/contact",
+        label: "Draw",
+        href: "draw",
+        type: "drawBoard",
       },
     ],
   },
@@ -31,15 +35,18 @@ export const navLinkData: NavLinkGroup[] = [
     links: [
       {
         label: "Help",
-        href: "/help",
+        href: "help",
+        type: "document",
       },
       {
         label: "Terms",
-        href: "/terms",
+        href: "terms",
+        type: "textRoom",
       },
       {
-        label: "Privacy",
-        href: "/privacy",
+        label: "Sprint",
+        href: "sprint",
+        type: "kanban",
       },
     ],
   },
@@ -48,16 +55,23 @@ export const navLinkData: NavLinkGroup[] = [
     links: [
       {
         label: "Facebook",
-        href: "/facebook",
+        href: "facebook",
+        type: "textRoom",
       },
       {
         label: "Twitter",
-        href: "/twitter",
+        href: "twitter",
+        type: "textRoom",
       },
       {
         label: "Instagram",
-        href: "/instagram",
+        href: "instagram",
+        type: "textRoom",
       },
     ],
   },
 ];
+
+export const navLinkData: NavLinkData[] = navLinkGroups
+  .map((group) => group.links)
+  .flat();

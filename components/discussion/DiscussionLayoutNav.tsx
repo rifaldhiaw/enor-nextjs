@@ -10,15 +10,20 @@ import {
   Title,
 } from "@mantine/core";
 import {
+  IconChalkboard,
   IconDots,
+  IconFileDescription,
   IconHash,
+  IconLayoutKanban,
   IconMessages,
   IconNote,
   IconReportAnalytics,
   IconTrash,
+  IconVolume,
 } from "@tabler/icons";
 import { useRouter } from "next/router";
-import { navLinkData } from "../../data/navlinkData";
+import { ReactNode } from "react";
+import { NavLinkData, navLinkGroups } from "../../data/navlinkData";
 import {
   discussionStoreActions,
   useDiscussionStore,
@@ -70,22 +75,32 @@ export const DiscussionLayoutNav = (props: { title: string }) => {
           value={activeAccordion}
           onChange={discussionStoreActions.setActiveAccordion}
         >
-          {navLinkData.map((item) => (
+          {navLinkGroups.map((item) => (
             <Accordion.Item key={item.title} value={item.title}>
               <AccordionControl py="xs">{item.title}</AccordionControl>
               <Accordion.Panel>
-                {item.links.map((child) => (
-                  <NavLink
-                    key={child.label}
-                    h={32}
-                    icon={<IconHash size={16} stroke={1.5} />}
-                    label={child.label}
-                    active={child.label.toLowerCase() === channelId}
-                    onClick={() => {
-                      router.push(`/discussion${child.href}`);
-                    }}
-                  />
-                ))}
+                {item.links.map((child) => {
+                  const iconByType: Record<NavLinkData["type"], ReactNode> = {
+                    textRoom: <IconHash size={16} stroke={1.5} />,
+                    voiceRoom: <IconVolume size={16} stroke={1.5} />,
+                    document: <IconFileDescription size={16} stroke={1.5} />,
+                    drawBoard: <IconChalkboard size={16} stroke={1.5} />,
+                    kanban: <IconLayoutKanban size={16} stroke={1.5} />,
+                  };
+
+                  return (
+                    <NavLink
+                      key={child.label}
+                      h={32}
+                      icon={iconByType[child.type]}
+                      label={child.label}
+                      active={child.label.toLowerCase() === channelId}
+                      onClick={() => {
+                        router.push(`/discussion/${child.href}`);
+                      }}
+                    />
+                  );
+                })}
               </Accordion.Panel>
             </Accordion.Item>
           ))}
