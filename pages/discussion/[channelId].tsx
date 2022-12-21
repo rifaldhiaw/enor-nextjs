@@ -51,7 +51,7 @@ const Channel = () => {
   const selectedPost = post100.find((post) => post.id.toString() === postId);
 
   const viewByNavLink: Record<NavLinkData["type"], ReactNode> = {
-    textRoom: <PostList />,
+    textRoom: <PostList focusPost={selectedPost?.id} />,
     voiceRoom: <Text>Voice Room</Text>,
     drawBoard: <DrawBoard />,
     document: <Text>Document</Text>,
