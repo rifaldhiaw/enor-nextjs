@@ -5,6 +5,8 @@ import router, { useRouter } from "next/router";
 import { ReactNode, useEffect } from "react";
 
 import { DiscussionLayout } from "../../components/discussion/DiscussionLayout";
+import RichDoc from "../../components/document/RichDoc";
+import { KanbanTrashable } from "../../components/kanban/KanbanTrashable";
 
 import { post100 } from "../../data/discussion";
 import { navLinkData, NavLinkData } from "../../data/navlinkData";
@@ -54,8 +56,8 @@ const Channel = () => {
     textRoom: <PostList focusPost={selectedPost?.id} />,
     voiceRoom: <Text>Voice Room</Text>,
     drawBoard: <DrawBoard />,
-    document: <Text>Document</Text>,
-    kanban: <Text>Kanban</Text>,
+    document: <RichDoc />,
+    kanban: <KanbanTrashable confirmDrop={false} />,
   };
 
   const getView = () => {

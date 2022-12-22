@@ -28,6 +28,16 @@ export const navLinkGroups: NavLinkGroup[] = [
         href: "draw",
         type: "drawBoard",
       },
+      {
+        label: "Kanban",
+        href: "kanban",
+        type: "kanban",
+      },
+      {
+        label: "Readme",
+        href: "readme",
+        type: "document",
+      },
     ],
   },
   {
