@@ -34,7 +34,7 @@ export const KanbanTrashable = ({ confirmDrop }: { confirmDrop: boolean }) => {
           onConfirm={() => resolveRef.current?.(true)}
           onDeny={() => resolveRef.current?.(false)}
         >
-          Are you sure you want to delete "{activeId}"?
+          Are you sure you want to delete &quot;{activeId}&quot;?
         </ConfirmModal>
       )}
     </>

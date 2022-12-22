@@ -38,10 +38,6 @@ import { coordinateGetter as multipleContainersCoordinateGetter } from "./multip
 import { Container, ContainerProps, Item } from "./components";
 import { createRange } from "./utils/createRange";
 
-export default {
-  title: "Presets/Sortable/Multiple Containers",
-};
-
 const animateLayoutChanges: AnimateLayoutChanges = (args) =>
   defaultAnimateLayoutChanges({ ...args, wasDragging: true });
 
