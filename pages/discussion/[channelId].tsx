@@ -1,13 +1,4 @@
-import {
-  Box,
-  Center,
-  CloseButton,
-  Flex,
-  Group,
-  Loader,
-  Text,
-} from "@mantine/core";
-import { IconHash } from "@tabler/icons";
+import { Box, Center, CloseButton, Group, Loader, Text } from "@mantine/core";
 import dynamic from "next/dynamic";
 import router, { useRouter } from "next/router";
 import { ReactNode, useEffect } from "react";
@@ -21,57 +12,35 @@ import {
   useDiscussionStore,
 } from "../../stores/discussionStore";
 
-const PostList = dynamic(
-  () =>
-    import("../../components/discussion/PostList").then((mod) => mod.PostList),
-  { ssr: false }
+const loader = () => (
+  <Center h="100%">
+    <Loader variant="dots" />
+  </Center>
 );
-const PostWithReplies = dynamic(
+
+const TextRoomView = dynamic(
   () =>
-    import("../../components/discussion/PostWithReplies").then(
-      (mod) => mod.PostWithReplies
+    import("../../components/textRoom/TextRoomView").then(
+      (mod) => mod.TextRoomView
     ),
-  { ssr: false }
+  { ssr: false, loading: loader }
 );
 
 const DrawBoard = dynamic(
   () =>
     import("../../components/whiteboard/Whiteboard").then((mod) => mod.default),
-  {
-    ssr: false,
-    loading: () => (
-      <Center h="100%">
-        <Loader variant="dots" />
-      </Center>
-    ),
-  }
+  { ssr: false, loading: loader }
 );
 
-const KanbanTrashable = dynamic(
+const KanbanView = dynamic(
   () =>
-    import("../../components/kanban/KanbanTrashable").then(
-      (mod) => mod.KanbanTrashable
-    ),
-  {
-    ssr: false,
-    loading: () => (
-      <Center h="100%">
-        <Loader variant="dots" />
-      </Center>
-    ),
-  }
+    import("../../components/kanban/KanbanView").then((mod) => mod.KanbanView),
+  { ssr: false, loading: loader }
 );
 
 const RichDoc = dynamic(
   () => import("../../components/richdoc/RichDoc").then((mod) => mod.default),
-  {
-    ssr: false,
-    loading: () => (
-      <Center h="100%">
-        <Loader variant="dots" />
-      </Center>
-    ),
-  }
+  { ssr: false, loading: loader }
 );
 
 export const Channel = () => {
@@ -93,11 +62,11 @@ export const Channel = () => {
   const selectedPost = post100.find((post) => post.id.toString() === postId);
 
   const viewByNavLink: Record<NavLinkData["type"], ReactNode> = {
-    textRoom: <PostList focusPost={selectedPost?.id} />,
+    textRoom: <TextRoomView />,
     voiceRoom: <Text>Voice Room</Text>,
     drawBoard: <DrawBoard />,
     document: <RichDoc />,
-    kanban: <KanbanTrashable confirmDrop={false} />,
+    kanban: <KanbanView />,
   };
 
   const getView = () => {
@@ -109,36 +78,12 @@ export const Channel = () => {
 
   return (
     <DiscussionLayout navTitle="Discussion">
-      <Box h="100%">
-        <Box
-          h="60px"
-          bg="white"
-          sx={(theme) => ({
-            borderBottom: `1px solid ${
-              theme.colorScheme === "dark"
-                ? theme.colors.dark[6]
-                : theme.colors.gray[2]
-            }`,
-          })}
-        >
-          <ChannelHeader title={channelId ?? ""} />
-        </Box>
-        <Box h="calc(100% - 60px)" bg="white">
-          {getView()}
-        </Box>
+      <Box h="100%" bg="white">
+        {getView()}
       </Box>
     </DiscussionLayout>
   );
 };
-
-// {selectedPost && (
-//   <Box h="100%" w="400px">
-//     <PostHeader />
-//     <ScrollArea h="calc(100% - 60px)">
-//       <PostWithReplies post={selectedPost} />
-//     </ScrollArea>
-//   </Box>
-// )}
 
 export const PostHeader = () => {
   const channelId = useRouter().query.channelId;
@@ -165,24 +110,6 @@ export const PostHeader = () => {
         />
         <Text fw="bold">Thread</Text>
       </Group>
-    </Box>
-  );
-};
-
-export const ChannelHeader = (props: { title: string }) => {
-  return (
-    <Box p="md">
-      <Flex align="center" gap={4}>
-        <IconHash />
-        <Text
-          sx={{
-            fontWeight: 600,
-            fontSize: 18,
-          }}
-        >
-          {props.title}
-        </Text>
-      </Flex>
     </Box>
   );
 };

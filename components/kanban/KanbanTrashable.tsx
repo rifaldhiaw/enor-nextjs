@@ -1,5 +1,4 @@
 import { CancelDrop, UniqueIdentifier } from "@dnd-kit/core";
-import { ScrollArea } from "@mantine/core";
 import React from "react";
 import { ConfirmModal } from "./components";
 import { MultipleContainers, TRASH_ID } from "./Kanban";
@@ -25,7 +24,7 @@ export const KanbanTrashable = ({ confirmDrop }: { confirmDrop: boolean }) => {
   };
 
   return (
-    <ScrollArea py="lg" h="100%">
+    <>
       <MultipleContainers
         cancelDrop={confirmDrop ? cancelDrop : undefined}
         trashable
@@ -38,6 +37,6 @@ export const KanbanTrashable = ({ confirmDrop }: { confirmDrop: boolean }) => {
           Are you sure you want to delete &quot;{activeId}&quot;?
         </ConfirmModal>
       )}
-    </ScrollArea>
+    </>
   );
 };
