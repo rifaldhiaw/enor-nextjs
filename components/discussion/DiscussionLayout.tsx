@@ -1,9 +1,8 @@
-import { Flex } from "@mantine/core";
+import { Box, Flex } from "@mantine/core";
 import dynamic from "next/dynamic";
 
 import React from "react";
 import { AppLayout } from "../app/AppLayout";
-import { Expanded } from "../utils/Expanded";
 
 const DiscussionLayoutNav = dynamic(
   () => import("./DiscussionLayoutNav").then((mod) => mod.DiscussionLayoutNav),
@@ -16,9 +15,25 @@ export const DiscussionLayout = (props: {
 }) => {
   return (
     <AppLayout activeNav={"Discussion"}>
-      <Flex h="100vh">
-        <DiscussionLayoutNav title={props.navTitle} />
-        <Expanded>{props.children}</Expanded>
+      <Flex h="100vh" w="100%" id="layout">
+        <Box
+          id="nav"
+          w="240px"
+          sx={{
+            flex: "none",
+          }}
+        >
+          <DiscussionLayoutNav title={props.navTitle} />
+        </Box>
+        <Box
+          id="content"
+          sx={{
+            flex: 1,
+            overflow: "auto",
+          }}
+        >
+          {props.children}
+        </Box>
       </Flex>
     </AppLayout>
   );

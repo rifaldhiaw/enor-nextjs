@@ -36,10 +36,11 @@ export const DiscussionLayoutNav = (props: { title: string }) => {
 
   return (
     <Paper
-      w={240}
+      w="100%"
       h="100vh"
       sx={(theme) => ({
         backgroundColor: theme.colors.gray[0],
+        flex: "none",
         borderRight: `1px solid ${
           theme.colorScheme === "dark"
             ? theme.colors.dark[6]
