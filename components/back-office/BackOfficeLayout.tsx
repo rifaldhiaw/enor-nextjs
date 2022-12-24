@@ -1,13 +1,8 @@
 import { Box, Flex } from "@mantine/core";
-import dynamic from "next/dynamic";
 
 import React from "react";
 import { AppLayout } from "../app/AppLayout";
-
-const BackOfficeLayoutNav = dynamic(
-  () => import("./BackOfficeLayoutNav").then((mod) => mod.BackOfficeLayoutNav),
-  { ssr: false }
-);
+import { BackOfficeLayoutNav } from "./BackOfficeLayoutNav";
 
 export const BackOfficeLayout = (props: {
   children: React.ReactNode;

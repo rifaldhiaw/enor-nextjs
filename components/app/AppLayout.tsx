@@ -1,5 +1,6 @@
 import { AppShell, useMantineTheme } from "@mantine/core";
 import { ReactNode } from "react";
+import { useProtected } from "../../data/pocketbase";
 import { AppNavbar, MainLink } from "./AppNavbar";
 
 export const AppLayout = (props: {
@@ -7,6 +8,8 @@ export const AppLayout = (props: {
   activeNav: MainLink;
 }) => {
   const theme = useMantineTheme();
+  useProtected();
+
   return (
     <AppShell
       styles={{

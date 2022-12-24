@@ -1,4 +1,4 @@
-import { BackOfficeLayout } from "../components/backOffice/BackOfficeLayout";
+import { BackOfficeLayout } from "../components/back-office/BackOfficeLayout";
 import { EmployeeTable } from "../components/employee/EmployeeTable";
 
 import employeeData from "../data/employees.json";

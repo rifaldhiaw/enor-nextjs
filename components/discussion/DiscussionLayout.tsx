@@ -1,12 +1,11 @@
 import { Box, Flex } from "@mantine/core";
 import dynamic from "next/dynamic";
-
-import React from "react";
 import { AppLayout } from "../app/AppLayout";
+import Loading from "../common/Loading";
 
 const DiscussionLayoutNav = dynamic(
   () => import("./DiscussionLayoutNav").then((mod) => mod.DiscussionLayoutNav),
-  { ssr: false }
+  { ssr: false, loading: () => <Loading /> }
 );
 
 export const DiscussionLayout = (props: {

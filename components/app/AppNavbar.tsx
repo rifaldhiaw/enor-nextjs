@@ -1,14 +1,22 @@
-import { createStyles, Navbar, Tooltip, UnstyledButton } from "@mantine/core";
+import {
+  createStyles,
+  Flex,
+  Navbar,
+  Tooltip,
+  UnstyledButton,
+} from "@mantine/core";
 import { MantineLogo } from "@mantine/ds";
 import {
   IconBuilding,
   IconCalendarStats,
   IconFingerprint,
   IconHome2,
+  IconLogout,
   IconMessages,
   IconSettings,
 } from "@tabler/icons";
 import { useRouter } from "next/router";
+import { pb } from "../../data/pocketbase";
 
 const useStyles = createStyles((theme) => ({
   wrapper: {
@@ -118,7 +126,6 @@ export function AppNavbar(props: {
     <Tooltip label={link.label} position="right" withArrow key={link.label}>
       <UnstyledButton
         onClick={() => {
-          // setActive(link.label);
           router.push(link.url);
         }}
         className={cx(classes.mainLink, {
@@ -137,7 +144,20 @@ export function AppNavbar(props: {
           <div className={classes.logo}>
             <MantineLogo type="mark" size={30} />
           </div>
-          {mainLinks}
+          <Flex direction="column" justify="space-between" sx={{ flex: 1 }}>
+            <Flex direction="column">{mainLinks}</Flex>
+
+            <Tooltip label={"Logout"} position="right" withArrow>
+              <UnstyledButton
+                onClick={() => {
+                  pb.authStore.clear();
+                }}
+                className={classes.mainLink}
+              >
+                <IconLogout />
+              </UnstyledButton>
+            </Tooltip>
+          </Flex>
         </div>
       </Navbar.Section>
     </Navbar>
