@@ -16,9 +16,10 @@ import { IconCheck, IconX } from "@tabler/icons";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useState } from "react";
-import { pb } from "../data/pocketbase";
-import { Collections } from "../pocketbase.types";
-import { emailRegex } from "../utils/constants";
+
+import { pb } from "~/data/pocketbase";
+import { Collections } from "~/pocketbase.types";
+import { emailRegex } from "~/utils/constants";
 
 export function LoginPage() {
   const [isLoading, setIsLoading] = useState(false);

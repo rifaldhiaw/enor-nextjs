@@ -2,13 +2,14 @@ import { Box, CloseButton, Group, Text } from "@mantine/core";
 import dynamic from "next/dynamic";
 import router, { useRouter } from "next/router";
 import { ReactNode } from "react";
-import Loading from "../../components/common/Loading";
-import { DiscussionLayout } from "../../components/discussion/DiscussionLayout";
-import { navLinkData, NavLinkData } from "../../data/navlinkData";
+
+import Loading from "~/components/common/Loading";
+import { DiscussionLayout } from "~/components/discussion/DiscussionLayout";
+import { navLinkData, NavLinkData } from "~/data/navlinkData";
 
 const TextRoomView = dynamic(
   () =>
-    import("../../components/textRoom/TextRoomView").then(
+    import("~/components/textRoom/TextRoomView").then(
       (mod) => mod.TextRoomView
     ),
   { ssr: false, loading: () => <Loading /> }
@@ -16,7 +17,7 @@ const TextRoomView = dynamic(
 
 const VoiceRoomView = dynamic(
   () =>
-    import("../../components/voiceRoom/VoiceRoomView").then(
+    import("~/components/voiceRoom/VoiceRoomView").then(
       (mod) => mod.VoiceRoomView
     ),
   { ssr: false, loading: () => <Loading /> }
@@ -24,23 +25,20 @@ const VoiceRoomView = dynamic(
 
 const DrawBoardView = dynamic(
   () =>
-    import("../../components/drawBoard/DrawBoardView").then(
+    import("~/components/drawBoard/DrawBoardView").then(
       (mod) => mod.DrawBoardView
     ),
   { ssr: false, loading: () => <Loading /> }
 );
 
 const KanbanView = dynamic(
-  () =>
-    import("../../components/kanban/KanbanView").then((mod) => mod.KanbanView),
+  () => import("~/components/kanban/KanbanView").then((mod) => mod.KanbanView),
   { ssr: false, loading: () => <Loading /> }
 );
 
 const RichDocView = dynamic(
   () =>
-    import("../../components/richdoc/RichDocView").then(
-      (mod) => mod.RichDocView
-    ),
+    import("~/components/richdoc/RichDocView").then((mod) => mod.RichDocView),
   { ssr: false, loading: () => <Loading /> }
 );
 

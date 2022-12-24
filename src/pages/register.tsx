@@ -11,9 +11,10 @@ import {
 import { useForm } from "@mantine/form";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { pb } from "../data/pocketbase";
-import { Collections } from "../pocketbase.types";
-import { emailRegex, passwordRegex } from "../utils/constants";
+
+import { pb } from "~/data/pocketbase";
+import { Collections } from "~/pocketbase.types";
+import { emailRegex, passwordRegex } from "~/utils/constants";
 
 export function RegisterPage() {
   const validatePasswordConfirm = (value: string) => {

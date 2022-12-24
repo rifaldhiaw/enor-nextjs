@@ -1,4 +1,4 @@
-import { AppLayout } from "../components/app/AppLayout";
+import { AppLayout } from "~/components/app/AppLayout";
 
 const Security = () => {
   return (
