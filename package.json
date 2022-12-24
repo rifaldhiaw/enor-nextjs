@@ -3,8 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "dev": "next dev",
     "build": "next build",
-    "dev": "concurrently \"next dev\" \"./pocketbase serve\"",
     "start": "next start",
     "lint": "next lint"
   },
@@ -70,7 +70,6 @@
     "zustand": "^4.1.5"
   },
   "devDependencies": {
-    "@faker-js/faker": "^7.6.0",
-    "concurrently": "^7.6.0"
+    "@faker-js/faker": "^7.6.0"
   }
 }
