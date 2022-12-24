@@ -1,16 +1,11 @@
 import { Box, Center, CloseButton, Group, Loader, Text } from "@mantine/core";
 import dynamic from "next/dynamic";
 import router, { useRouter } from "next/router";
-import { ReactNode, useEffect } from "react";
+import { ReactNode } from "react";
 
 import { DiscussionLayout } from "../../components/discussion/DiscussionLayout";
 
-import { post100 } from "../../data/discussion";
 import { navLinkData, NavLinkData } from "../../data/navlinkData";
-import {
-  discussionStoreActions,
-  useDiscussionStore,
-} from "../../stores/discussionStore";
 
 const loader = () => (
   <Center h="100%">
@@ -26,9 +21,19 @@ const TextRoomView = dynamic(
   { ssr: false, loading: loader }
 );
 
-const DrawBoard = dynamic(
+const VoiceRoomView = dynamic(
   () =>
-    import("../../components/whiteboard/Whiteboard").then((mod) => mod.default),
+    import("../../components/voiceRoom/VoiceRoomView").then(
+      (mod) => mod.VoiceRoomView
+    ),
+  { ssr: false, loading: loader }
+);
+
+const DrawBoardView = dynamic(
+  () =>
+    import("../../components/drawBoard/DrawBoardView").then(
+      (mod) => mod.DrawBoardView
+    ),
   { ssr: false, loading: loader }
 );
 
@@ -38,34 +43,22 @@ const KanbanView = dynamic(
   { ssr: false, loading: loader }
 );
 
-const RichDoc = dynamic(
-  () => import("../../components/richdoc/RichDoc").then((mod) => mod.default),
+const RichDocView = dynamic(
+  () =>
+    import("../../components/richdoc/RichDocView").then(
+      (mod) => mod.RichDocView
+    ),
   { ssr: false, loading: loader }
 );
 
 export const Channel = () => {
   const channelId = useRouter().query.channelId as string | undefined;
-  const postId = useRouter().query.postId as string | undefined;
-
-  const showOverlay = useDiscussionStore((state) => state.showPostOverlay);
-
-  // hide overlay after 500ms
-  useEffect(() => {
-    if (showOverlay) {
-      const timeout = setTimeout(() => {
-        discussionStoreActions.setShowPostOverlay(false);
-      }, 300);
-      return () => clearTimeout(timeout);
-    }
-  }, [showOverlay]);
-
-  const selectedPost = post100.find((post) => post.id.toString() === postId);
 
   const viewByNavLink: Record<NavLinkData["type"], ReactNode> = {
     textRoom: <TextRoomView />,
-    voiceRoom: <Text>Voice Room</Text>,
-    drawBoard: <DrawBoard />,
-    document: <RichDoc />,
+    voiceRoom: <VoiceRoomView />,
+    drawBoard: <DrawBoardView />,
+    document: <RichDocView />,
     kanban: <KanbanView />,
   };
 
@@ -104,7 +97,6 @@ export const PostHeader = () => {
         <CloseButton
           size="lg"
           onClick={() => {
-            discussionStoreActions.setShowPostOverlay(true);
             router.push(`/discussion/${channelId}`);
           }}
         />

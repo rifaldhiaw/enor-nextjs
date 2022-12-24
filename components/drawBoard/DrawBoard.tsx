@@ -9,7 +9,7 @@ import {
 } from "@excalidraw/excalidraw/types/types";
 import { Box } from "@mantine/core";
 
-export default function Whiteboard() {
+export default function DrawBoard() {
   const excalidrawRef = useRef<ExcalidrawImperativeAPI>(null);
   const [theme, setTheme] = useState<ExcalidrawProps["theme"]>("light");
 

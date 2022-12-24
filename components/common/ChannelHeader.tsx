@@ -9,7 +9,7 @@ export const ChannelHeader = (props: {
   return (
     <Flex
       align="center"
-      gap={4}
+      gap={8}
       h="60px"
       bg="white"
       p="md"

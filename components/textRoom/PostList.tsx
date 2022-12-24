@@ -4,7 +4,6 @@ import { useVirtualizer } from "@tanstack/react-virtual";
 import { useRouter } from "next/router";
 import { useRef } from "react";
 import { post100 } from "../../data/discussion";
-import { discussionStoreActions } from "../../stores/discussionStore";
 import { PostDetail } from "./Post";
 
 export const PostList = (props: { focusPost?: string }) => {
@@ -59,9 +58,6 @@ export const PostList = (props: { focusPost?: string }) => {
                 {...post100[virtualItem.index]}
                 selected={post.id === props.focusPost}
                 onCommentClick={() => {
-                  if (!props.focusPost) {
-                    discussionStoreActions.setShowPostOverlay(true);
-                  }
                   return router.push({
                     pathname: "/discussion/[channelId]",
                     query: {

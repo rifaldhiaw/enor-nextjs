@@ -7,7 +7,6 @@ export const useDiscussionStore = create(
     () => ({
       selectedPost: null as null | Post,
       activeAccordion: [] as string[],
-      showPostOverlay: false,
     }),
     { name: "discussion" }
   )
@@ -20,7 +19,4 @@ export const discussionStoreActions = {
   unselectPost: () => setState({ selectedPost: null }),
   setActiveAccordion: (activeAccordion: string[]) =>
     setState({ activeAccordion }),
-  setShowPostOverlay: (showPostOverlay: boolean) => {
-    // setState({ showPostOverlay });
-  },
 };
