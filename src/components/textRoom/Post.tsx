@@ -43,7 +43,6 @@ export function PostDetail({
     <Box
       onMouseEnter={() => setShowActions(true)}
       onMouseLeave={() => setShowActions(false)}
-      mb="sm"
       sx={{
         padding: "8px 16px",
         position: "relative",

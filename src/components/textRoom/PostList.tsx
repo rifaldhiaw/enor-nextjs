@@ -1,9 +1,8 @@
 import { Box } from "@mantine/core";
-import { usePrevious } from "@mantine/hooks";
 import { useVirtualizer } from "@tanstack/react-virtual";
 import { useRouter } from "next/router";
-import { useRef } from "react";
-import { post100 } from "../../data/discussion";
+import { useLayoutEffect, useRef } from "react";
+import { useTextRoomStore } from "~/stores/textRoomStore";
 import { PostDetail } from "./Post";
 
 export const PostList = (props: { focusPost?: string }) => {
@@ -11,14 +10,23 @@ export const PostList = (props: { focusPost?: string }) => {
   const router = useRouter();
   const channelId = router.query.channelId as string;
 
-  // previous post id with usePrevious hook
-  const prevPostId = usePrevious(props.focusPost);
+  const posts = useTextRoomStore((s) => s.posts);
 
   const virtualizer = useVirtualizer({
-    count: post100.length,
+    count: posts.length,
     getScrollElement: () => parentRef.current,
     estimateSize: () => 120,
   });
+
+  // scroll to last message on mount
+  useLayoutEffect(() => {
+    virtualizer.scrollToIndex(posts.length - 1);
+  }, []);
+
+  // scroll to last message on new message
+  useLayoutEffect(() => {
+    virtualizer.scrollToIndex(posts.length - 1);
+  }, [posts.length]);
 
   return (
     <Box
@@ -26,7 +34,7 @@ export const PostList = (props: { focusPost?: string }) => {
       bg="white"
       w="100%"
       h="100%"
-      py="lg"
+      pt="lg"
       style={{
         overflow: "auto",
       }}
@@ -39,7 +47,7 @@ export const PostList = (props: { focusPost?: string }) => {
         }}
       >
         {virtualizer.getVirtualItems().map((virtualItem) => {
-          const post = post100[virtualItem.index];
+          const post = posts[virtualItem.index];
 
           return (
             <Box
@@ -55,14 +63,14 @@ export const PostList = (props: { focusPost?: string }) => {
               })}
             >
               <PostDetail
-                {...post100[virtualItem.index]}
+                {...posts[virtualItem.index]}
                 selected={post.id === props.focusPost}
                 onCommentClick={() => {
                   return router.push({
                     pathname: "/discussion/[channelId]",
                     query: {
                       channelId,
-                      postId: post100[virtualItem.index].id,
+                      postId: posts[virtualItem.index].id,
                     },
                   });
                 }}
