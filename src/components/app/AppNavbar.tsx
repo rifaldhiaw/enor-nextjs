@@ -26,7 +26,9 @@ const useStyles = createStyles((theme) => ({
 
   aside: {
     backgroundColor:
-      theme.colorScheme === "dark" ? theme.colors.dark[7] : theme.white,
+      theme.colorScheme === "dark"
+        ? theme.colors.dark[7]
+        : theme.colors.gray[0],
     display: "flex",
     flexDirection: "column",
     alignItems: "center",

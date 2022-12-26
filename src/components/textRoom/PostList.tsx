@@ -1,7 +1,7 @@
-import { Box } from "@mantine/core";
+import { Box, useMantineTheme } from "@mantine/core";
 import { useVirtualizer } from "@tanstack/react-virtual";
 import { useRouter } from "next/router";
-import { useLayoutEffect, useRef } from "react";
+import { useEffect, useLayoutEffect, useRef } from "react";
 import { useTextRoomStore } from "~/stores/textRoomStore";
 import { PostDetail } from "./Post";
 
@@ -9,6 +9,8 @@ export const PostList = (props: { focusPost?: string }) => {
   const parentRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
   const channelId = router.query.channelId as string;
+
+  const theme = useMantineTheme();
 
   const posts = useTextRoomStore((s) => s.posts);
 
@@ -20,23 +22,44 @@ export const PostList = (props: { focusPost?: string }) => {
 
   // scroll to last message on mount
   useLayoutEffect(() => {
-    virtualizer.scrollToIndex(posts.length - 1);
-  }, []);
-
-  // scroll to last message on new message
-  useLayoutEffect(() => {
-    virtualizer.scrollToIndex(posts.length - 1);
+    virtualizer.scrollToIndex(posts.length - 1, {
+      align: "end",
+    });
   }, [posts.length]);
+
+  // scroll after 10ms to fix somehow initial scroll does not scroll to the end
+  useEffect(() => {
+    const id = setTimeout(() => {
+      virtualizer.scrollToIndex(posts.length - 1, {
+        align: "end",
+      });
+    }, 100);
+
+    return () => {
+      clearTimeout(id);
+    };
+  }, []);
 
   return (
     <Box
       ref={parentRef}
-      bg="white"
       w="100%"
+      maw="700px"
       h="100%"
       pt="lg"
-      style={{
+      sx={{
+        alignSelf: "center",
         overflow: "auto",
+        "&::-webkit-scrollbar": {
+          width: "8px",
+        },
+        "&::-webkit-scrollbar-track": {
+          backgroundColor: "transparent",
+        },
+        "&::-webkit-scrollbar-thumb": {
+          backgroundColor: theme.colors.gray[5],
+          borderRadius: "8px",
+        },
       }}
     >
       <div

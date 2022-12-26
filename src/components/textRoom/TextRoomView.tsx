@@ -2,7 +2,7 @@ import { Box, Flex, ScrollArea } from "@mantine/core";
 import { IconHash } from "@tabler/icons";
 import { useRouter } from "next/router";
 import { PostInput } from "~/components/textRoom/PostInput";
-import { post100 } from "../../data/discussion";
+import { useTextRoomStore } from "~/stores/textRoomStore";
 import { PostHeader } from "../../pages/discussion/[channelId]";
 import { ChannelHeader } from "../common/ChannelHeader";
 import { PostList } from "./PostList";
@@ -13,16 +13,17 @@ export const TextRoomView = () => {
   const postId = router.query.postId as string;
   const channelId = router.query.channelId as string;
 
-  const selectedPost = post100.find((post) => post.id.toString() === postId);
+  const posts = useTextRoomStore((s) => s.posts);
+  const selectedPost = posts.find((p) => p.id === postId);
 
   return (
-    <Flex h="100%">
+    <Flex h="100%" bg="gray.0">
       <Box h="100%" sx={{ flex: 1 }}>
-        <ChannelHeader title={channelId} icon={<IconHash />} />
+        <ChannelHeader bg="gray.0" title={channelId} icon={<IconHash />} />
         <Flex h="calc(100% - 60px)" direction="column">
-          <Box h="0" sx={{ flex: 1 }}>
+          <Flex align="center" justify="center" h="0" sx={{ flex: 1 }}>
             <PostList focusPost={selectedPost?.id} />
-          </Box>
+          </Flex>
           <PostInput />
         </Flex>
       </Box>

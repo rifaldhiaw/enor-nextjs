@@ -5,22 +5,24 @@ import {
   Button,
   Flex,
   Group,
+  Paper,
   Text,
   useMantineTheme,
 } from "@mantine/core";
 import {
   IconDotsVertical,
+  IconMessage,
   IconMoodSmile,
-  IconPencil,
   IconShare,
 } from "@tabler/icons";
+import dayjs from "dayjs";
 import { useState } from "react";
 
 interface PostDetailProps {
   postedAt: string;
   body: string;
   selected?: boolean;
-  onCommentClick: () => void;
+  onCommentClick?: () => void;
   author: {
     name: string;
     image: string;
@@ -46,51 +48,69 @@ export function PostDetail({
       sx={{
         padding: "8px 16px",
         position: "relative",
-        boxShadow: selected
-          ? "rgba(17, 17, 26, 0.05) 0px 4px 16px, rgba(17, 17, 26, 0.05) 0px 8px 32px"
-          : "none",
       }}
     >
-      <Group>
-        <Avatar src={author.image} alt={author.name} radius="xl" />
-        <div>
-          <Text size="sm">{author.name}</Text>
-          <Text size="xs" color="dimmed">
-            {postedAt}
-          </Text>
-        </div>
-      </Group>
-      <Text
-        sx={{
-          paddingLeft: 54,
-        }}
-        size="sm"
-      >
-        {body}
-      </Text>
-      <Flex pl={40} align="center">
-        <Button size="xs" variant="subtle" onClick={onCommentClick}>
-          36 Comments
-        </Button>
-        <ActionIcon
-          color="blue"
-          variant="subtle"
+      <Flex gap="md">
+        <Avatar src={author.image} alt={author.name} radius="xl" mt="md" />
+
+        <Paper
+          bg="white"
+          w="100%"
+          px="md"
+          pt="md"
+          pb="sm"
+          shadow={selected ? "md" : undefined}
           sx={{
-            borderRadius: "50%",
+            borderLeft: `3px solid ${
+              selected
+                ? theme.colors.blue[5]
+                : theme.colorScheme === "dark"
+                ? theme.colors.gray[5]
+                : theme.colors.gray[2]
+            }`,
           }}
         >
-          <em-emoji id="+1"></em-emoji>
-        </ActionIcon>
-        {/* action icon to add new emoji */}
-        {showAcitons && (
-          <ActionIcon
-            sx={{
-              borderRadius: "50%",
-            }}
-          >
-            <IconMoodSmile size="16" />
-          </ActionIcon>
-        )}
+          <Group spacing="sm">
+            <Text fw="bold" size="sm">
+              {author.name}
+            </Text>
+            <Text size="xs" color="dimmed">
+              {dayjs(postedAt).format("MMM D, YYYY")}
+            </Text>
+          </Group>
+
+          {/* body */}
+          <Text size="sm">{body}</Text>
+
+          {/* comment button */}
+          <Flex>
+            {onCommentClick && (
+              <Button size="xs" variant="subtle" onClick={onCommentClick}>
+                36 Comments
+              </Button>
+            )}
+
+            <ActionIcon
+              color="blue"
+              variant="subtle"
+              sx={{
+                borderRadius: "50%",
+              }}
+            >
+              <em-emoji id="+1"></em-emoji>
+            </ActionIcon>
+            {/* action icon to add new emoji */}
+            {showAcitons && (
+              <ActionIcon
+                sx={{
+                  borderRadius: "50%",
+                }}
+              >
+                <IconMoodSmile size="16" />
+              </ActionIcon>
+            )}
+          </Flex>
+        </Paper>
       </Flex>
 
       {/* post actions section */}
@@ -108,20 +128,12 @@ export function PostDetail({
               theme.colorScheme === "dark" ? theme.colors.dark[7] : "white",
           }}
         >
-          {/* emoji reaction button */}
           <ActionIcon
             sx={{
               borderRadius: "50%",
             }}
           >
-            <IconMoodSmile size="16" />
-          </ActionIcon>
-          <ActionIcon
-            sx={{
-              borderRadius: "50%",
-            }}
-          >
-            <IconPencil size="16" />
+            <IconMessage size="16" />
           </ActionIcon>
           <ActionIcon
             sx={{

@@ -4,20 +4,23 @@ import { ReactNode } from "react";
 export const ChannelHeader = (props: {
   title: string;
   icon: ReactNode;
+  bg?: string;
   children?: ReactNode;
 }) => {
+  const selectedMenu = "Posts";
+
   return (
     <Flex
       align="center"
       gap={8}
       h="60px"
-      bg="white"
+      bg={props.bg ?? "white"}
       p="md"
       sx={(theme) => ({
         borderBottom: `1px solid ${
           theme.colorScheme === "dark"
             ? theme.colors.dark[6]
-            : theme.colors.gray[2]
+            : theme.colors.gray[4]
         }`,
       })}
     >

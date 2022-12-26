@@ -79,7 +79,6 @@ export const PostHeader = () => {
         position: "sticky",
         top: 0,
         zIndex: 10,
-        backgroundColor: "white",
         borderBottom: "1px solid #dee2e6",
       }}
       p="md"

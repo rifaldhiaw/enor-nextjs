@@ -1,15 +1,9 @@
 import create from "zustand";
-import { persist } from "zustand/middleware";
 import { Post, post100 } from "../data/discussion";
 
-export const useTextRoomStore = create(
-  persist(
-    () => ({
-      posts: post100,
-    }),
-    { name: "discussion" }
-  )
-);
+export const useTextRoomStore = create(() => ({
+  posts: post100,
+}));
 
 const { setState } = useTextRoomStore;
 
