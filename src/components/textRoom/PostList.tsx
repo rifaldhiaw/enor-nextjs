@@ -90,7 +90,7 @@ export const PostList = (props: { focusPost?: string }) => {
                 selected={post.id === props.focusPost}
                 onCommentClick={() => {
                   return router.push({
-                    pathname: "/discussion/[channelId]",
+                    pathname: "/team/[channelId]",
                     query: {
                       channelId,
                       postId: posts[virtualItem.index].id,

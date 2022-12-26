@@ -29,7 +29,7 @@ import {
   useDiscussionStore,
 } from "../../stores/discussionStore";
 
-export const DiscussionLayoutNav = (props: { title: string }) => {
+export const TeamNav = (props: { title: string }) => {
   const activeAccordion = useDiscussionStore((state) => state.activeAccordion);
   const router = useRouter();
   const channelId = router.query.channelId;
@@ -97,7 +97,7 @@ export const DiscussionLayoutNav = (props: { title: string }) => {
                       label={child.label}
                       active={child.label.toLowerCase() === channelId}
                       onClick={() => {
-                        router.push(`/discussion/${child.href}`);
+                        router.push(`/team/${child.href}`);
                       }}
                     />
                   );

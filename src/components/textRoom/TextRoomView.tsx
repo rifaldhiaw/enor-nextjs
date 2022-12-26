@@ -4,7 +4,7 @@ import { useRouter } from "next/router";
 import { PostInput } from "~/components/textRoom/PostInput";
 import { UserList } from "~/components/textRoom/UserList";
 import { useTextRoomStore } from "~/stores/textRoomStore";
-import { PostHeader } from "../../pages/discussion/[channelId]";
+import { PostHeader } from "../../pages/team/[channelId]";
 import { ChannelHeader } from "../common/ChannelHeader";
 import { PostList } from "./PostList";
 import { PostWithReplies } from "./PostWithReplies";

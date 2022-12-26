@@ -4,7 +4,7 @@ import router, { useRouter } from "next/router";
 import { ReactNode } from "react";
 
 import Loading from "~/components/common/Loading";
-import { DiscussionLayout } from "~/components/discussion/DiscussionLayout";
+import { DiscussionLayout } from "~/components/team/TeamLayout";
 import { navLinkData, NavLinkData } from "~/data/navlinkData";
 
 const TextRoomView = dynamic(
@@ -87,7 +87,7 @@ export const PostHeader = () => {
         <CloseButton
           size="lg"
           onClick={() => {
-            router.push(`/discussion/${channelId}`);
+            router.push(`/team/${channelId}`);
           }}
         />
         <Text fw="bold">Thread</Text>

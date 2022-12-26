@@ -3,17 +3,17 @@ import dynamic from "next/dynamic";
 import { AppLayout } from "../app/AppLayout";
 import Loading from "../common/Loading";
 
-const DiscussionLayoutNav = dynamic(
-  () => import("./DiscussionLayoutNav").then((mod) => mod.DiscussionLayoutNav),
-  { ssr: false, loading: () => <Loading /> }
-);
+const TeamNav = dynamic(() => import("./TeamNav").then((mod) => mod.TeamNav), {
+  ssr: false,
+  loading: () => <Loading />,
+});
 
 export const DiscussionLayout = (props: {
   children: React.ReactNode;
   navTitle: string;
 }) => {
   return (
-    <AppLayout activeNav={"Discussion"}>
+    <AppLayout activeNav={"Team"}>
       <Flex h="100vh" w="100%" id="layout">
         <Box
           id="nav"
@@ -22,7 +22,7 @@ export const DiscussionLayout = (props: {
             flex: "none",
           }}
         >
-          <DiscussionLayoutNav title={props.navTitle} />
+          <TeamNav title={props.navTitle} />
         </Box>
         <Box
           id="content"

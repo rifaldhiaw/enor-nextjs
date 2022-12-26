@@ -9,11 +9,11 @@ import { MantineLogo } from "@mantine/ds";
 import {
   IconBuilding,
   IconCalendarStats,
-  IconFingerprint,
   IconHome2,
   IconLogout,
   IconMessages,
   IconSettings,
+  IconUsers,
 } from "@tabler/icons";
 import { useRouter } from "next/router";
 import { pb } from "../../data/pocketbase";
@@ -107,10 +107,10 @@ const useStyles = createStyles((theme) => ({
 
 const mainLinksMockdata = [
   { icon: IconHome2, label: "Home", url: "/" },
-  { icon: IconMessages, label: "Discussion", url: "/discussion/home" },
+  { icon: IconMessages, label: "Chat", url: "/chat" },
+  { icon: IconUsers, label: "Team", url: "/team/home" },
   { icon: IconBuilding, label: "Back Office", url: "/back-office" },
   { icon: IconCalendarStats, label: "Releases", url: "/releases" },
-  { icon: IconFingerprint, label: "Security", url: "/security" },
   { icon: IconSettings, label: "Settings", url: "/settings" },
 ] as const;
 
