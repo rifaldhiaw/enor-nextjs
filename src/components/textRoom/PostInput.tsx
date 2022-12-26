@@ -1,4 +1,4 @@
-import { Box, useMantineTheme } from "@mantine/core";
+import { useMantineTheme } from "@mantine/core";
 import { Link, RichTextEditor } from "@mantine/tiptap";
 import { BubbleMenu, useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
@@ -14,39 +14,37 @@ export const PostInput = () => {
   const theme = useMantineTheme();
 
   return (
-    <Box pl="48px" mb="lg" mt="sm" w="100%" maw="650px" mx="auto">
-      <RichTextEditor editor={editor}>
-        {editor && (
-          <BubbleMenu editor={editor}>
-            <RichTextEditor.ControlsGroup>
-              <RichTextEditor.Bold />
-              <RichTextEditor.Italic />
-              <RichTextEditor.Link />
-            </RichTextEditor.ControlsGroup>
-          </BubbleMenu>
-        )}
-        <RichTextEditor.Content
-          sx={{
-            padding: "8px 16px",
-            backgroundColor: theme.white,
-          }}
-          placeholder="Write a message..."
-          onKeyDown={(event) => {
-            if (event.key === "Enter" && !event.shiftKey) {
-              event.preventDefault();
+    <RichTextEditor editor={editor}>
+      {editor && (
+        <BubbleMenu editor={editor}>
+          <RichTextEditor.ControlsGroup>
+            <RichTextEditor.Bold />
+            <RichTextEditor.Italic />
+            <RichTextEditor.Link />
+          </RichTextEditor.ControlsGroup>
+        </BubbleMenu>
+      )}
+      <RichTextEditor.Content
+        sx={{
+          padding: "8px 16px",
+          backgroundColor: theme.white,
+        }}
+        placeholder="Write a message..."
+        onKeyDown={(event) => {
+          if (event.key === "Enter" && !event.shiftKey) {
+            event.preventDefault();
 
-              // TODO: should use json instead of text
-              const textValue = editor?.getText();
+            // TODO: should use json instead of text
+            const textValue = editor?.getText();
 
-              const newPost = makeFakePost(Date.now(), textValue);
-              textRoomStoreActions.addNewPost(newPost);
+            const newPost = makeFakePost(Date.now(), textValue);
+            textRoomStoreActions.addNewPost(newPost);
 
-              // reset editor
-              editor?.chain().focus().setContent("").run();
-            }
-          }}
-        />
-      </RichTextEditor>
-    </Box>
+            // reset editor
+            editor?.chain().focus().setContent("").run();
+          }
+        }}
+      />
+    </RichTextEditor>
   );
 };

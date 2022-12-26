@@ -2,6 +2,7 @@ import { Box, Flex, ScrollArea } from "@mantine/core";
 import { IconHash } from "@tabler/icons";
 import { useRouter } from "next/router";
 import { PostInput } from "~/components/textRoom/PostInput";
+import { UserList } from "~/components/textRoom/UserList";
 import { useTextRoomStore } from "~/stores/textRoomStore";
 import { PostHeader } from "../../pages/discussion/[channelId]";
 import { ChannelHeader } from "../common/ChannelHeader";
@@ -24,10 +25,12 @@ export const TextRoomView = () => {
           <Flex align="center" justify="center" h="0" sx={{ flex: 1 }}>
             <PostList focusPost={selectedPost?.id} />
           </Flex>
-          <PostInput />
+          <Box pl="48px" mb="lg" mt="sm" w="100%" maw="650px" mx="auto">
+            <PostInput />
+          </Box>
         </Flex>
       </Box>
-      {selectedPost && (
+      {selectedPost ? (
         <Box
           h="100%"
           w="400px"
@@ -36,8 +39,34 @@ export const TextRoomView = () => {
           }}
         >
           <PostHeader />
-          <ScrollArea h="calc(100% - 60px)">
-            <PostWithReplies post={selectedPost} />
+          <Flex direction="column" h="calc(100% - 60px)">
+            <ScrollArea h="0" sx={{ flex: 1 }}>
+              <PostWithReplies post={selectedPost} />
+            </ScrollArea>
+            <Box
+              pl="74px"
+              pr="md"
+              mb="lg"
+              mt="sm"
+              w="100%"
+              maw="650px"
+              mx="auto"
+            >
+              <PostInput />
+            </Box>
+          </Flex>
+        </Box>
+      ) : (
+        <Box
+          h="100%"
+          w="280px"
+          sx={{
+            borderLeft: "1px solid #eaeaea",
+          }}
+        >
+          <PostHeader />
+          <ScrollArea h="calc(100% - 60px)" p="md">
+            <UserList />
           </ScrollArea>
         </Box>
       )}
