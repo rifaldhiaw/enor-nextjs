@@ -1,6 +1,5 @@
 ## Todo
 
-- [ ] Edit Channel
 - [ ] Delete Channel
 - [ ] Delete Team
 
@@ -8,6 +7,7 @@
 - [ ] Add Channel Type
 - [ ] Add Channel Privacy (public/private)
 - [ ] Add Channel Members
+- [ ] Add Channel isHidden (true/false)
 
 - [ ] Channel type selection should use icons in form
 

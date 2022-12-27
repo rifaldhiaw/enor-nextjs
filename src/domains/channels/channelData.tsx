@@ -71,3 +71,33 @@ export const useAddChannel = () => {
     },
   });
 };
+
+export const useUpdateChannel = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (
+      channel: ChannelsRecord & { id: string }
+    ): Promise<ChannelsRecord> => {
+      return pb.collection(Collections.Channels).update(channel.id, channel);
+    },
+    onSuccess: () => {
+      showNotification({
+        title: "Channel updated",
+        message: `Channel has been updated`,
+        icon: <IconCheck size={20} />,
+        color: "green",
+      });
+      closeAllModals();
+      queryClient.invalidateQueries({ queryKey: [Collections.Channels] });
+    },
+    onError: (error) => {
+      showNotification({
+        title: "Failed to update channel",
+        message: (error as Error).message,
+        icon: <IconX size={20} />,
+        color: "red",
+      });
+    },
+  });
+};

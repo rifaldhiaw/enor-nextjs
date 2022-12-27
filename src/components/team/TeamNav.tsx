@@ -10,6 +10,7 @@ import {
   Paper,
   ScrollArea,
   Select,
+  Text,
   TextInput,
   Title,
 } from "@mantine/core";
@@ -30,14 +31,19 @@ import {
   IconVolume,
 } from "@tabler/icons";
 import { useRouter } from "next/router";
-import { ReactNode } from "react";
+import { ReactNode, useState } from "react";
 import {
+  ChannelsRecord,
   ChannelsResponse,
   ChannelsTypeOptions,
   TeamsRecord,
 } from "~/../pocketbase.types";
 import { getAuthModel } from "~/data/pocketbase";
-import { useAddChannel, useAllChannels } from "~/domains/channels/channelData";
+import {
+  useAddChannel,
+  useAllChannels,
+  useUpdateChannel,
+} from "~/domains/channels/channelData";
 import { groupChannelsByTeam } from "~/domains/channels/channelDataUtils";
 import {
   useAddTeam,
@@ -111,28 +117,17 @@ export const TeamNav = (props: { title: string }) => {
             return (
               <Accordion.Item key={item.id} value={item.name}>
                 <AccordionControl py="xs" teamId={item.id}>
-                  {item.name}
+                  <Text fw="bold" fz="sm" color="gray.6">
+                    {item.name}
+                  </Text>
                 </AccordionControl>
                 <Accordion.Panel>
                   {channels?.map((channel: ChannelsResponse) => {
-                    const iconByType: Record<NavLinkData["type"], ReactNode> = {
-                      textRoom: <IconHash size={16} stroke={1.5} />,
-                      voiceRoom: <IconVolume size={16} stroke={1.5} />,
-                      document: <IconFileDescription size={16} stroke={1.5} />,
-                      drawBoard: <IconChalkboard size={16} stroke={1.5} />,
-                      kanban: <IconLayoutKanban size={16} stroke={1.5} />,
-                    };
-
                     return (
-                      <NavLink
+                      <ChannelItem
                         key={channel.id}
-                        h={32}
-                        icon={iconByType[channel.type]}
-                        label={channel.name}
-                        active={channel.id === channelId}
-                        onClick={() => {
-                          router.push(`/team/${channel.id}`);
-                        }}
+                        channel={channel}
+                        teamId={item.id}
                       />
                     );
                   })}
@@ -146,17 +141,84 @@ export const TeamNav = (props: { title: string }) => {
   );
 };
 
+const ChannelItem = (props: { channel: ChannelsResponse; teamId: string }) => {
+  const router = useRouter();
+  const activeChannelId = router.query.channelId;
+
+  const { channel, teamId } = props;
+  const [visible, setVisible] = useState(false);
+
+  const iconByType: Record<NavLinkData["type"], ReactNode> = {
+    textRoom: <IconHash size={16} stroke={1.5} />,
+    voiceRoom: <IconVolume size={16} stroke={1.5} />,
+    document: <IconFileDescription size={16} stroke={1.5} />,
+    drawBoard: <IconChalkboard size={16} stroke={1.5} />,
+    kanban: <IconLayoutKanban size={16} stroke={1.5} />,
+  };
+
+  const onClickEditChannel = () => {
+    setVisible(false);
+    openModal({
+      title: "Edit Channel",
+      children: <ChannelForm teamId={teamId} channel={channel} />,
+    });
+  };
+
+  return (
+    <Flex
+      onMouseEnter={() => setVisible(true)}
+      onMouseLeave={() => setVisible(false)}
+    >
+      <NavLink
+        key={channel.id}
+        h={32}
+        icon={iconByType[channel.type]}
+        label={channel.name}
+        active={channel.id === activeChannelId}
+        onClick={() => {
+          router.push(`/team/${channel.id}`);
+        }}
+      />
+      <Menu transition="pop" withArrow position="bottom-end">
+        {visible && (
+          <Menu.Target>
+            <ActionIcon size="md">
+              <IconDots size={14} />
+            </ActionIcon>
+          </Menu.Target>
+        )}
+        <Menu.Dropdown>
+          <Menu.Item
+            icon={<IconPencil size={14} />}
+            onClick={onClickEditChannel}
+          >
+            Edit Channel
+          </Menu.Item>
+          <Menu.Item icon={<IconTrash size={16} stroke={1.5} />} color="red">
+            Archive Team
+          </Menu.Item>
+        </Menu.Dropdown>
+      </Menu>
+    </Flex>
+  );
+};
+
 function AccordionControl(props: AccordionControlProps & { teamId: string }) {
+  // menu button visible state
+  const [visible, setVisible] = useState(false);
+
   const onClickAddChannel = () => {
+    setVisible(false);
     openModal({
       title: "Add Channel",
-      children: <AddChannelForm teamId={props.teamId} />,
+      children: <ChannelForm teamId={props.teamId} />,
     });
   };
 
   const team = useAllTeams().data?.find((item) => item.id === props.teamId);
 
   const onClickEditTeam = () => {
+    setVisible(false);
     openModal({
       title: "Edit Team",
       children: <TeamForm team={team} />,
@@ -164,14 +226,20 @@ function AccordionControl(props: AccordionControlProps & { teamId: string }) {
   };
 
   return (
-    <Box sx={{ display: "flex", alignItems: "center" }}>
+    <Box
+      sx={{ display: "flex", alignItems: "center" }}
+      onMouseEnter={() => setVisible(true)}
+      onMouseLeave={() => setVisible(false)}
+    >
       <Accordion.Control {...props} />
       <Menu transition="pop" withArrow position="bottom-end">
-        <Menu.Target>
-          <ActionIcon size="lg">
-            <IconDots size={16} />
-          </ActionIcon>
-        </Menu.Target>
+        {visible && (
+          <Menu.Target>
+            <ActionIcon size="md">
+              <IconDots size={14} />
+            </ActionIcon>
+          </Menu.Target>
+        )}
         <Menu.Dropdown>
           <Menu.Item icon={<IconPlus size={14} />} onClick={onClickAddChannel}>
             Add Channel
@@ -264,28 +332,45 @@ const TeamForm = (props: { team?: TeamsRecord & { id: string } }) => {
   );
 };
 
-const AddChannelForm = (props: { teamId: string }) => {
+const ChannelForm = (props: {
+  teamId: string;
+  channel?: ChannelsRecord & { id: string };
+}) => {
   const form = useForm({
-    initialValues: { channelName: "", type: "textRoom" as ChannelType },
+    initialValues: props.channel ?? {
+      name: "",
+      type: "textRoom" as ChannelType,
+    },
   });
-  const adder = useAddChannel();
+
+  const addChannel = useAddChannel();
+  const updateChannel = useUpdateChannel();
 
   return (
     <form
-      onSubmit={form.onSubmit((values) =>
-        adder.mutate({
-          name: values.channelName,
-          type: ChannelsTypeOptions[values.type],
-          team: props.teamId,
-        })
-      )}
+      onSubmit={form.onSubmit((values) => {
+        if (props.channel) {
+          return updateChannel.mutate({
+            id: props.channel.id,
+            team: props.teamId,
+            name: values.name,
+            type: ChannelsTypeOptions[values.type],
+          });
+        } else {
+          addChannel.mutate({
+            team: props.teamId,
+            name: values.name,
+            type: ChannelsTypeOptions[values.type],
+          });
+        }
+      })}
     >
       <TextInput
         label="New Team"
         placeholder="e.g. Release Team"
         data-autofocus
         required
-        {...form.getInputProps("channelName")}
+        {...form.getInputProps("name")}
       />
       <Select
         label="Channel Type"
@@ -297,7 +382,7 @@ const AddChannelForm = (props: { teamId: string }) => {
         }))}
         {...form.getInputProps("type")}
       />
-      <Button fullWidth type="submit" mt="lg" loading={adder.isLoading}>
+      <Button fullWidth type="submit" mt="lg" loading={addChannel.isLoading}>
         Submit
       </Button>
     </form>
