@@ -163,7 +163,7 @@ function AccordionControl(props: AccordionControlProps & { teamId: string }) {
             Analytics
           </Menu.Item>
           <Menu.Item icon={<IconTrash size={16} stroke={1.5} />} color="red">
-            Terminate contract
+            Archive Team
           </Menu.Item>
         </Menu.Dropdown>
       </Menu>
