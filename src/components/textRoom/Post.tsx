@@ -59,8 +59,9 @@ export function PostDetail({
           px="md"
           pt="md"
           pb="sm"
-          shadow={selected ? "md" : undefined}
+          shadow={selected ? "md" : "undefined"}
           sx={{
+            border: `1px solid ${theme.colors.gray[2]}`,
             borderLeft: `3px solid ${
               selected
                 ? theme.colors.blue[5]

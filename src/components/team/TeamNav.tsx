@@ -4,6 +4,7 @@ import {
   ActionIcon,
   Box,
   Button,
+  createStyles,
   Flex,
   Menu,
   NavLink,
@@ -56,6 +57,46 @@ import {
   useDiscussionStore,
 } from "../../stores/discussionStore";
 
+const useStyles = createStyles((theme) => ({
+  root: {
+    backgroundColor:
+      theme.colorScheme === "dark"
+        ? theme.colors.dark[6]
+        : theme.colors.gray[1],
+    borderRadius: theme.radius.sm,
+    padding: theme.spacing.sm,
+  },
+
+  item: {
+    backgroundColor:
+      theme.colorScheme === "dark"
+        ? theme.colors.dark[6]
+        : theme.colors.gray[2],
+    border: "1px solid transparent",
+    position: "relative",
+    zIndex: 0,
+    transition: "transform 150ms ease",
+
+    "&[data-active]": {
+      transform: "scale(1.03)",
+      backgroundColor:
+        theme.colorScheme === "dark" ? theme.colors.dark[7] : theme.white,
+      borderColor:
+        theme.colorScheme === "dark"
+          ? theme.colors.dark[4]
+          : theme.colors.gray[3],
+      borderRadius: theme.radius.md,
+      zIndex: 1,
+    },
+  },
+
+  chevron: {
+    "&[data-rotate]": {
+      transform: "rotate(-90deg)",
+    },
+  },
+}));
+
 export const TeamNav = (props: { title: string }) => {
   const activeAccordion = useDiscussionStore((state) => state.activeAccordion);
   const router = useRouter();
@@ -65,6 +106,8 @@ export const TeamNav = (props: { title: string }) => {
   const channels = useAllChannels();
 
   const channelsByTeam = groupChannelsByTeam(channels.data ?? []);
+
+  const { classes } = useStyles();
 
   return (
     <Paper
@@ -98,7 +141,6 @@ export const TeamNav = (props: { title: string }) => {
       </Flex>
 
       <ScrollArea
-        offsetScrollbars
         sx={{
           height: "calc(100vh - var(--mantine-header-height, 60px))",
           flex: 1,
@@ -110,14 +152,17 @@ export const TeamNav = (props: { title: string }) => {
           mx="auto"
           value={activeAccordion}
           onChange={discussionStoreActions.setActiveAccordion}
+          variant="filled"
+          classNames={classes}
+          className={classes.root}
         >
           {teams.data?.map((item) => {
             const channels = channelsByTeam[item.id];
 
             return (
-              <Accordion.Item key={item.id} value={item.id}>
+              <Accordion.Item my="sm" key={item.id} value={item.id}>
                 <AccordionControl py="xs" teamId={item.id}>
-                  <Text fw="bold" fz="sm" color="gray.6">
+                  <Text fz="xs" color="gray.7">
                     {item.name}
                   </Text>
                 </AccordionControl>
