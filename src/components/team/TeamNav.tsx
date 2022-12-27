@@ -80,7 +80,9 @@ const useStyles = createStyles((theme) => ({
     "&[data-active]": {
       transform: "scale(1.03)",
       backgroundColor:
-        theme.colorScheme === "dark" ? theme.colors.dark[7] : theme.white,
+        theme.colorScheme === "dark"
+          ? theme.colors.dark[7]
+          : theme.colors.gray[0],
       borderColor:
         theme.colorScheme === "dark"
           ? theme.colors.dark[4]
