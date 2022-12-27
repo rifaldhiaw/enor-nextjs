@@ -23,5 +23,5 @@ export const useProtected = () => {
     pb.authStore.onChange(() => {
       checkAuth();
     });
-  }, []);
+  }, [router]);
 };

@@ -25,7 +25,7 @@ export const PostList = (props: { focusPost?: string }) => {
     virtualizer.scrollToIndex(posts.length - 1, {
       align: "end",
     });
-  }, [posts.length]);
+  }, [virtualizer, posts.length]);
 
   // scroll after 10ms to fix somehow initial scroll does not scroll to the end
   useEffect(() => {
@@ -38,6 +38,7 @@ export const PostList = (props: { focusPost?: string }) => {
     return () => {
       clearTimeout(id);
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
