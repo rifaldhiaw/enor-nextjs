@@ -1,5 +1,4 @@
 import { Box, Center, Text } from "@mantine/core";
-import { IconVolume } from "@tabler/icons";
 import { useRouter } from "next/router";
 import { ChannelHeader } from "../common/ChannelHeader";
 
@@ -9,7 +8,7 @@ export const VoiceRoomView = () => {
 
   return (
     <Box h="100%">
-      <ChannelHeader title={channelId} icon={<IconVolume />} />
+      <ChannelHeader />
       <Box h="calc(100% - 60px)">
         <Center h="100%">
           <Text color="gray.4" fz={48} fw="bold">

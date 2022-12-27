@@ -1,11 +1,15 @@
 import { MantineProvider } from "@mantine/core";
+import { ModalsProvider } from "@mantine/modals";
 import { NotificationsProvider } from "@mantine/notifications";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { AppProps } from "next/app";
 import Head from "next/head";
 
 import data from "@emoji-mart/data";
 import { init } from "emoji-mart";
 import { useEffect } from "react";
+
+const queryClient = new QueryClient();
 
 export default function App(props: AppProps) {
   const { Component, pageProps } = props;
@@ -33,9 +37,13 @@ export default function App(props: AppProps) {
           colorScheme: "light",
         }}
       >
-        <NotificationsProvider>
-          <Component {...pageProps} />
-        </NotificationsProvider>
+        <ModalsProvider>
+          <NotificationsProvider>
+            <QueryClientProvider client={queryClient}>
+              <Component {...pageProps} />
+            </QueryClientProvider>
+          </NotificationsProvider>
+        </ModalsProvider>
       </MantineProvider>
     </>
   );

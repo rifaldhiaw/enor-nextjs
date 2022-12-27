@@ -3,27 +3,44 @@ import {
   AccordionControlProps,
   ActionIcon,
   Box,
+  Button,
+  Flex,
   Menu,
   NavLink,
   Paper,
   ScrollArea,
+  TextInput,
   Title,
 } from "@mantine/core";
+import { useForm } from "@mantine/form";
+import { closeAllModals, openModal } from "@mantine/modals";
+import { showNotification } from "@mantine/notifications";
 import {
   IconChalkboard,
+  IconCheck,
   IconDots,
   IconFileDescription,
   IconHash,
   IconLayoutKanban,
   IconMessages,
   IconNote,
+  IconPlus,
   IconReportAnalytics,
+  IconSettings,
   IconTrash,
   IconVolume,
+  IconX,
 } from "@tabler/icons";
 import { useRouter } from "next/router";
-import { ReactNode } from "react";
-import { NavLinkData, navLinkGroups } from "../../data/navlinkData";
+import { ReactNode, useState } from "react";
+import { ChannelsResponse, Collections } from "~/../pocketbase.types";
+import { pb } from "~/data/pocketbase";
+import {
+  getChannels,
+  groupChannelsByTeam,
+} from "~/domains/channels/channelData";
+import { getAllTeams } from "~/domains/team/teamData";
+import { NavLinkData } from "../../data/navlinkData";
 import {
   discussionStoreActions,
   useDiscussionStore,
@@ -33,6 +50,11 @@ export const TeamNav = (props: { title: string }) => {
   const activeAccordion = useDiscussionStore((state) => state.activeAccordion);
   const router = useRouter();
   const channelId = router.query.channelId;
+
+  const teams = getAllTeams();
+  const channels = getChannels();
+
+  const channelsByTeam = groupChannelsByTeam(channels.data ?? []);
 
   return (
     <Paper
@@ -48,11 +70,10 @@ export const TeamNav = (props: { title: string }) => {
         }`,
       })}
     >
-      <Title
-        order={4}
-        p="md"
+      <Flex
+        align="center"
+        justify="space-between"
         sx={(theme) => ({
-          position: "sticky",
           borderBottom: `1px solid ${
             theme.colorScheme === "dark"
               ? theme.colors.dark[6]
@@ -60,8 +81,11 @@ export const TeamNav = (props: { title: string }) => {
           }`,
         })}
       >
-        {props.title}
-      </Title>
+        <Title order={4} p="md">
+          {props.title}
+        </Title>
+        <NavHeaderMenu />
+      </Flex>
 
       <ScrollArea
         sx={{
@@ -76,35 +100,39 @@ export const TeamNav = (props: { title: string }) => {
           value={activeAccordion}
           onChange={discussionStoreActions.setActiveAccordion}
         >
-          {navLinkGroups.map((item) => (
-            <Accordion.Item key={item.title} value={item.title}>
-              <AccordionControl py="xs">{item.title}</AccordionControl>
-              <Accordion.Panel>
-                {item.links.map((child) => {
-                  const iconByType: Record<NavLinkData["type"], ReactNode> = {
-                    textRoom: <IconHash size={16} stroke={1.5} />,
-                    voiceRoom: <IconVolume size={16} stroke={1.5} />,
-                    document: <IconFileDescription size={16} stroke={1.5} />,
-                    drawBoard: <IconChalkboard size={16} stroke={1.5} />,
-                    kanban: <IconLayoutKanban size={16} stroke={1.5} />,
-                  };
+          {teams.data?.map((item) => {
+            const channels = channelsByTeam[item.id];
 
-                  return (
-                    <NavLink
-                      key={child.label}
-                      h={32}
-                      icon={iconByType[child.type]}
-                      label={child.label}
-                      active={child.label.toLowerCase() === channelId}
-                      onClick={() => {
-                        router.push(`/team/${child.href}`);
-                      }}
-                    />
-                  );
-                })}
-              </Accordion.Panel>
-            </Accordion.Item>
-          ))}
+            return (
+              <Accordion.Item key={item.id} value={item.name}>
+                <AccordionControl py="xs">{item.name}</AccordionControl>
+                <Accordion.Panel>
+                  {channels?.map((channel: ChannelsResponse) => {
+                    const iconByType: Record<NavLinkData["type"], ReactNode> = {
+                      textRoom: <IconHash size={16} stroke={1.5} />,
+                      voiceRoom: <IconVolume size={16} stroke={1.5} />,
+                      document: <IconFileDescription size={16} stroke={1.5} />,
+                      drawBoard: <IconChalkboard size={16} stroke={1.5} />,
+                      kanban: <IconLayoutKanban size={16} stroke={1.5} />,
+                    };
+
+                    return (
+                      <NavLink
+                        key={channel.id}
+                        h={32}
+                        icon={iconByType[channel.type]}
+                        label={channel.name}
+                        active={channel.name.toLowerCase() === channelId}
+                        onClick={() => {
+                          router.push(`/team/${channel.id}`);
+                        }}
+                      />
+                    );
+                  })}
+                </Accordion.Panel>
+              </Accordion.Item>
+            );
+          })}
         </Accordion>
       </ScrollArea>
     </Paper>
@@ -139,3 +167,77 @@ function AccordionControl(props: AccordionControlProps) {
     </Box>
   );
 }
+
+const NavHeaderMenu = () => {
+  const onClickAdd = () => {
+    openModal({
+      title: "Add Team",
+      children: <AddTeamForm />,
+    });
+  };
+
+  return (
+    <Menu shadow="md" width={200}>
+      <Menu.Target>
+        <ActionIcon size="lg">
+          <IconDots size={16} />
+        </ActionIcon>
+      </Menu.Target>
+
+      <Menu.Dropdown>
+        <Menu.Label>Team</Menu.Label>
+        <Menu.Item icon={<IconPlus size={14} />} onClick={onClickAdd}>
+          Add Team
+        </Menu.Item>
+        <Menu.Item icon={<IconSettings size={14} />}>Settings</Menu.Item>
+      </Menu.Dropdown>
+    </Menu>
+  );
+};
+
+const AddTeamForm = () => {
+  const [isLoading, setIsLoading] = useState(false);
+  const form = useForm({ initialValues: { teamName: "" } });
+
+  const onSubmitAddTeam = async (values: any) => {
+    setIsLoading(true);
+
+    try {
+      await pb.collection(Collections.Teams).create({
+        name: values.teamName,
+      });
+
+      showNotification({
+        title: "Team added",
+        message: `Team ${values.teamName} has been added`,
+        icon: <IconCheck size={20} />,
+        color: "green",
+      });
+      closeAllModals();
+    } catch (error) {
+      showNotification({
+        title: "Failed to add team",
+        message: (error as Error).message,
+        icon: <IconX size={20} />,
+        color: "red",
+      });
+    }
+
+    setIsLoading(false);
+  };
+
+  return (
+    <form onSubmit={form.onSubmit(onSubmitAddTeam)}>
+      <TextInput
+        label="New Team"
+        placeholder="e.g. Release Team"
+        data-autofocus
+        required
+        {...form.getInputProps("teamName")}
+      />
+      <Button fullWidth type="submit" mt="md" loading={isLoading}>
+        Submit
+      </Button>
+    </form>
+  );
+};

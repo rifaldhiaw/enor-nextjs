@@ -1,5 +1,4 @@
 import { Box, Flex, ScrollArea } from "@mantine/core";
-import { IconHash } from "@tabler/icons";
 import { useRouter } from "next/router";
 import { PostInput } from "~/components/textRoom/PostInput";
 import { UserList } from "~/components/textRoom/UserList";
@@ -20,7 +19,7 @@ export const TextRoomView = () => {
   return (
     <Flex h="100%" bg="gray.0">
       <Box h="100%" sx={{ flex: 1 }}>
-        <ChannelHeader bg="gray.0" title={channelId} icon={<IconHash />} />
+        <ChannelHeader />
         <Flex h="calc(100% - 60px)" direction="column">
           <Flex align="center" justify="center" h="0" sx={{ flex: 1 }}>
             <PostList focusPost={selectedPost?.id} />

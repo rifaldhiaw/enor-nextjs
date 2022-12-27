@@ -1,20 +1,37 @@
 import { Flex, Text } from "@mantine/core";
+import {
+  IconChalkboard,
+  IconFileDescription,
+  IconHash,
+  IconLayoutKanban,
+  IconVolume,
+} from "@tabler/icons";
+import { useRouter } from "next/router";
 import { ReactNode } from "react";
+import { NavLinkData } from "~/data/navlinkData";
+import { getChannels } from "~/domains/channels/channelData";
 
-export const ChannelHeader = (props: {
-  title: string;
-  icon: ReactNode;
-  bg?: string;
-  children?: ReactNode;
-}) => {
-  const selectedMenu = "Posts";
+export const ChannelHeader = () => {
+  const router = useRouter();
+  const channelId = router.query.channelId as string;
+
+  const channels = getChannels();
+  const channel = channels.data?.find((c) => c.id === channelId);
+
+  const iconByType: Record<NavLinkData["type"], ReactNode> = {
+    textRoom: <IconHash />,
+    voiceRoom: <IconVolume />,
+    document: <IconFileDescription />,
+    drawBoard: <IconChalkboard />,
+    kanban: <IconLayoutKanban />,
+  };
 
   return (
     <Flex
       align="center"
       gap={8}
       h="60px"
-      bg={props.bg ?? "white"}
+      bg="gray.0"
       p="md"
       sx={(theme) => ({
         borderBottom: `1px solid ${
@@ -24,16 +41,15 @@ export const ChannelHeader = (props: {
         }`,
       })}
     >
-      {props.icon}
+      {iconByType[channel?.type ?? "textRoom"]}
       <Text
         sx={{
           fontWeight: 600,
           fontSize: 18,
         }}
       >
-        {props.title}
+        {channel?.name}
       </Text>
-      {props.children}
     </Flex>
   );
 };
