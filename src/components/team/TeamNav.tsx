@@ -115,7 +115,7 @@ export const TeamNav = (props: { title: string }) => {
             const channels = channelsByTeam[item.id];
 
             return (
-              <Accordion.Item key={item.id} value={item.name}>
+              <Accordion.Item key={item.id} value={item.id}>
                 <AccordionControl py="xs" teamId={item.id}>
                   <Text fw="bold" fz="sm" color="gray.6">
                     {item.name}
