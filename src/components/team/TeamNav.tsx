@@ -22,6 +22,7 @@ import {
   IconHash,
   IconLayoutKanban,
   IconNote,
+  IconPencil,
   IconPlus,
   IconReportAnalytics,
   IconSettings,
@@ -29,11 +30,20 @@ import {
   IconVolume,
 } from "@tabler/icons";
 import { useRouter } from "next/router";
-import { ReactNode, useState } from "react";
-import { ChannelsResponse, ChannelsTypeOptions } from "~/../pocketbase.types";
+import { ReactNode } from "react";
+import {
+  ChannelsResponse,
+  ChannelsTypeOptions,
+  TeamsRecord,
+} from "~/../pocketbase.types";
+import { getAuthModel } from "~/data/pocketbase";
 import { useAddChannel, useAllChannels } from "~/domains/channels/channelData";
 import { groupChannelsByTeam } from "~/domains/channels/channelDataUtils";
-import { getAllTeams, useAddTeam } from "~/domains/team/teamData";
+import {
+  useAddTeam,
+  useAllTeams,
+  useUpdateTeam,
+} from "~/domains/team/teamData";
 import { ChannelType, channelTypes, NavLinkData } from "../../data/navlinkData";
 import {
   discussionStoreActions,
@@ -45,7 +55,7 @@ export const TeamNav = (props: { title: string }) => {
   const router = useRouter();
   const channelId = router.query.channelId;
 
-  const teams = getAllTeams();
+  const teams = useAllTeams();
   const channels = useAllChannels();
 
   const channelsByTeam = groupChannelsByTeam(channels.data ?? []);
@@ -82,6 +92,7 @@ export const TeamNav = (props: { title: string }) => {
       </Flex>
 
       <ScrollArea
+        offsetScrollbars
         sx={{
           height: "calc(100vh - var(--mantine-header-height, 60px))",
           flex: 1,
@@ -143,6 +154,15 @@ function AccordionControl(props: AccordionControlProps & { teamId: string }) {
     });
   };
 
+  const team = useAllTeams().data?.find((item) => item.id === props.teamId);
+
+  const onClickEditTeam = () => {
+    openModal({
+      title: "Edit Team",
+      children: <TeamForm team={team} />,
+    });
+  };
+
   return (
     <Box sx={{ display: "flex", alignItems: "center" }}>
       <Accordion.Control {...props} />
@@ -155,6 +175,10 @@ function AccordionControl(props: AccordionControlProps & { teamId: string }) {
         <Menu.Dropdown>
           <Menu.Item icon={<IconPlus size={14} />} onClick={onClickAddChannel}>
             Add Channel
+          </Menu.Item>
+          <Menu.Divider />
+          <Menu.Item icon={<IconPencil size={14} />} onClick={onClickEditTeam}>
+            Edit Team
           </Menu.Item>
           <Menu.Item icon={<IconNote size={16} stroke={1.5} />}>
             Add note
@@ -175,7 +199,7 @@ const NavHeaderMenu = () => {
   const onClickAddTeam = () => {
     openModal({
       title: "Add Team",
-      children: <AddTeamForm />,
+      children: <TeamForm />,
     });
   };
 
@@ -198,18 +222,32 @@ const NavHeaderMenu = () => {
   );
 };
 
-const AddTeamForm = () => {
-  const [isLoading, setIsLoading] = useState(false);
-  const form = useForm({ initialValues: { teamName: "" } });
+const TeamForm = (props: { team?: TeamsRecord & { id: string } }) => {
+  const form = useForm({
+    initialValues: props.team ?? {
+      name: "",
+      organization: getAuthModel()?.organization ?? "",
+    },
+  });
 
   const addTeam = useAddTeam();
+  const updateTeam = useUpdateTeam();
 
   return (
     <form
       onSubmit={form.onSubmit((values) => {
-        addTeam.mutate({
-          name: values.teamName,
-        });
+        if (props.team) {
+          return updateTeam.mutate({
+            id: props.team.id,
+            name: values.name,
+            organization: values.organization,
+          });
+        } else {
+          addTeam.mutate({
+            name: values.name,
+            organization: values.organization,
+          });
+        }
       })}
     >
       <TextInput
@@ -217,9 +255,9 @@ const AddTeamForm = () => {
         placeholder="e.g. Release Team"
         data-autofocus
         required
-        {...form.getInputProps("teamName")}
+        {...form.getInputProps("name")}
       />
-      <Button fullWidth type="submit" mt="md" loading={isLoading}>
+      <Button fullWidth type="submit" mt="md" loading={addTeam.isLoading}>
         Submit
       </Button>
     </form>

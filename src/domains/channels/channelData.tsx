@@ -9,10 +9,10 @@ import {
   Collections,
 } from "~/../pocketbase.types";
 import { pb } from "~/data/pocketbase";
-import { getAllTeams } from "~/domains/team/teamData";
+import { useAllTeams } from "~/domains/team/teamData";
 
 export const useAllChannels = () => {
-  const teams = getAllTeams();
+  const teams = useAllTeams();
   const teamIds = teams.data?.map((team) => team.id) ?? [];
 
   const filter = teamIds.map((teamId) => `team = '${teamId}'`).join(" || ");

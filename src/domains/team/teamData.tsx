@@ -11,7 +11,7 @@ import {
 import { pb } from "~/data/pocketbase";
 import { useAddChannel } from "~/domains/channels/channelData";
 
-export const getAllTeams = () => {
+export const useAllTeams = () => {
   const orgId = pb.authStore.model?.organization;
 
   return useQuery({
@@ -38,18 +38,13 @@ export const useAddTeam = () => {
   const addChannel = useAddChannel();
 
   return useMutation({
-    mutationFn: async (
-      team: Omit<TeamsRecord, "organization">
-    ): Promise<TeamsResponse> => {
-      return pb.collection(Collections.Teams).create({
-        name: team.name,
-        organization: pb.authStore.model?.organization,
-      });
+    mutationFn: async (team: TeamsRecord): Promise<TeamsResponse> => {
+      return pb.collection(Collections.Teams).create(team);
     },
     onSuccess: (newTeam) => {
       showNotification({
-        title: "Team added",
-        message: `Team has been added`,
+        title: `Team ${newTeam.name} added`,
+        message: `Team ${newTeam.name} has been added`,
         icon: <IconCheck size={20} />,
         color: "green",
       });
@@ -67,6 +62,38 @@ export const useAddTeam = () => {
     onError: (error) => {
       showNotification({
         title: "Failed to add team",
+        message: (error as Error).message,
+        icon: <IconX size={20} />,
+        color: "red",
+      });
+    },
+  });
+};
+
+export const useUpdateTeam = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (
+      team: TeamsRecord & { id: string }
+    ): Promise<TeamsResponse> => {
+      return pb.collection(Collections.Teams).update(team.id, team);
+    },
+    onSuccess: (newTeam) => {
+      showNotification({
+        title: `Team ${newTeam.name} updated`,
+        message: `Team ${newTeam.name} has been updated`,
+        icon: <IconCheck size={20} />,
+        color: "green",
+      });
+      closeAllModals();
+      queryClient.invalidateQueries({
+        queryKey: [Collections.Teams],
+      });
+    },
+    onError: (error) => {
+      showNotification({
+        title: "Failed to update team",
         message: (error as Error).message,
         icon: <IconX size={20} />,
         color: "red",
