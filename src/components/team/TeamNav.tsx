@@ -73,12 +73,13 @@ const useStyles = createStyles((theme) => ({
         ? theme.colors.dark[6]
         : theme.colors.gray[2],
     border: "1px solid transparent",
-    position: "relative",
-    zIndex: 0,
-    transition: "transform 150ms ease",
+    transition: "margin 150ms ease",
+    margin: theme.spacing.sm,
 
     "&[data-active]": {
-      transform: "scale(1.03)",
+      margin: "0",
+      marginTop: theme.spacing.xs,
+      marginBottom: theme.spacing.xs,
       backgroundColor:
         theme.colorScheme === "dark"
           ? theme.colors.dark[7]

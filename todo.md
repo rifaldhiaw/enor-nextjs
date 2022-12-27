@@ -13,8 +13,6 @@
 - [ ] Edit Channel should not allow changing of type
 - [ ] Edit Channel should not allow changing of privacy
 
-- [ ] Fix Menu Dropdown zIndex
-
 - [ ] Channel type selection should use icons in form
 
 - [ ] Add Team Description
