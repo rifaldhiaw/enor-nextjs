@@ -9,13 +9,13 @@ import {
 import { useRouter } from "next/router";
 import { ReactNode } from "react";
 import { NavLinkData } from "~/data/navlinkData";
-import { getChannels } from "~/domains/channels/channelData";
+import { useAllChannels } from "~/domains/channels/channelData";
 
 export const ChannelHeader = () => {
   const router = useRouter();
   const channelId = router.query.channelId as string;
 
-  const channels = getChannels();
+  const channels = useAllChannels();
   const channel = channels.data?.find((c) => c.id === channelId);
 
   const iconByType: Record<NavLinkData["type"], ReactNode> = {

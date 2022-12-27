@@ -1,7 +1,17 @@
+export const channelTypes = [
+  "textRoom",
+  "voiceRoom",
+  "drawBoard",
+  "document",
+  "kanban",
+] as const;
+
+export type ChannelType = typeof channelTypes[number];
+
 export type NavLinkData = {
   label: string;
   href: string;
-  type: "textRoom" | "voiceRoom" | "drawBoard" | "document" | "kanban";
+  type: typeof channelTypes[number];
 };
 
 type NavLinkGroup = {

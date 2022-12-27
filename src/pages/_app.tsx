@@ -29,22 +29,22 @@ export default function App(props: AppProps) {
         />
       </Head>
 
-      <MantineProvider
-        withGlobalStyles
-        withNormalizeCSS
-        theme={{
-          /** Put your mantine theme override here */
-          colorScheme: "light",
-        }}
-      >
-        <ModalsProvider>
+      <QueryClientProvider client={queryClient}>
+        <MantineProvider
+          withGlobalStyles
+          withNormalizeCSS
+          theme={{
+            /** Put your mantine theme override here */
+            colorScheme: "light",
+          }}
+        >
           <NotificationsProvider>
-            <QueryClientProvider client={queryClient}>
+            <ModalsProvider>
               <Component {...pageProps} />
-            </QueryClientProvider>
+            </ModalsProvider>
           </NotificationsProvider>
-        </ModalsProvider>
-      </MantineProvider>
+        </MantineProvider>
+      </QueryClientProvider>
     </>
   );
 }

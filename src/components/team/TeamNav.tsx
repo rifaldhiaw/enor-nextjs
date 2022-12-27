@@ -9,38 +9,32 @@ import {
   NavLink,
   Paper,
   ScrollArea,
+  Select,
   TextInput,
   Title,
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
-import { closeAllModals, openModal } from "@mantine/modals";
-import { showNotification } from "@mantine/notifications";
+import { openModal } from "@mantine/modals";
 import {
   IconChalkboard,
-  IconCheck,
   IconDots,
   IconFileDescription,
   IconHash,
   IconLayoutKanban,
-  IconMessages,
   IconNote,
   IconPlus,
   IconReportAnalytics,
   IconSettings,
   IconTrash,
   IconVolume,
-  IconX,
 } from "@tabler/icons";
 import { useRouter } from "next/router";
 import { ReactNode, useState } from "react";
-import { ChannelsResponse, Collections } from "~/../pocketbase.types";
-import { pb } from "~/data/pocketbase";
-import {
-  getChannels,
-  groupChannelsByTeam,
-} from "~/domains/channels/channelData";
-import { getAllTeams } from "~/domains/team/teamData";
-import { NavLinkData } from "../../data/navlinkData";
+import { ChannelsResponse, ChannelsTypeOptions } from "~/../pocketbase.types";
+import { useAddChannel, useAllChannels } from "~/domains/channels/channelData";
+import { groupChannelsByTeam } from "~/domains/channels/channelDataUtils";
+import { getAllTeams, useAddTeam } from "~/domains/team/teamData";
+import { ChannelType, channelTypes, NavLinkData } from "../../data/navlinkData";
 import {
   discussionStoreActions,
   useDiscussionStore,
@@ -52,7 +46,7 @@ export const TeamNav = (props: { title: string }) => {
   const channelId = router.query.channelId;
 
   const teams = getAllTeams();
-  const channels = getChannels();
+  const channels = useAllChannels();
 
   const channelsByTeam = groupChannelsByTeam(channels.data ?? []);
 
@@ -105,7 +99,9 @@ export const TeamNav = (props: { title: string }) => {
 
             return (
               <Accordion.Item key={item.id} value={item.name}>
-                <AccordionControl py="xs">{item.name}</AccordionControl>
+                <AccordionControl py="xs" teamId={item.id}>
+                  {item.name}
+                </AccordionControl>
                 <Accordion.Panel>
                   {channels?.map((channel: ChannelsResponse) => {
                     const iconByType: Record<NavLinkData["type"], ReactNode> = {
@@ -122,7 +118,7 @@ export const TeamNav = (props: { title: string }) => {
                         h={32}
                         icon={iconByType[channel.type]}
                         label={channel.name}
-                        active={channel.name.toLowerCase() === channelId}
+                        active={channel.id === channelId}
                         onClick={() => {
                           router.push(`/team/${channel.id}`);
                         }}
@@ -139,7 +135,14 @@ export const TeamNav = (props: { title: string }) => {
   );
 };
 
-function AccordionControl(props: AccordionControlProps) {
+function AccordionControl(props: AccordionControlProps & { teamId: string }) {
+  const onClickAddChannel = () => {
+    openModal({
+      title: "Add Channel",
+      children: <AddChannelForm teamId={props.teamId} />,
+    });
+  };
+
   return (
     <Box sx={{ display: "flex", alignItems: "center" }}>
       <Accordion.Control {...props} />
@@ -150,8 +153,8 @@ function AccordionControl(props: AccordionControlProps) {
           </ActionIcon>
         </Menu.Target>
         <Menu.Dropdown>
-          <Menu.Item icon={<IconMessages size={16} stroke={1.5} />}>
-            Send message
+          <Menu.Item icon={<IconPlus size={14} />} onClick={onClickAddChannel}>
+            Add Channel
           </Menu.Item>
           <Menu.Item icon={<IconNote size={16} stroke={1.5} />}>
             Add note
@@ -169,7 +172,7 @@ function AccordionControl(props: AccordionControlProps) {
 }
 
 const NavHeaderMenu = () => {
-  const onClickAdd = () => {
+  const onClickAddTeam = () => {
     openModal({
       title: "Add Team",
       children: <AddTeamForm />,
@@ -186,7 +189,7 @@ const NavHeaderMenu = () => {
 
       <Menu.Dropdown>
         <Menu.Label>Team</Menu.Label>
-        <Menu.Item icon={<IconPlus size={14} />} onClick={onClickAdd}>
+        <Menu.Item icon={<IconPlus size={14} />} onClick={onClickAddTeam}>
           Add Team
         </Menu.Item>
         <Menu.Item icon={<IconSettings size={14} />}>Settings</Menu.Item>
@@ -199,35 +202,16 @@ const AddTeamForm = () => {
   const [isLoading, setIsLoading] = useState(false);
   const form = useForm({ initialValues: { teamName: "" } });
 
-  const onSubmitAddTeam = async (values: any) => {
-    setIsLoading(true);
-
-    try {
-      await pb.collection(Collections.Teams).create({
-        name: values.teamName,
-      });
-
-      showNotification({
-        title: "Team added",
-        message: `Team ${values.teamName} has been added`,
-        icon: <IconCheck size={20} />,
-        color: "green",
-      });
-      closeAllModals();
-    } catch (error) {
-      showNotification({
-        title: "Failed to add team",
-        message: (error as Error).message,
-        icon: <IconX size={20} />,
-        color: "red",
-      });
-    }
-
-    setIsLoading(false);
-  };
+  const addTeam = useAddTeam();
 
   return (
-    <form onSubmit={form.onSubmit(onSubmitAddTeam)}>
+    <form
+      onSubmit={form.onSubmit((values) => {
+        addTeam.mutate({
+          name: values.teamName,
+        });
+      })}
+    >
       <TextInput
         label="New Team"
         placeholder="e.g. Release Team"
@@ -236,6 +220,46 @@ const AddTeamForm = () => {
         {...form.getInputProps("teamName")}
       />
       <Button fullWidth type="submit" mt="md" loading={isLoading}>
+        Submit
+      </Button>
+    </form>
+  );
+};
+
+const AddChannelForm = (props: { teamId: string }) => {
+  const form = useForm({
+    initialValues: { channelName: "", type: "textRoom" as ChannelType },
+  });
+  const adder = useAddChannel();
+
+  return (
+    <form
+      onSubmit={form.onSubmit((values) =>
+        adder.mutate({
+          name: values.channelName,
+          type: ChannelsTypeOptions[values.type],
+          team: props.teamId,
+        })
+      )}
+    >
+      <TextInput
+        label="New Team"
+        placeholder="e.g. Release Team"
+        data-autofocus
+        required
+        {...form.getInputProps("channelName")}
+      />
+      <Select
+        label="Channel Type"
+        placeholder="Pick one"
+        mt="sm"
+        data={channelTypes.map((item) => ({
+          label: item,
+          value: item,
+        }))}
+        {...form.getInputProps("type")}
+      />
+      <Button fullWidth type="submit" mt="lg" loading={adder.isLoading}>
         Submit
       </Button>
     </form>

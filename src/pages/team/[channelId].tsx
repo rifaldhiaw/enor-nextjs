@@ -5,7 +5,8 @@ import { ReactNode } from "react";
 
 import Loading from "~/components/common/Loading";
 import { DiscussionLayout } from "~/components/team/TeamLayout";
-import { navLinkData, NavLinkData } from "~/data/navlinkData";
+import { NavLinkData } from "~/data/navlinkData";
+import { useCurrentChannel } from "~/domains/channels/channelData";
 
 const TextRoomView = dynamic(
   () =>
@@ -53,11 +54,10 @@ export const Channel = () => {
     kanban: <KanbanView />,
   };
 
+  const channel = useCurrentChannel();
+
   const getView = () => {
-    const selectedNavLink = navLinkData.find(
-      (navLink) => navLink.href === channelId
-    );
-    return viewByNavLink[selectedNavLink?.type ?? "textRoom"];
+    return viewByNavLink[channel?.type ?? "textRoom"];
   };
 
   return (
