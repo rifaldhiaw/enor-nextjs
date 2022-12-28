@@ -6,7 +6,7 @@ import { ReactNode } from "react";
 import Loading from "~/components/common/Loading";
 import { DiscussionLayout } from "~/components/team/TeamLayout";
 import { NavLinkData } from "~/data/navlinkData";
-import { useCurrentChannel } from "~/domains/channels/channelData";
+import { useCurrentChannel } from "~/domains/channel/channelData";
 
 const TextRoomView = dynamic(
   () =>

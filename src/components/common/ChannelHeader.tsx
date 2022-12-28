@@ -9,7 +9,7 @@ import {
 import { useRouter } from "next/router";
 import { ReactNode } from "react";
 import { NavLinkData } from "~/data/navlinkData";
-import { useAllChannels } from "~/domains/channels/channelData";
+import { useAllChannels } from "~/domains/channel/channelData";
 
 export const ChannelHeader = () => {
   const router = useRouter();

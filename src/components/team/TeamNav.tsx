@@ -44,8 +44,8 @@ import {
   useAddChannel,
   useAllChannels,
   useUpdateChannel,
-} from "~/domains/channels/channelData";
-import { groupChannelsByTeam } from "~/domains/channels/channelDataUtils";
+} from "~/domains/channel/channelData";
+import { groupChannelsByTeam } from "~/domains/channel/channelDataUtils";
 import {
   useAddTeam,
   useAllTeams,

@@ -9,7 +9,7 @@ import {
   TeamsResponse,
 } from "~/../pocketbase.types";
 import { pb } from "~/data/pocketbase";
-import { useAddChannel } from "~/domains/channels/channelData";
+import { useAddChannel } from "~/domains/channel/channelData";
 
 export const useAllTeams = () => {
   const orgId = pb.authStore.model?.organization;
