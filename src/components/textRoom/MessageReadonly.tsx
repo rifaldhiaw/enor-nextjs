@@ -12,7 +12,7 @@ export const MessageReadonly = (props: { content: JSONContent }) => {
 
   useEffect(() => {
     editor?.commands.setContent(props.content);
-  }, [props.content]);
+  }, [props.content, editor]);
 
   return (
     <RichTextEditor editor={editor} sx={{ border: "0" }}>
