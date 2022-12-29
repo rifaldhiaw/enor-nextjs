@@ -4,6 +4,7 @@
 
 export enum Collections {
 	Channels = "channels",
+	Messages = "messages",
 	Organizations = "organizations",
 	Teams = "teams",
 	Users = "users",
@@ -45,6 +46,14 @@ export type ChannelsRecord = {
 	type: ChannelsTypeOptions
 }
 
+export type MessagesRecord<Tbody = unknown, Treaction = unknown> = {
+	body?: null | Tbody
+	user: RecordIdString
+	reaction?: null | Treaction
+	parent?: RecordIdString
+	channel?: RecordIdString
+}
+
 export type OrganizationsRecord = {
 	name: string
 }
@@ -67,12 +76,14 @@ export type UsersRecord = {
 
 // Response types include system fields and match responses from the PocketBase API
 export type ChannelsResponse = ChannelsRecord & BaseSystemFields
+export type MessagesResponse<Tbody = unknown, Treaction = unknown> = MessagesRecord<Tbody, Treaction> & BaseSystemFields
 export type OrganizationsResponse = OrganizationsRecord & BaseSystemFields
 export type TeamsResponse = TeamsRecord & BaseSystemFields
 export type UsersResponse = UsersRecord & AuthSystemFields
 
 export type CollectionRecords = {
 	channels: ChannelsRecord
+	messages: MessagesRecord
 	organizations: OrganizationsRecord
 	teams: TeamsRecord
 	users: UsersRecord

@@ -44,8 +44,6 @@ const RichDocView = dynamic(
 );
 
 export const Channel = () => {
-  const channelId = useRouter().query.channelId as string | undefined;
-
   const viewByNavLink: Record<NavLinkData["type"], ReactNode> = {
     textRoom: <TextRoomView />,
     voiceRoom: <VoiceRoomView />,

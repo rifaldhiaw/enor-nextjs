@@ -1,36 +1,33 @@
 import { Box, useMantineTheme } from "@mantine/core";
 import { useVirtualizer } from "@tanstack/react-virtual";
 import { useRouter } from "next/router";
-import { useEffect, useLayoutEffect, useRef } from "react";
-import { useTextRoomStore } from "~/stores/textRoomStore";
+import { memo, useEffect, useRef } from "react";
+import { MessagesResponse, UsersRecord } from "~/../pocketbase.types";
+import { useAllMessagesInChannel } from "~/domains/message/messageData";
 import { PostDetail } from "./Post";
 
-export const PostList = (props: { focusPost?: string }) => {
+const PostList = (props: {
+  focusPost?: string;
+  messages: MessagesResponse[];
+}) => {
   const parentRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
   const channelId = router.query.channelId as string;
 
   const theme = useMantineTheme();
-
-  const posts = useTextRoomStore((s) => s.posts);
+  const messages = props.messages;
 
   const virtualizer = useVirtualizer({
-    count: posts.length,
+    count: messages.length,
     getScrollElement: () => parentRef.current,
-    estimateSize: () => 120,
+    estimateSize: () => 106,
+    overscan: 50,
   });
-
-  // scroll to last message on mount
-  useLayoutEffect(() => {
-    virtualizer.scrollToIndex(posts.length - 1, {
-      align: "end",
-    });
-  }, [virtualizer, posts.length]);
-
-  // scroll after 10ms to fix somehow initial scroll does not scroll to the end
   useEffect(() => {
+    if (messages.length === 0) return;
+
     const id = setTimeout(() => {
-      virtualizer.scrollToIndex(posts.length - 1, {
+      virtualizer.scrollToIndex(messages.length - 1, {
         align: "end",
       });
     }, 100);
@@ -39,7 +36,7 @@ export const PostList = (props: { focusPost?: string }) => {
       clearTimeout(id);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [messages.length]);
 
   return (
     <Box
@@ -58,51 +55,74 @@ export const PostList = (props: { focusPost?: string }) => {
           backgroundColor: "transparent",
         },
         "&::-webkit-scrollbar-thumb": {
-          backgroundColor: theme.colors.gray[5],
+          backgroundColor: theme.colors.gray[4],
           borderRadius: "8px",
         },
       }}
     >
       <div
         style={{
-          height: virtualizer.getTotalSize(),
+          height: `${virtualizer.getTotalSize()}px`,
           width: "100%",
           position: "relative",
         }}
       >
         {virtualizer.getVirtualItems().map((virtualItem) => {
-          const post = posts[virtualItem.index];
+          const message = messages[virtualItem.index];
 
           return (
-            <Box
-              key={virtualItem.key}
+            <div
+              key={message.id}
               data-index={virtualItem.index}
               ref={virtualizer.measureElement}
-              sx={(theme) => ({
+              style={{
                 position: "absolute",
                 top: 0,
                 left: 0,
                 width: "100%",
                 transform: `translateY(${virtualItem.start}px)`,
-              })}
+              }}
             >
               <PostDetail
-                {...posts[virtualItem.index]}
-                selected={post.id === props.focusPost}
+                withBorder
+                postedAt={message.created}
+                body={message.body as JSON}
+                author={{
+                  name: message.expand?.user.name, //TODO: get user name
+                  image: (message.expand?.user as UsersRecord).avatar ?? "",
+                }}
+                selected={message.id === props.focusPost}
+                sx={{
+                  marginTop: "8px",
+                }}
                 onCommentClick={() => {
                   return router.push({
                     pathname: "/team/[channelId]",
                     query: {
                       channelId,
-                      postId: posts[virtualItem.index].id,
+                      postId: messages[virtualItem.index].id,
                     },
                   });
                 }}
               />
-            </Box>
+            </div>
           );
         })}
       </div>
     </Box>
   );
 };
+
+export const PostListContainer = (props: { focusPost?: string }) => {
+  const router = useRouter();
+  const channelId = router.query.channelId as string;
+
+  const messagesResp = useAllMessagesInChannel(channelId);
+  const messages = messagesResp.data ?? [];
+
+  return <PostList focusPost={props.focusPost} messages={messages} />;
+};
+
+const PostListMemo = memo(PostListContainer);
+
+export { PostListMemo as PostList };

@@ -64,26 +64,24 @@ const useStyles = createStyles((theme) => ({
         ? theme.colors.dark[6]
         : theme.colors.gray[1],
     borderRadius: theme.radius.sm,
-    padding: theme.spacing.sm,
+    padding: theme.spacing.xs,
   },
 
   item: {
     backgroundColor:
       theme.colorScheme === "dark"
         ? theme.colors.dark[6]
-        : theme.colors.gray[2],
+        : theme.colors.gray[1],
     border: "1px solid transparent",
     transition: "margin 150ms ease",
-    margin: theme.spacing.sm,
+    margin: theme.spacing.xs,
 
     "&[data-active]": {
       margin: "0",
       marginTop: theme.spacing.xs,
       marginBottom: theme.spacing.xs,
       backgroundColor:
-        theme.colorScheme === "dark"
-          ? theme.colors.dark[7]
-          : theme.colors.gray[0],
+        theme.colorScheme === "dark" ? theme.colors.dark[7] : theme.white,
       borderColor:
         theme.colorScheme === "dark"
           ? theme.colors.dark[4]
@@ -163,9 +161,9 @@ export const TeamNav = (props: { title: string }) => {
             const channels = channelsByTeam[item.id];
 
             return (
-              <Accordion.Item my="sm" key={item.id} value={item.id}>
+              <Accordion.Item key={item.id} value={item.id} p="0">
                 <AccordionControl py="xs" teamId={item.id}>
-                  <Text fz="xs" color="gray.7">
+                  <Text fz="sm" color="gray.7">
                     {item.name}
                   </Text>
                 </AccordionControl>
@@ -255,15 +253,17 @@ function AccordionControl(props: AccordionControlProps & { teamId: string }) {
   // menu button visible state
   const [visible, setVisible] = useState(false);
 
+  const { teamId, ...accordionControlProps } = props;
+
   const onClickAddChannel = () => {
     setVisible(false);
     openModal({
       title: "Add Channel",
-      children: <ChannelForm teamId={props.teamId} />,
+      children: <ChannelForm teamId={teamId} />,
     });
   };
 
-  const team = useAllTeams().data?.find((item) => item.id === props.teamId);
+  const team = useAllTeams().data?.find((item) => item.id === teamId);
 
   const onClickEditTeam = () => {
     setVisible(false);
@@ -279,7 +279,7 @@ function AccordionControl(props: AccordionControlProps & { teamId: string }) {
       onMouseEnter={() => setVisible(true)}
       onMouseLeave={() => setVisible(false)}
     >
-      <Accordion.Control {...props} />
+      <Accordion.Control {...accordionControlProps} />
       <Menu transition="pop" withArrow position="bottom-end">
         {visible && (
           <Menu.Target>

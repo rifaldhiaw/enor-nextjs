@@ -1,8 +1,9 @@
 import { Box, Flex, ScrollArea } from "@mantine/core";
 import { useRouter } from "next/router";
 import { PostInput } from "~/components/textRoom/PostInput";
+import { PostReplyInput } from "~/components/textRoom/PostReplyInput";
 import { UserList } from "~/components/textRoom/UserList";
-import { useTextRoomStore } from "~/stores/textRoomStore";
+import { useAllMessagesInChannel } from "~/domains/message/messageData";
 import { PostHeader } from "../../pages/team/[channelId]";
 import { ChannelHeader } from "../common/ChannelHeader";
 import { PostList } from "./PostList";
@@ -13,8 +14,8 @@ export const TextRoomView = () => {
   const postId = router.query.postId as string;
   const channelId = router.query.channelId as string;
 
-  const posts = useTextRoomStore((s) => s.posts);
-  const selectedPost = posts.find((p) => p.id === postId);
+  const posts = useAllMessagesInChannel(channelId);
+  const selectedPost = posts.data?.find((p) => p.id === postId);
 
   return (
     <Flex h="100%" bg="gray.0">
@@ -40,18 +41,10 @@ export const TextRoomView = () => {
           <PostHeader />
           <Flex direction="column" h="calc(100% - 60px)">
             <ScrollArea h="0" sx={{ flex: 1 }}>
-              <PostWithReplies post={selectedPost} />
+              <PostWithReplies message={selectedPost} />
             </ScrollArea>
-            <Box
-              pl="74px"
-              pr="md"
-              mb="lg"
-              mt="sm"
-              w="100%"
-              maw="650px"
-              mx="auto"
-            >
-              <PostInput />
+            <Box px="md" mb="lg" mt="sm" w="100%" maw="650px" mx="auto">
+              <PostReplyInput />
             </Box>
           </Flex>
         </Box>

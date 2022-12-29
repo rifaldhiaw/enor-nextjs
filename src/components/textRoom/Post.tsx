@@ -6,6 +6,7 @@ import {
   Flex,
   Group,
   Paper,
+  Sx,
   Text,
   useMantineTheme,
 } from "@mantine/core";
@@ -17,16 +18,19 @@ import {
 } from "@tabler/icons";
 import dayjs from "dayjs";
 import { useState } from "react";
+import { MessageReadonly } from "~/components/textRoom/MessageReadonly";
 
 interface PostDetailProps {
   postedAt: string;
-  body: string;
+  body: JSON;
   selected?: boolean;
   onCommentClick?: () => void;
+  withBorder?: boolean;
   author: {
     name: string;
     image: string;
   };
+  sx?: Sx;
 }
 
 export function PostDetail({
@@ -35,6 +39,8 @@ export function PostDetail({
   author,
   selected,
   onCommentClick,
+  withBorder,
+  sx,
 }: PostDetailProps) {
   const theme = useMantineTheme();
 
@@ -45,10 +51,8 @@ export function PostDetail({
     <Box
       onMouseEnter={() => setShowActions(true)}
       onMouseLeave={() => setShowActions(false)}
-      sx={{
-        padding: "8px 16px",
-        position: "relative",
-      }}
+      pos="relative"
+      sx={sx}
     >
       <Flex gap="md">
         <Avatar src={author.image} alt={author.name} radius="xl" mt="md" />
@@ -57,18 +61,24 @@ export function PostDetail({
           bg="white"
           w="100%"
           px="md"
-          pt="md"
-          pb="sm"
-          shadow={selected ? "md" : "undefined"}
+          pt="sm"
+          pb={withBorder ? "sm" : undefined}
+          shadow={selected ? "md" : undefined}
           sx={{
-            border: `1px solid ${theme.colors.gray[2]}`,
-            borderLeft: `3px solid ${
-              selected
-                ? theme.colors.blue[5]
-                : theme.colorScheme === "dark"
-                ? theme.colors.gray[5]
-                : theme.colors.gray[2]
-            }`,
+            border: withBorder
+              ? `1px solid ${theme.colors.gray[3]}`
+              : "transparent",
+            transform: selected ? "scale(1.01) translateX(-4px)" : "scale(1)",
+            transition: "transform 0.1s",
+            borderLeft: withBorder
+              ? `3px solid ${
+                  selected
+                    ? theme.colors.blue[5]
+                    : theme.colorScheme === "dark"
+                    ? theme.colors.gray[5]
+                    : theme.colors.gray[2]
+                }`
+              : "transparent",
           }}
         >
           <Group spacing="sm">
@@ -81,7 +91,7 @@ export function PostDetail({
           </Group>
 
           {/* body */}
-          <Text size="sm">{body}</Text>
+          <MessageReadonly content={body} />
 
           {/* comment button */}
           <Flex>

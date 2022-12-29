@@ -8,7 +8,7 @@ import { DisableEnter } from "~/components/utils/tiptapUtils";
 import { getAuthModel } from "~/data/pocketbase";
 import { useAddMessage } from "~/domains/message/messageData";
 
-export const PostInput = () => {
+export const PostReplyInput = () => {
   const editor = useEditor({
     extensions: [StarterKit, Link, DisableEnter],
     content: "",
@@ -16,9 +16,10 @@ export const PostInput = () => {
 
   const router = useRouter();
   const channelId = router.query.channelId as string;
+  const postId = router.query.postId as string;
 
   const theme = useMantineTheme();
-  const addMessage = useAddMessage();
+  const addMessage = useAddMessage(postId);
 
   return (
     <RichTextEditor editor={editor}>
@@ -53,6 +54,7 @@ export const PostInput = () => {
               channel: channelId,
               body,
               user: userData.id,
+              parent: postId,
               reaction: [],
             });
 

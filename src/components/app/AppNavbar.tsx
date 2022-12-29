@@ -25,10 +25,8 @@ const useStyles = createStyles((theme) => ({
   },
 
   aside: {
-    backgroundColor:
-      theme.colorScheme === "dark"
-        ? theme.colors.dark[7]
-        : theme.colors.gray[0],
+    backgroundColor: theme.colors.blue[9],
+
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
@@ -39,10 +37,7 @@ const useStyles = createStyles((theme) => ({
 
   main: {
     flex: 1,
-    backgroundColor:
-      theme.colorScheme === "dark"
-        ? theme.colors.dark[6]
-        : theme.colors.gray[0],
+    backgroundColor: theme.colors.gray[0],
   },
 
   mainLink: {
@@ -54,27 +49,17 @@ const useStyles = createStyles((theme) => ({
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    color:
-      theme.colorScheme === "dark"
-        ? theme.colors.dark[0]
-        : theme.colors.gray[7],
+    color: theme.colors.gray[0],
 
     "&:hover": {
-      backgroundColor:
-        theme.colorScheme === "dark"
-          ? theme.colors.dark[5]
-          : theme.colors.gray[0],
+      backgroundColor: theme.colors.blue[5],
     },
   },
 
   mainLinkActive: {
     "&, &:hover": {
-      backgroundColor: theme.fn.variant({
-        variant: "light",
-        color: theme.primaryColor,
-      }).background,
-      color: theme.fn.variant({ variant: "light", color: theme.primaryColor })
-        .color,
+      backgroundColor: theme.colors.blue[6],
+      color: theme.white,
     },
   },
 
@@ -140,7 +125,12 @@ export function AppNavbar(props: {
   ));
 
   return (
-    <Navbar hiddenBreakpoint="sm" hidden={!props.opened} width={{ sm: 76 }}>
+    <Navbar
+      hiddenBreakpoint="sm"
+      hidden={!props.opened}
+      width={{ sm: 76 }}
+      bg="blue.8"
+    >
       <Navbar.Section grow className={classes.wrapper}>
         <div className={classes.aside}>
           <div className={classes.logo}>
