@@ -45,6 +45,7 @@ const PostList = (props: {
       maw="700px"
       h="100%"
       pt="lg"
+      px="xs"
       sx={{
         alignSelf: "center",
         overflow: "auto",

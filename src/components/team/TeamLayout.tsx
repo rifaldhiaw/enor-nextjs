@@ -17,7 +17,7 @@ export const DiscussionLayout = (props: {
       <Flex h="100vh" w="100%" id="layout">
         <Box
           id="nav"
-          w="240px"
+          w="260px"
           sx={{
             flex: "none",
           }}

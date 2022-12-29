@@ -1,5 +1,6 @@
 import { useMantineTheme } from "@mantine/core";
 import { Link, RichTextEditor } from "@mantine/tiptap";
+import Placeholder from "@tiptap/extension-placeholder";
 import { BubbleMenu, useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import { useRouter } from "next/router";
@@ -10,7 +11,14 @@ import { useAddMessage } from "~/domains/message/messageData";
 
 export const PostReplyInput = () => {
   const editor = useEditor({
-    extensions: [StarterKit, Link, DisableEnter],
+    extensions: [
+      StarterKit,
+      Link,
+      DisableEnter,
+      Placeholder.configure({
+        placeholder: "Reply with something …",
+      }),
+    ],
     content: "",
   });
 

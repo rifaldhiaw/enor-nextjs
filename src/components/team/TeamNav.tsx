@@ -100,8 +100,6 @@ const useStyles = createStyles((theme) => ({
 
 export const TeamNav = (props: { title: string }) => {
   const activeAccordion = useDiscussionStore((state) => state.activeAccordion);
-  const router = useRouter();
-  const channelId = router.query.channelId;
 
   const teams = useAllTeams();
   const channels = useAllChannels();

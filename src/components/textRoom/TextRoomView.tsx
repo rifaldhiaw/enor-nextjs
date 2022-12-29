@@ -25,7 +25,7 @@ export const TextRoomView = () => {
           <Flex align="center" justify="center" h="0" sx={{ flex: 1 }}>
             <PostList focusPost={selectedPost?.id} />
           </Flex>
-          <Box pl="48px" mb="lg" mt="sm" w="100%" maw="650px" mx="auto">
+          <Box pl="48px" mb="lg" mt="sm" w="100%" maw="670px" mx="auto">
             <PostInput />
           </Box>
         </Flex>
