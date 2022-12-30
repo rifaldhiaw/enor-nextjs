@@ -50,8 +50,6 @@ export const PostReplyInput = () => {
           if (event.key === "Enter" && !event.shiftKey) {
             event.preventDefault();
 
-            console.log(editor?.getText());
-
             const body = editor?.getJSON();
             const userData = getAuthModel();
 

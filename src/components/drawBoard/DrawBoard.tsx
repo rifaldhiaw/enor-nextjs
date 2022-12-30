@@ -1,17 +1,15 @@
 import { Excalidraw } from "@excalidraw/excalidraw";
-import { useRef, useState } from "react";
+import { useRef } from "react";
 
 import type { ExcalidrawElement } from "@excalidraw/excalidraw/types/element/types";
 import {
   AppState,
   ExcalidrawImperativeAPI,
-  ExcalidrawProps,
 } from "@excalidraw/excalidraw/types/types";
 import { Box } from "@mantine/core";
 
 export default function DrawBoard() {
   const excalidrawRef = useRef<ExcalidrawImperativeAPI>(null);
-  const [theme, setTheme] = useState<ExcalidrawProps["theme"]>("light");
 
   return (
     <Box w="100%" h="100%">
@@ -25,7 +23,7 @@ export default function DrawBoard() {
         viewModeEnabled={false}
         zenModeEnabled={false}
         gridModeEnabled={false}
-        theme={theme}
+        theme={"light"}
         name="Custom name of drawing"
       />
     </Box>
