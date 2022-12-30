@@ -2,7 +2,6 @@ import {
   ActionIcon,
   Avatar,
   Box,
-  Button,
   Flex,
   Group,
   Paper,
@@ -10,12 +9,7 @@ import {
   Text,
   useMantineTheme,
 } from "@mantine/core";
-import {
-  IconDotsVertical,
-  IconMessage,
-  IconMoodSmile,
-  IconShare,
-} from "@tabler/icons";
+import { IconDotsVertical, IconMessage, IconShare } from "@tabler/icons";
 import dayjs from "dayjs";
 import { useState } from "react";
 import { Descendant } from "slate";
@@ -87,7 +81,8 @@ export function PostDetail({
               {author.name}
             </Text>
             <Text size="xs" color="dimmed">
-              {dayjs(postedAt).format("MMM D, YYYY")}
+              {/* show hour:minute, mmm d */}
+              {dayjs(postedAt).format("h:mm A, D MMM")}
             </Text>
           </Group>
 
@@ -95,7 +90,7 @@ export function PostDetail({
           <MessageReadonly body={body} />
 
           {/* comment button */}
-          <Flex>
+          {/* <Flex>
             {onCommentClick && (
               <Button size="xs" variant="subtle" onClick={onCommentClick}>
                 36 Comments
@@ -111,7 +106,7 @@ export function PostDetail({
             >
               <em-emoji id="+1"></em-emoji>
             </ActionIcon>
-            {/* action icon to add new emoji */}
+            
             {showAcitons && (
               <ActionIcon
                 sx={{
@@ -121,7 +116,7 @@ export function PostDetail({
                 <IconMoodSmile size="16" />
               </ActionIcon>
             )}
-          </Flex>
+          </Flex> */}
         </Paper>
       </Flex>
 
@@ -133,32 +128,21 @@ export function PostDetail({
           sx={{
             position: "absolute",
             borderRadius: "16px",
-            padding: "2px 8px",
+            overflow: "hidden",
+            padding: "0 4px",
             boxShadow: "0 0 0 1px rgba(0, 0, 0, 0.1)",
             zIndex: 10,
             backgroundColor:
               theme.colorScheme === "dark" ? theme.colors.dark[7] : "white",
           }}
         >
-          <ActionIcon
-            sx={{
-              borderRadius: "50%",
-            }}
-          >
+          <ActionIcon size="lg" onClick={onCommentClick}>
             <IconMessage size="16" />
           </ActionIcon>
-          <ActionIcon
-            sx={{
-              borderRadius: "50%",
-            }}
-          >
+          <ActionIcon size="lg">
             <IconShare size="16" />
           </ActionIcon>
-          <ActionIcon
-            sx={{
-              borderRadius: "50%",
-            }}
-          >
+          <ActionIcon size="lg">
             <IconDotsVertical size="16" />
           </ActionIcon>
         </Flex>

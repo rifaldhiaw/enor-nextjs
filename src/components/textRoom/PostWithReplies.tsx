@@ -24,7 +24,7 @@ export const PostWithReplies: FC<{
         />
       </Box>
       <Box h="12px" bg="gray.1" />
-      <Stack spacing={0} px="md">
+      <Stack spacing={0} px="md" pb="md">
         {replies.data?.map((reply) => (
           <PostDetail
             key={reply.id}

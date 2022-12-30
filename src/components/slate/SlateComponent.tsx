@@ -35,7 +35,7 @@ export const SlateElement: FC<any> = ({ attributes, children, element }) => {
 
     default:
       return (
-        <Text style={style} {...attributes}>
+        <Text fz="15px" style={style} {...attributes}>
           {children}
         </Text>
       );

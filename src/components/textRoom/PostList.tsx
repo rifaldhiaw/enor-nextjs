@@ -51,6 +51,16 @@ const PostList = (props: {
     });
   }, [virtualizer, messages.length]);
 
+  const onCommentClick = (messageId: string) => {
+    router.push({
+      pathname: "/team/[channelId]",
+      query: {
+        channelId,
+        postId: messageId,
+      },
+    });
+  };
+
   return (
     <Box
       ref={parentRef}
@@ -110,13 +120,7 @@ const PostList = (props: {
                   marginTop: "8px",
                 }}
                 onCommentClick={() => {
-                  return router.push({
-                    pathname: "/team/[channelId]",
-                    query: {
-                      channelId,
-                      postId: messages[virtualItem.index].id,
-                    },
-                  });
+                  onCommentClick(message.id);
                 }}
               />
             </div>
