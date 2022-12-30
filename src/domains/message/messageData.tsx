@@ -2,6 +2,7 @@ import { showNotification } from "@mantine/notifications";
 import { IconX } from "@tabler/icons";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/router";
+import { Descendant } from "slate";
 import {
   Collections,
   MessagesRecord,
@@ -13,10 +14,10 @@ export const useAllMessagesInChannel = (channelId: string) => {
   return useQuery({
     queryKey: [Collections.Messages, channelId],
     enabled: !!channelId,
-    queryFn: (): Promise<MessagesResponse[]> => {
+    queryFn: () => {
       return pb
         .collection(Collections.Messages)
-        .getFullList<MessagesResponse>(200, {
+        .getFullList<MessagesResponse<Descendant[], unknown>>(200, {
           filter: `channel.id = '${channelId}' && parent.id = ''`,
           expand: "user",
           sort: "created",
@@ -37,10 +38,10 @@ export const useAllRepliesToMessage = (messageId: string) => {
   return useQuery({
     queryKey: [Collections.Messages, messageId],
     enabled: !!messageId,
-    queryFn: (): Promise<MessagesResponse[]> => {
+    queryFn: () => {
       return pb
         .collection(Collections.Messages)
-        .getFullList<MessagesResponse>(200, {
+        .getFullList<MessagesResponse<Descendant[], unknown>>(200, {
           filter: `parent.id = '${messageId}'`,
           expand: "user",
           sort: "created",

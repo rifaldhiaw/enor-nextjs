@@ -47,7 +47,7 @@ export type ChannelsRecord = {
 }
 
 export type MessagesRecord<Tbody = unknown, Treaction = unknown> = {
-	body?: null | Tbody
+	body: null | Tbody
 	user: RecordIdString
 	reaction?: null | Treaction
 	parent?: RecordIdString

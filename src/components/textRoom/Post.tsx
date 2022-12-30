@@ -18,11 +18,12 @@ import {
 } from "@tabler/icons";
 import dayjs from "dayjs";
 import { useState } from "react";
+import { Descendant } from "slate";
 import { MessageReadonly } from "~/components/textRoom/MessageReadonly";
 
 interface PostDetailProps {
   postedAt: string;
-  body: JSON;
+  body: Descendant[];
   selected?: boolean;
   onCommentClick?: () => void;
   withBorder?: boolean;
@@ -91,7 +92,7 @@ export function PostDetail({
           </Group>
 
           {/* body */}
-          <MessageReadonly content={body} />
+          <MessageReadonly body={body} />
 
           {/* comment button */}
           <Flex>

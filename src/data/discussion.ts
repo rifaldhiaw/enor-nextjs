@@ -2,7 +2,7 @@ import { faker } from "@faker-js/faker";
 import dayjs from "dayjs";
 
 // random int between 0 and max
-const getRandomInt = (max: number) => Math.floor(Math.random() * max);
+export const getRandomInt = (max: number) => Math.floor(Math.random() * max);
 
 const avatar = faker.image.avatar();
 

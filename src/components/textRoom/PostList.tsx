@@ -2,13 +2,15 @@ import { Box, useMantineTheme } from "@mantine/core";
 import { useVirtualizer } from "@tanstack/react-virtual";
 import { useRouter } from "next/router";
 import { memo, useEffect, useRef } from "react";
+import { Descendant } from "slate";
 import { MessagesResponse, UsersRecord } from "~/../pocketbase.types";
+import { emptySlateContent } from "~/components/slate/SlateComponent";
 import { useAllMessagesInChannel } from "~/domains/message/messageData";
 import { PostDetail } from "./Post";
 
 const PostList = (props: {
   focusPost?: string;
-  messages: MessagesResponse[];
+  messages: MessagesResponse<Descendant[], unknown>[];
 }) => {
   const parentRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
@@ -21,22 +23,33 @@ const PostList = (props: {
     count: messages.length,
     getScrollElement: () => parentRef.current,
     estimateSize: () => 106,
-    overscan: 50,
+    overscan: 3,
   });
+
+  const isAtBottomCheck = () => {
+    if (!parentRef.current) return false;
+    const el = parentRef.current;
+    const atBottom =
+      Math.abs(el.scrollHeight - el.scrollTop - el.clientHeight) <= 10.0;
+
+    return atBottom;
+  };
+
   useEffect(() => {
     if (messages.length === 0) return;
 
-    const id = setTimeout(() => {
-      virtualizer.scrollToIndex(messages.length - 1, {
-        align: "end",
-      });
-    }, 100);
-
-    return () => {
-      clearTimeout(id);
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [messages.length]);
+    // interate scrollToBottom using requestAnimationFrame until isAtBottomCheck is true
+    let requestAnimationFrameId = requestAnimationFrame(function loop() {
+      if (!isAtBottomCheck()) {
+        virtualizer.scrollToIndex(messages.length - 1, {
+          align: "end",
+        });
+        requestAnimationFrameId = requestAnimationFrame(loop);
+      } else {
+        cancelAnimationFrame(requestAnimationFrameId);
+      }
+    });
+  }, [virtualizer, messages.length]);
 
   return (
     <Box
@@ -87,7 +100,7 @@ const PostList = (props: {
               <PostDetail
                 withBorder
                 postedAt={message.created}
-                body={message.body as JSON}
+                body={message.body ?? emptySlateContent}
                 author={{
                   name: message.expand?.user.name, //TODO: get user name
                   image: (message.expand?.user as UsersRecord).avatar ?? "",
