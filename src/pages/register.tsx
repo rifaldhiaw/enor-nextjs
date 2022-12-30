@@ -12,7 +12,11 @@ import { useForm } from "@mantine/form";
 import Link from "next/link";
 import { useRouter } from "next/router";
 
-import { Collections } from "~/../pocketbase.types";
+import {
+  Collections,
+  UsersAppRoleOptions,
+  UsersRecord,
+} from "~/../pocketbase.types";
 import { pb } from "~/data/pocketbase";
 import { emailRegex, passwordRegex } from "~/utils/constants";
 
@@ -31,7 +35,12 @@ export function RegisterPage() {
     return null;
   };
 
-  const initialFormValues = {
+  const initialFormValues: UsersRecord & {
+    password: string;
+    passwordConfirm: string;
+    email: string;
+  } = {
+    appRole: UsersAppRoleOptions["admin"],
     name: "",
     email: "",
     password: "",
@@ -48,8 +57,8 @@ export function RegisterPage() {
   });
 
   const router = useRouter();
-  const onSubmit = async (values: typeof initialFormValues) => {
-    await pb.collection(Collections.Users).create(values);
+  const onSubmit = async (user: typeof initialFormValues) => {
+    await pb.collection(Collections.Users).create(user);
     router.push("/login");
   };
 

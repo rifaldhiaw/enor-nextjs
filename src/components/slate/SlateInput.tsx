@@ -1,14 +1,8 @@
 import { Box } from "@mantine/core";
 import { useForceUpdate } from "@mantine/hooks";
 import isHotkey from "is-hotkey";
-import { FC, useCallback, useEffect, useState } from "react";
-import {
-  BaseEditor,
-  createEditor,
-  Descendant,
-  Editor,
-  Transforms,
-} from "slate";
+import { FC, useCallback, useState } from "react";
+import { BaseEditor, createEditor, Descendant, Editor } from "slate";
 import { HistoryEditor, withHistory } from "slate-history";
 import { Editable, ReactEditor, Slate, withReact } from "slate-react";
 
@@ -41,21 +35,11 @@ const HOTKEYS = {
 
 export const SlateInput: FC<{
   value: Descendant[];
-  autoFocus: boolean;
   placeholder?: string;
   onSubmit: (value: Descendant[]) => void;
   onCancel?: () => void;
 }> = (props) => {
   const [editor] = useState(() => withHistory(withReact(createEditor())));
-
-  useEffect(() => {
-    if (props.autoFocus) {
-      setTimeout(() => {
-        ReactEditor.focus(editor);
-        Transforms.select(editor, Editor.end(editor, []));
-      }, 100);
-    }
-  }, [editor, props.autoFocus]);
 
   const renderElement = useCallback(
     (props: any) => <SlateElementComp {...props} />,
@@ -71,7 +55,6 @@ export const SlateInput: FC<{
     editor.children = [{ type: "paragraph", children: [{ text: "" }] }]; // reset to empty state
 
     forceUpdate();
-    ReactEditor.blur(editor);
   };
 
   return (

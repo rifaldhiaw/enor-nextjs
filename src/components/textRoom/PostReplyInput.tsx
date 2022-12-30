@@ -15,7 +15,6 @@ export const PostReplyInput = () => {
   return (
     <SlateInput
       value={[]}
-      autoFocus={false}
       placeholder="Write a message..."
       onSubmit={(value: Descendant[]) => {
         const userData = getAuthModel();
