@@ -13,7 +13,6 @@ export const PostInput = () => {
   return (
     <SlateInput
       value={[]}
-      autoFocus={false}
       placeholder="Write a message..."
       onSubmit={(value: Descendant[]) => {
         const userData = getAuthModel();
