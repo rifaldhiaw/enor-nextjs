@@ -22,6 +22,10 @@ export const useAllTeams = () => {
         sort: "name",
       });
     },
+    refetchOnMount: false,
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: false,
+    networkMode: "offlineFirst",
     onError: (error) => {
       showNotification({
         color: "red",

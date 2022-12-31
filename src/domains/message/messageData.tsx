@@ -12,7 +12,7 @@ import { pb } from "~/data/pocketbase";
 
 export const useAllMessagesInChannel = (channelId: string) => {
   return useQuery({
-    queryKey: [Collections.Messages, channelId],
+    queryKey: [channelId],
     enabled: !!channelId,
     queryFn: () => {
       return pb
@@ -36,7 +36,7 @@ export const useAllMessagesInChannel = (channelId: string) => {
 
 export const useAllRepliesToMessage = (messageId: string) => {
   return useQuery({
-    queryKey: [Collections.Messages, messageId],
+    queryKey: [messageId],
     enabled: !!messageId,
     queryFn: () => {
       return pb
@@ -69,17 +69,11 @@ export const useAddMessage = (parentMessageId?: string) => {
       return pb.collection(Collections.Messages).create(message);
     },
     onSuccess: () => {
-      if (parentMessageId) {
-        queryClient.invalidateQueries({
-          queryKey: [Collections.Messages, parentMessageId],
-          exact: true,
-        });
-      } else {
-        queryClient.invalidateQueries({
-          queryKey: [Collections.Messages, channelId],
-          exact: true,
-        });
-      }
+      queryClient.invalidateQueries({
+        predicate: (query) =>
+          query.queryKey.includes(channelId) ||
+          query.queryKey.includes(parentMessageId),
+      });
     },
     onError: (error) => {
       showNotification({

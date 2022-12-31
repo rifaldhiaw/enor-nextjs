@@ -2,6 +2,7 @@ import {
   ActionIcon,
   Avatar,
   Box,
+  Button,
   Flex,
   Group,
   Paper,
@@ -9,7 +10,12 @@ import {
   Text,
   useMantineTheme,
 } from "@mantine/core";
-import { IconDotsVertical, IconMessage, IconShare } from "@tabler/icons";
+import {
+  IconDotsVertical,
+  IconMessage,
+  IconMoodSmile,
+  IconShare,
+} from "@tabler/icons";
 import dayjs from "dayjs";
 import { useState } from "react";
 import { Descendant } from "slate";
@@ -18,6 +24,7 @@ import { MessageReadonly } from "~/components/textRoom/MessageReadonly";
 interface PostDetailProps {
   postedAt: string;
   body: Descendant[];
+  replyCount?: number;
   selected?: boolean;
   onCommentClick?: () => void;
   withBorder?: boolean;
@@ -31,6 +38,7 @@ interface PostDetailProps {
 export function PostDetail({
   postedAt,
   body,
+  replyCount,
   author,
   selected,
   onCommentClick,
@@ -90,14 +98,14 @@ export function PostDetail({
           <MessageReadonly body={body} />
 
           {/* comment button */}
-          {/* <Flex>
-            {onCommentClick && (
+          <Flex>
+            {onCommentClick && !!replyCount && (
               <Button size="xs" variant="subtle" onClick={onCommentClick}>
-                36 Comments
+                {replyCount} Comments
               </Button>
             )}
 
-            <ActionIcon
+            {/* <ActionIcon
               color="blue"
               variant="subtle"
               sx={{
@@ -105,9 +113,9 @@ export function PostDetail({
               }}
             >
               <em-emoji id="+1"></em-emoji>
-            </ActionIcon>
-            
-            {showAcitons && (
+            </ActionIcon> */}
+
+            {/* {showAcitons && (
               <ActionIcon
                 sx={{
                   borderRadius: "50%",
@@ -115,8 +123,8 @@ export function PostDetail({
               >
                 <IconMoodSmile size="16" />
               </ActionIcon>
-            )}
-          </Flex> */}
+            )} */}
+          </Flex>
         </Paper>
       </Flex>
 
@@ -136,6 +144,9 @@ export function PostDetail({
               theme.colorScheme === "dark" ? theme.colors.dark[7] : "white",
           }}
         >
+          <ActionIcon size="lg">
+            <IconMoodSmile size="16" />
+          </ActionIcon>
           <ActionIcon size="lg" onClick={onCommentClick}>
             <IconMessage size="16" />
           </ActionIcon>

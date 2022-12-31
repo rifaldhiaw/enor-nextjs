@@ -111,6 +111,7 @@ const PostList = (props: {
                 withBorder
                 postedAt={message.created}
                 body={message.body ?? emptySlateContent}
+                replyCount={message.replySummary?.count ?? 0}
                 author={{
                   name: message.expand?.user.name, //TODO: get user name
                   image: (message.expand?.user as UsersRecord).avatar ?? "",
