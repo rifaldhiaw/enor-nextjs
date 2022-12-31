@@ -41,6 +41,7 @@ export function RegisterPage() {
     email: string;
   } = {
     appRole: UsersAppRoleOptions["admin"],
+    organization: "e4fk48xbmedtbcf", // TODO: remove this
     name: "",
     email: "",
     password: "",
