@@ -18,7 +18,7 @@ export const useAllChannels = () => {
   const filter = teamIds.map((teamId) => `team = '${teamId}'`).join(" || ");
 
   return useQuery({
-    queryKey: [Collections.Channels, filter],
+    queryKey: ["useAllChannels", filter],
     enabled: teamIds.length > 0,
     queryFn: () => {
       return pb
@@ -59,7 +59,9 @@ export const useAddChannel = () => {
         color: "green",
       });
       closeAllModals();
-      queryClient.invalidateQueries({ queryKey: [Collections.Channels] });
+      queryClient.invalidateQueries({
+        queryKey: ["useAllChannels"],
+      });
     },
     onError: (error) => {
       showNotification({
@@ -89,7 +91,7 @@ export const useUpdateChannel = () => {
         color: "green",
       });
       closeAllModals();
-      queryClient.invalidateQueries({ queryKey: [Collections.Channels] });
+      queryClient.invalidateQueries({ queryKey: ["useAllChannels"] });
     },
     onError: (error) => {
       showNotification({

@@ -10,7 +10,7 @@ export const PostReplyInput = () => {
   const channelId = router.query.channelId as string;
   const postId = router.query.postId as string;
 
-  const addMessage = useAddMessage(postId);
+  const addMessage = useAddMessage();
 
   return (
     <SlateInput

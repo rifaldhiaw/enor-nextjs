@@ -3,13 +3,18 @@ import { FC } from "react";
 import { Descendant } from "slate";
 import { MessagesResponse, UsersRecord } from "~/../pocketbase.types";
 import { emptySlateContent } from "~/components/slate/SlateComponent";
-import { useAllRepliesToMessage } from "~/domains/message/messageData";
+import {
+  useAllRepliesToMessage,
+  useRealtimeRepliesToMessage,
+} from "~/domains/message/messageData";
 import { PostDetail } from "./Post";
 
 export const PostWithReplies: FC<{
   message: MessagesResponse<Descendant[]>;
 }> = ({ message }) => {
   const replies = useAllRepliesToMessage(message.id);
+
+  useRealtimeRepliesToMessage(message);
 
   return (
     <Flex direction="column" gap="md" bg="white">

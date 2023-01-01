@@ -15,7 +15,7 @@ export const useAllTeams = () => {
   const orgId = pb.authStore.model?.organization;
 
   return useQuery({
-    queryKey: [Collections.Teams, orgId],
+    queryKey: ["useAllTeams", orgId],
     queryFn: () => {
       return pb.collection(Collections.Teams).getFullList<TeamsResponse>(100, {
         filter: `organization.id = '${orgId}'`,
@@ -54,7 +54,7 @@ export const useAddTeam = () => {
       });
       closeAllModals();
       queryClient.invalidateQueries({
-        queryKey: [Collections.Teams],
+        queryKey: ["useAllTeams"],
       });
 
       addChannel.mutate({
@@ -92,7 +92,7 @@ export const useUpdateTeam = () => {
       });
       closeAllModals();
       queryClient.invalidateQueries({
-        queryKey: [Collections.Teams],
+        queryKey: ["useAllTeams"],
       });
     },
     onError: (error) => {
