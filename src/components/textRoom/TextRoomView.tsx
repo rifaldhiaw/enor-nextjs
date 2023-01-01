@@ -1,8 +1,13 @@
 import { Box, Flex, ScrollArea } from "@mantine/core";
+import { useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/router";
+import { useEffect } from "react";
+import { ChannelsRecord, Collections } from "~/../pocketbase.types";
 import { PostInput } from "~/components/textRoom/PostInput";
 import { PostReplyInput } from "~/components/textRoom/PostReplyInput";
 import { UserList } from "~/components/textRoom/UserList";
+import { pb } from "~/data/pocketbase";
+import { useCurrentChannel } from "~/domains/channel/channelData";
 import { useAllMessagesInChannel } from "~/domains/message/messageData";
 import { PostHeader } from "../../pages/team/[channelId]";
 import { ChannelHeader } from "../common/ChannelHeader";
@@ -11,11 +16,41 @@ import { PostWithReplies } from "./PostWithReplies";
 
 export const TextRoomView = () => {
   const router = useRouter();
-  const postId = router.query.postId as string;
-  const channelId = router.query.channelId as string;
 
+  const channelId = router.query.channelId as string;
+  const currentChannel = useCurrentChannel();
+
+  const postId = router.query.postId as string;
   const posts = useAllMessagesInChannel(channelId);
   const selectedPost = posts.data?.find((p) => p.id === postId);
+
+  const queryClient = useQueryClient();
+
+  // Subscribe to channel updates
+  // If the last message clock is updated, invalidate the messages query
+  useEffect(() => {
+    if (!channelId) return;
+    if (!currentChannel) return;
+
+    pb.collection(Collections.Channels).subscribe<ChannelsRecord>(
+      channelId,
+      (e) => {
+        const newClock = e.record.lastMessageClock ?? 0;
+        const prevClock = currentChannel.lastMessageClock ?? 0;
+
+        if (newClock > prevClock) {
+          queryClient.invalidateQueries({
+            queryKey: [Collections.Messages + channelId],
+          });
+        }
+      }
+    );
+
+    return () => {
+      pb.collection(Collections.Channels).unsubscribe(channelId);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [channelId, currentChannel?.lastMessageClock]);
 
   return (
     <Flex h="100%" bg="gray.0">

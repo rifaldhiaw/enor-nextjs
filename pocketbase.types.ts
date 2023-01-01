@@ -46,6 +46,7 @@ export type ChannelsRecord = {
   name: string;
   team: RecordIdString;
   type: ChannelsTypeOptions;
+  lastMessageClock?: number;
 };
 
 export type MessagesRecord<

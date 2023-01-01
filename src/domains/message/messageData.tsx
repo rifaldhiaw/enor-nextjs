@@ -1,7 +1,6 @@
 import { showNotification } from "@mantine/notifications";
 import { IconX } from "@tabler/icons";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { useRouter } from "next/router";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { Descendant } from "slate";
 import {
   Collections,
@@ -12,7 +11,7 @@ import { pb } from "~/data/pocketbase";
 
 export const useAllMessagesInChannel = (channelId: string) => {
   return useQuery({
-    queryKey: [channelId],
+    queryKey: [Collections.Messages + channelId],
     enabled: !!channelId,
     queryFn: () => {
       return pb
@@ -59,21 +58,16 @@ export const useAllRepliesToMessage = (messageId: string) => {
 };
 
 export const useAddMessage = (parentMessageId?: string) => {
-  const queryClient = useQueryClient();
-
-  const router = useRouter();
-  const channelId = router.query.channelId as string;
-
   return useMutation({
     mutationFn: (message: MessagesRecord) => {
       return pb.collection(Collections.Messages).create(message);
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({
-        predicate: (query) =>
-          query.queryKey.includes(channelId) ||
-          query.queryKey.includes(parentMessageId),
-      });
+      // queryClient.invalidateQueries({
+      //   predicate: (query) =>
+      //     query.queryKey.includes(channelId) ||
+      //     query.queryKey.includes(parentMessageId),
+      // });
     },
     onError: (error) => {
       showNotification({
