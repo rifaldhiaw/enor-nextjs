@@ -105,7 +105,7 @@ export const useRealtimeRepliesToMessage = (message: MessagesResponse) => {
     return () => {
       pb.collection(Collections.Messages).unsubscribe(message.id);
     };
-  }, [message.id, queryClient]);
+  }, [message.id]);
 };
 
 export const useRealtimeMessagesInChannel = (channelId: string) => {

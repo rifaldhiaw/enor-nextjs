@@ -1,7 +1,7 @@
 import { Box, CloseButton, Group, Text } from "@mantine/core";
 import dynamic from "next/dynamic";
 import router, { useRouter } from "next/router";
-import { ReactNode } from "react";
+import { ReactNode, useMemo } from "react";
 
 import Loading from "~/components/common/Loading";
 import { DiscussionLayout } from "~/components/team/TeamLayout";
@@ -44,24 +44,26 @@ const RichDocView = dynamic(
 );
 
 export const Channel = () => {
-  const viewByNavLink: Record<NavLinkData["type"], ReactNode> = {
-    textRoom: <TextRoomView />,
-    voiceRoom: <VoiceRoomView />,
-    drawBoard: <DrawBoardView />,
-    document: <RichDocView />,
-    kanban: <KanbanView />,
-  };
-
   const channel = useCurrentChannel();
 
-  const getView = () => {
-    return viewByNavLink[channel?.type ?? "textRoom"];
-  };
+  // useMemo of code above
+  const view = useMemo(() => {
+    if (!channel) return null;
+    const viewByNavLink: Record<NavLinkData["type"], ReactNode> = {
+      textRoom: <TextRoomView />,
+      voiceRoom: <VoiceRoomView />,
+      drawBoard: <DrawBoardView />,
+      document: <RichDocView />,
+      kanban: <KanbanView />,
+    };
+
+    return viewByNavLink[channel.type];
+  }, [channel]);
 
   return (
     <DiscussionLayout navTitle="Discussion">
       <Box h="100%" bg="white">
-        {getView()}
+        {view}
       </Box>
     </DiscussionLayout>
   );

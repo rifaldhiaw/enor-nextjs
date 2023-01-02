@@ -12,7 +12,6 @@ specifiers:
   '@excalidraw/excalidraw': ^0.13.0
   '@faker-js/faker': ^7.6.0
   '@livekit/react-components': ^1.1.0
-  '@mantine/carousel': ^5.9.4
   '@mantine/core': ^5.9.4
   '@mantine/dates': ^5.9.4
   '@mantine/dropzone': ^5.9.4
@@ -26,6 +25,7 @@ specifiers:
   '@mantine/prism': ^5.9.4
   '@mantine/spotlight': ^5.9.4
   '@mantine/tiptap': ^5.9.4
+  '@preact/signals-react': ^1.2.2
   '@tabler/icons': ^1.117.0
   '@tanstack/query-core': ^4.20.4
   '@tanstack/react-query': ^4.20.4
@@ -88,7 +88,6 @@ dependencies:
   '@emotion/server': 11.10.0
   '@excalidraw/excalidraw': 0.13.0_biqbaboplfbrettd7655fr4n2y
   '@livekit/react-components': 1.1.0_xhh7yq3cfk66buqja7qmfggtyq
-  '@mantine/carousel': 5.9.4_y6renfj2fnbjkh2qcqzkcc4yhy
   '@mantine/core': 5.9.4_pgo6dehjvjnehz6jphknhqbkyi
   '@mantine/dates': 5.9.4_qna4mfjln7nd2ikoxaebjem64u
   '@mantine/dropzone': 5.9.4_akxvflpdc4qclfp7ngtfppkada
@@ -102,6 +101,7 @@ dependencies:
   '@mantine/prism': 5.9.4_akxvflpdc4qclfp7ngtfppkada
   '@mantine/spotlight': 5.9.4_akxvflpdc4qclfp7ngtfppkada
   '@mantine/tiptap': 5.9.4_jlovmuqn4m6arrkjlb2w22itqi
+  '@preact/signals-react': 1.2.2_react@18.2.0
   '@tabler/icons': 1.117.0_biqbaboplfbrettd7655fr4n2y
   '@tanstack/query-core': 4.20.4
   '@tanstack/react-query': 4.20.4_biqbaboplfbrettd7655fr4n2y
@@ -749,21 +749,6 @@ packages:
       react-dom: 18.2.0_react@18.2.0
     dev: false
 
-  /@mantine/carousel/5.9.4_y6renfj2fnbjkh2qcqzkcc4yhy:
-    resolution: {integrity: sha512-gXpVxfSIrZGjc2Js2FAsTPA2i+40DJe57qVKPIHlzW30/Jdfb6Ve9ekdMkB6GiM8F0ogHlP+nVcQ1fGpc9vjvQ==}
-    peerDependencies:
-      '@mantine/core': 5.9.4
-      '@mantine/hooks': 5.9.4
-      embla-carousel-react: ^7.0.0
-      react: '>=16.8.0'
-    dependencies:
-      '@mantine/core': 5.9.4_pgo6dehjvjnehz6jphknhqbkyi
-      '@mantine/hooks': 5.9.4_react@18.2.0
-      '@mantine/utils': 5.9.4_react@18.2.0
-      embla-carousel-react: 7.0.5_react@18.2.0
-      react: 18.2.0
-    dev: false
-
   /@mantine/core/5.9.4_pgo6dehjvjnehz6jphknhqbkyi:
     resolution: {integrity: sha512-lUiRk9nHoK/lelAdyirt/MJh6ACHyV9OizYWUG4YjjZhYfGaKQQuZ7b8I/bCV3MMQmhjp02ujBPTEFHH7dzQkw==}
     peerDependencies:
@@ -1165,6 +1150,20 @@ packages:
 
   /@popperjs/core/2.11.6:
     resolution: {integrity: sha512-50/17A98tWUfQ176raKiOGXuYpLyyVMkxxG6oylzL3BPOlA6ADGdK7EYunSa4I064xerltq9TGXs8HmOk5E+vw==}
+    dev: false
+
+  /@preact/signals-core/1.2.3:
+    resolution: {integrity: sha512-Kui4p7PMcEQevBgsTO0JBo3gyQ88Q3qzEvsVCuSp11t0JcN4DmGCTJcGRVSCq7Bn7lGxJBO+57jNSzDoDJ+QmA==}
+    dev: false
+
+  /@preact/signals-react/1.2.2_react@18.2.0:
+    resolution: {integrity: sha512-GoESQ9n1bns2FD+8yqH7lBvQMavboKLCNEW+s0hs3Wcp5B1VHvVxwJo6aFs6rpxoh1/q8Tvwbi4vIeehBD2mzA==}
+    peerDependencies:
+      react: 17.x || 18.x
+    dependencies:
+      '@preact/signals-core': 1.2.3
+      react: 18.2.0
+      use-sync-external-store: 1.2.0_react@18.2.0
     dev: false
 
   /@protobufjs/aspromise/1.1.2:
