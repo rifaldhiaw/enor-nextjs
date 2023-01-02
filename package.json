@@ -56,8 +56,6 @@
     "dayjs": "^1.11.7",
     "embla-carousel-react": "^7.0.5",
     "emoji-mart": "^5.4.0",
-    "eslint": "8.29.0",
-    "eslint-config-next": "13.1.1",
     "idb-keyval": "^6.2.0",
     "is-hotkey": "^0.2.0",
     "livekit-client": "^1.6.0",
@@ -85,6 +83,8 @@
   },
   "devDependencies": {
     "@faker-js/faker": "^7.6.0",
-    "@types/is-hotkey": "^0.1.7"
+    "@types/is-hotkey": "^0.1.7",
+    "eslint": "8.29.0",
+    "eslint-config-next": "13.1.1"
   }
 }
