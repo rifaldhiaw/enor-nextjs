@@ -1,6 +1,4 @@
 import { usePrevious } from "@dnd-kit/utilities";
-import { showNotification } from "@mantine/notifications";
-import { IconX } from "@tabler/icons";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import {
@@ -10,6 +8,7 @@ import {
   MessagesResponse,
 } from "~/../pocketbase.types";
 import { pb } from "~/data/pocketbase";
+import { showErrorNotification } from "~/utils/notificationUtils";
 
 export const useAllMessagesInChannel = (channelId: string) => {
   return useQuery({
@@ -26,12 +25,7 @@ export const useAllMessagesInChannel = (channelId: string) => {
         });
     },
     onError: (error) => {
-      showNotification({
-        color: "red",
-        title: "Failed to get messages",
-        message: (error as Error).message,
-        icon: <IconX size={16} />,
-      });
+      showErrorNotification("Failed to get messages", (error as Error).message);
     },
   });
 };
@@ -51,12 +45,7 @@ export const useAllRepliesToMessage = (messageId: string) => {
         });
     },
     onError: (error) => {
-      showNotification({
-        color: "red",
-        title: "Failed to get replies",
-        message: (error as Error).message,
-        icon: <IconX size={16} />,
-      });
+      showErrorNotification("Failed to get replies", (error as Error).message);
     },
   });
 };
@@ -67,12 +56,7 @@ export const useAddMessage = () => {
       return pb.collection(Collections.Messages).create(message);
     },
     onError: (error) => {
-      showNotification({
-        color: "red",
-        title: "Failed to add message",
-        message: (error as Error).message,
-        icon: <IconX size={16} />,
-      });
+      showErrorNotification("Failed to add message", (error as Error).message);
     },
   });
 };

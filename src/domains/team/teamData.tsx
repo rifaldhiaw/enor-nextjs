@@ -1,6 +1,4 @@
 import { closeAllModals } from "@mantine/modals";
-import { showNotification } from "@mantine/notifications";
-import { IconCheck, IconX } from "@tabler/icons";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   ChannelsTypeOptions,
@@ -10,6 +8,10 @@ import {
 } from "~/../pocketbase.types";
 import { pb } from "~/data/pocketbase";
 import { useAddChannel } from "~/domains/channel/channelData";
+import {
+  showErrorNotification,
+  showSuccessNotification,
+} from "~/utils/notificationUtils";
 
 export const useAllTeams = () => {
   const orgId = pb.authStore.model?.organization;
@@ -27,12 +29,7 @@ export const useAllTeams = () => {
     refetchOnReconnect: false,
     networkMode: "offlineFirst",
     onError: (error) => {
-      showNotification({
-        color: "red",
-        title: "Failed to get teams",
-        message: (error as Error).message,
-        icon: <IconX size={16} />,
-      });
+      showErrorNotification("Failed to get teams", (error as Error).message);
     },
   });
 };
@@ -46,12 +43,10 @@ export const useAddTeam = () => {
       return pb.collection(Collections.Teams).create(team);
     },
     onSuccess: (newTeam) => {
-      showNotification({
-        title: `Team ${newTeam.name} added`,
-        message: `Team ${newTeam.name} has been added`,
-        icon: <IconCheck size={20} />,
-        color: "green",
-      });
+      showSuccessNotification(
+        "Team added",
+        `Team ${newTeam.name} has been added`
+      );
       closeAllModals();
       queryClient.invalidateQueries({
         queryKey: ["useAllTeams"],
@@ -64,12 +59,7 @@ export const useAddTeam = () => {
       });
     },
     onError: (error) => {
-      showNotification({
-        title: "Failed to add team",
-        message: (error as Error).message,
-        icon: <IconX size={20} />,
-        color: "red",
-      });
+      showErrorNotification("Failed to add team", (error as Error).message);
     },
   });
 };
@@ -84,24 +74,18 @@ export const useUpdateTeam = () => {
       return pb.collection(Collections.Teams).update(team.id, team);
     },
     onSuccess: (newTeam) => {
-      showNotification({
-        title: `Team ${newTeam.name} updated`,
-        message: `Team ${newTeam.name} has been updated`,
-        icon: <IconCheck size={20} />,
-        color: "green",
-      });
+      showSuccessNotification(
+        "Team updated",
+        `Team ${newTeam.name} has been updated`
+      );
+
       closeAllModals();
       queryClient.invalidateQueries({
         queryKey: ["useAllTeams"],
       });
     },
     onError: (error) => {
-      showNotification({
-        title: "Failed to update team",
-        message: (error as Error).message,
-        icon: <IconX size={20} />,
-        color: "red",
-      });
+      showErrorNotification("Failed to update team", (error as Error).message);
     },
   });
 };

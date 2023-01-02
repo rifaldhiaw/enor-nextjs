@@ -16,6 +16,7 @@ import {
   Title,
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
+import { useLocalStorage } from "@mantine/hooks";
 import { openModal } from "@mantine/modals";
 import {
   IconChalkboard,
@@ -52,10 +53,6 @@ import {
   useUpdateTeam,
 } from "~/domains/team/teamData";
 import { ChannelType, channelTypes, NavLinkData } from "../../data/navlinkData";
-import {
-  discussionStoreActions,
-  useDiscussionStore,
-} from "../../stores/discussionStore";
 
 const useStyles = createStyles((theme) => ({
   root: {
@@ -99,7 +96,10 @@ const useStyles = createStyles((theme) => ({
 }));
 
 export const TeamNav = (props: { title: string }) => {
-  const activeAccordion = useDiscussionStore((state) => state.activeAccordion);
+  const [activeAccordion, setActiveAccordion] = useLocalStorage({
+    key: "activeAccordion",
+    defaultValue: [] as string[],
+  });
 
   const teams = useAllTeams();
   const channels = useAllChannels();
@@ -150,7 +150,7 @@ export const TeamNav = (props: { title: string }) => {
           chevronPosition="left"
           mx="auto"
           value={activeAccordion}
-          onChange={discussionStoreActions.setActiveAccordion}
+          onChange={setActiveAccordion}
           variant="filled"
           classNames={classes}
           className={classes.root}

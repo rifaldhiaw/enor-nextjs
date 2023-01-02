@@ -11,8 +11,6 @@ import {
   Title,
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
-import { showNotification } from "@mantine/notifications";
-import { IconCheck, IconX } from "@tabler/icons";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useState } from "react";
@@ -20,6 +18,10 @@ import { Collections } from "~/../pocketbase.types";
 
 import { pb } from "~/data/pocketbase";
 import { emailRegex } from "~/utils/constants";
+import {
+  showErrorNotification,
+  showSuccessNotification,
+} from "~/utils/notificationUtils";
 
 export function LoginPage() {
   const [isLoading, setIsLoading] = useState(false);
@@ -45,21 +47,10 @@ export function LoginPage() {
         .collection(Collections.Users)
         .authWithPassword(values.email, values.password);
 
-      showNotification({
-        color: "teal",
-        title: "Signed in",
-        message: "You are now signed in",
-        icon: <IconCheck size={16} />,
-      });
-
+      showSuccessNotification("Signed in", "You are now signed in");
       router.push("/");
     } catch (error) {
-      showNotification({
-        color: "red",
-        title: "Failed to sign in",
-        message: (error as Error).message,
-        icon: <IconX size={16} />,
-      });
+      showErrorNotification("Failed to sign in", (error as Error).message);
     }
     setIsLoading(false);
   };
