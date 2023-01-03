@@ -15,7 +15,7 @@ import {
   IconSettings,
   IconUsers,
 } from "@tabler/icons";
-import { useRouter } from "next/router";
+import Link from "next/link";
 import { pb } from "../../data/pocketbase";
 
 const useStyles = createStyles((theme) => ({
@@ -93,7 +93,7 @@ const useStyles = createStyles((theme) => ({
 const mainLinksMockdata = [
   { icon: IconHome2, label: "Home", url: "/" },
   { icon: IconMessages, label: "Chat", url: "/chat" },
-  { icon: IconUsers, label: "Team", url: "/team/home" },
+  { icon: IconUsers, label: "Team", url: "/team" },
   { icon: IconBuilding, label: "Back Office", url: "/back-office" },
   { icon: IconCalendarStats, label: "Releases", url: "/releases" },
   { icon: IconSettings, label: "Settings", url: "/settings" },
@@ -107,14 +107,12 @@ export function AppNavbar(props: {
   active: MainLink;
 }) {
   const { classes, cx } = useStyles();
-  const router = useRouter();
 
   const mainLinks = mainLinksMockdata.map((link) => (
     <Tooltip label={link.label} position="right" withArrow key={link.label}>
       <UnstyledButton
-        onClick={() => {
-          router.push(link.url);
-        }}
+        href={link.url}
+        component={Link}
         className={cx(classes.mainLink, {
           [classes.mainLinkActive]: link.label === props.active,
         })}
